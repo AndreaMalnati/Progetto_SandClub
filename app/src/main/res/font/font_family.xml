@@ -4,5 +4,5 @@
 
         android:fontStyle="normal"
         android:fontWeight="150"
-        android:font="@font/BebasNeue"/>
+        android:font="@font/testo"/>
 </font-family>
