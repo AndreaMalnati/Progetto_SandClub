@@ -6,5 +6,6 @@
     <string name="password">Password</string>
     <string name="password2Rg">Repeat Password</string>
     <string name="register">Register</string>
+    <string name="default_web_client_id">403704541151-9miqksu7dhjgs99s3assf0up5an4657s.apps.googleusercontent.com</string>
 
 </resources>
