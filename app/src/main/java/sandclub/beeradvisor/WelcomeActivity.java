@@ -29,8 +29,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-import sandclub.beeradvisor.model.User;
-
 public class WelcomeActivity extends AppCompatActivity {
     Button login, register;
 
@@ -46,21 +44,14 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        String databaseUrl = "https://progetto-sandclub-default-rtdb.europe-west1.firebasedatabase.app/";
         login = findViewById(R.id.loginBtn);
         register = findViewById(R.id.registerBtn);
         google = findViewById(R.id.registerGoogleBtn);
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance(databaseUrl);
+        database = FirebaseDatabase.getInstance();
 
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         //registrazione
         register.setOnClickListener(new View.OnClickListener() {
@@ -120,9 +111,12 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = auth.getCurrentUser();
-                            User newUser = new User(user.getUid(), user.getDisplayName(), user.getDisplayName(), user.getEmail(), "", user.getPhotoUrl().toString());
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("id", user.getUid());
+                            map.put("name", user.getDisplayName());
+                            map.put("profile", user.getPhotoUrl().toString());
 
-                            database.getReference().child("user").child(user.getUid()).setValue(newUser);
+                            database.getReference().child("users").child(user.getUid()).setValue(map);
 
                             Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                             startActivity(intent);
