@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +17,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Firebase;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -26,11 +32,13 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnConfirmRegister;
     FirebaseAuth mAuth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -41,6 +49,11 @@ public class RegisterActivity extends AppCompatActivity {
         editTextPassword2 = findViewById(R.id.password2Rg);
         btnConfirmRegister = findViewById(R.id.Confirm_Registration);
 
+
+
+
+
+
         btnConfirmRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Email = String.valueOf(editTextEmail.getText());
                 Password = String.valueOf(editTextPassword.getText());
                 Password2 = String.valueOf(editTextPassword2.getText());
+
+
 
             //CONTROLLI campi vuoti e/o campi non corretti
                 if(TextUtils.isEmpty(Nome)){
@@ -63,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 //check email corretta
-                if(TextUtils.isEmpty(Email) || android.util.Patterns.EMAIL_ADDRESS.matcher(Email).matches()){
+                if(TextUtils.isEmpty(Email) || isValidEmail(Email) == false){
                     Toast.makeText(RegisterActivity.this, "Email non valida", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -95,14 +110,30 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    String errorMessage = "Authentication fallita";
+                                    if (task.getException() != null) {
+                                        errorMessage += " " + task.getException().getMessage();
+                                    }
                                     Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
 
                                 }
                             }
                         });
+
+
+
             }
+
+
         });
+
     }
+
+    public boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern);
+    }
+
+
 }

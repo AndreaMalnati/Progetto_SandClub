@@ -32,22 +32,27 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+
         android:layout_width="290sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:textColorHint="@color/grey"
+        app:hintEnabled="false"
+
         >
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameRg"
-            android:fontFamily="@font/testo"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/grey"
             android:background="@color/trasparent"
             android:hint="@string/name"
+            android:fontFamily="@font/testo"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
-            />
+            android:textColor="@color/black"/>
 
         <View
             android:layout_width="match_parent"
@@ -60,7 +65,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="290sp"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/grey"
+
+        app:hintEnabled="false"
         android:layout_marginTop="5sp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -69,10 +75,12 @@
             android:fontFamily="@font/testo"
             android:layout_width="match_parent"
             android:background="@color/trasparent"
+            android:textColorHint="@color/grey"
             android:layout_height="wrap_content"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
+            android:textColor="@color/black"
 
             />
         <View
@@ -86,7 +94,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="290sp"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/grey"
+
+        app:hintEnabled="false"
         android:layout_marginTop="5sp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailRg"
@@ -94,10 +103,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/testo"
+            android:textColorHint="@color/grey"
             android:background="@color/trasparent"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
+            android:textColor="@color/black"
             />
         <View
             android:layout_width="match_parent"
@@ -109,7 +120,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="290sp"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/grey"
+        app:hintEnabled="false"
+
         android:layout_marginTop="5sp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordRg"
@@ -118,9 +130,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/testo"
             android:background="@color/trasparent"
+            android:textColorHint="@color/grey"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
+            android:textColor="@color/black"
 
 
             />
@@ -134,7 +148,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="290sp"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/grey"
+
+        app:hintEnabled="false"
         android:layout_marginTop="5sp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password2Rg"
@@ -143,9 +158,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/testo"
             android:background="@color/trasparent"
+            android:textColorHint="@color/grey"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
+            android:textColor="@color/black"
             />
         <View
             android:layout_width="match_parent"
