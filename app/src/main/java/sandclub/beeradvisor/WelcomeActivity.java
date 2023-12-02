@@ -47,7 +47,13 @@ public class WelcomeActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
 
-
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //registrazione
         register.setOnClickListener(new View.OnClickListener() {

@@ -31,70 +31,7 @@
         android:layout_marginTop="1sp" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
 
-        android:layout_width="290sp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        app:hintEnabled="false"
-
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nameRg"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/grey"
-            android:background="@color/trasparent"
-            android:hint="@string/name"
-            android:fontFamily="@font/testo"
-            android:paddingBottom="2sp"
-            android:paddingTop="0dp"
-            android:paddingStart="0dp"
-            android:textColor="@color/black"
-            android:maxLines="1"
-            android:lines="1"
-            android:singleLine="true"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1sp"
-            android:background="@color/black"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="290sp"
-        android:layout_height="wrap_content"
-
-        app:hintEnabled="false"
-        android:layout_marginTop="5sp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/surnameRg"
-            android:hint="@string/surname"
-            android:fontFamily="@font/testo"
-            android:layout_width="match_parent"
-            android:background="@color/trasparent"
-            android:textColorHint="@color/grey"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2sp"
-            android:paddingTop="0dp"
-            android:paddingStart="0dp"
-            android:textColor="@color/black"
-            android:maxLines="1"
-            android:lines="1"
-            android:singleLine="true"
-
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1sp"
-            android:background="@color/black"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -104,7 +41,7 @@
         app:hintEnabled="false"
         android:layout_marginTop="5sp">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailRg"
+            android:id="@+id/emailLg"
             android:hint="@string/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,7 +70,7 @@
 
         android:layout_marginTop="5sp">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordRg"
+            android:id="@+id/passwordLg"
             android:hint="@string/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -156,47 +93,16 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="290sp"
-        android:layout_height="wrap_content"
-
-        app:hintEnabled="false"
-        android:layout_marginTop="5sp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password2Rg"
-            android:hint="@string/password2Rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/testo"
-            android:background="@color/trasparent"
-            android:textColorHint="@color/grey"
-            android:paddingBottom="2sp"
-            android:paddingTop="0dp"
-            android:paddingStart="0dp"
-            android:textColor="@color/black"
-            android:maxLines="1"
-            android:lines="1"
-            android:singleLine="true"
-            android:inputType="textPassword"
-
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1sp"
-            android:background="@color/black"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <androidx.appcompat.widget.AppCompatButton
         android:layout_marginTop="10sp"
-        android:id="@+id/Confirm_Registration"
+        android:id="@+id/confirmLoginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/my_border"
         android:fontFamily="@font/testo"
-        android:text="@string/register"
+        android:text="@string/login"
         android:textColor="@color/orange"
         android:textSize="18dp"
-    />
+        />
 
 </LinearLayout>
