@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "403704541151-v98eu9bjgbllnlndfk1v4orkh2hqqtvn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sandclub.beeradvisor",
+            "certificate_hash": "b03f6e3628cb0712cefc6441deb4dc4f8a71a554"
+          }
+        },
+        {
           "client_id": "403704541151-9miqksu7dhjgs99s3assf0up5an4657s.apps.googleusercontent.com",
           "client_type": 3
         }
