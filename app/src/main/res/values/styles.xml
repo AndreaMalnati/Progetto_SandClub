@@ -2,8 +2,6 @@
 <resources>
     <style name="textInputStyle" parent="TextAppearance.Design.Hint">
         <item name="fontFamily">@font/testo</item>
-
-        <!-- Altri attributi di stile per l'hint, se necessario -->
     </style>
 
 </resources>
