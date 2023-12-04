@@ -6,10 +6,29 @@ public class User {
     String cognome;
     String email;
     String password;
+    String photoUrl;
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public User() {
     }
 
+    //User google
+    public User(String userId, String nome, String cognome, String email, String password, String photoUrl) {
+        this.userId = userId;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.password = password;
+        this.photoUrl = photoUrl;
+    }
+    //User normale
     public User(String userId, String nome, String cognome, String email, String password) {
         this.userId = userId;
         this.nome = nome;
