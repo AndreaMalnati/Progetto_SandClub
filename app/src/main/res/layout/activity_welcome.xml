@@ -78,7 +78,7 @@
             android:layout_marginEnd="60dp"
             android:layout_marginBottom="250dp"
             android:height="45dp"
-            android:background="@drawable/my_border"
+            android:background="@drawable/my_border_google"
             android:fontFamily="@font/testo"
             android:text="registrati con google"
             android:textColor="@color/orange"
