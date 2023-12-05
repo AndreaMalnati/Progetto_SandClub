@@ -118,7 +118,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             FirebaseUser user = auth.getCurrentUser();
                             User newUser = new User(user.getUid(), user.getDisplayName(), user.getDisplayName(), user.getEmail(), "", user.getPhotoUrl().toString());
 
-                            database.getReference().child("users").child(user.getUid()).setValue(newUser);
+                            database.getReference().child("user").child(user.getUid()).setValue(newUser);
 
                             Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                             startActivity(intent);
