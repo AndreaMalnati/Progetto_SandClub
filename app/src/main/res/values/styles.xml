@@ -4,4 +4,18 @@
         <item name="fontFamily">@font/testo</item>
     </style>
 
+    <!-- Stile Bottone di pagine registrazione, login e welcom-->
+    <style name="CustomButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/my_border</item>
+        <item name="fontFamily">@font/testo</item>
+        <item name = "android:textColor">@color/orange</item>
+        <item name = "android:textSize">18dp</item>
+    </style>
+
+    <!-- Stile Bottone google -->
+    <style name="googleButton" parent="Widget.AppCompat.Button">
+        <item name ="android:background">@drawable/google_button</item>
+        <item name = "android:src">@drawable/googleg_standard_color_18</item>
+
+    </style>
 </resources>
