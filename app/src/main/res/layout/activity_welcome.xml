@@ -52,59 +52,45 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginBtn"
         android:layout_width="290dp"
-
         android:layout_height="45dp"
-
         android:layout_marginStart="60dp"
         android:layout_marginTop="436dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="250dp"
         android:height="45dp"
-        android:background="@drawable/my_border"
-        android:fontFamily="@font/testo"
-        android:text="Login"
-        android:textColor="@color/orange"
-        android:textSize="18dp"
-        />
+        style = "@style/CustomButtonStyle"
+        android:text="Login"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/registerGoogleBtn"
-            android:layout_width="290dp"
 
-            android:layout_height="45dp"
 
+        <ImageButton
+            style = "@style/googleButton"
             android:layout_marginStart="60dp"
             android:layout_marginTop="576dp"
             android:layout_marginEnd="60dp"
-            android:layout_marginBottom="250dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:height="45dp"
-            android:background="@drawable/my_border"
-            android:fontFamily="@font/testo"
+            android:id="@+id/registerGoogleBtn"
             android:text="registrati con google"
-            android:textColor="@color/orange"
-            android:textSize="18dp" />
+            android:textSize="18dp" >
+
+        </ImageButton>
+
 
         <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/registerBtn"
-
+            style = "@style/CustomButtonStyle"
+            android:id="@+id/registerBtn"
         android:layout_width="290dp"
-
         android:layout_height="45dp"
-
         android:layout_marginStart="60dp"
         android:layout_marginTop="506dp"
         android:layout_marginEnd="60dp"
-
         android:layout_marginBottom="175dp"
-        android:background="@drawable/my_border"
-        android:fontFamily="@font/testo"
         android:text="Registrati"
-        android:textColor="@color/orange"
-        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.52" />
