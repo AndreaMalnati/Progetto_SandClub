@@ -1,9 +1,11 @@
 package sandclub.beeradvisor;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +32,9 @@ import java.util.HashMap;
 import sandclub.beeradvisor.model.User;
 
 public class WelcomeActivity extends AppCompatActivity {
-    Button login, register, google;
+    Button login, register;
+
+    ImageButton google;
     FirebaseAuth auth;
     FirebaseDatabase database;
     GoogleSignInClient googleSignInClient;
