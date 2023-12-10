@@ -18,7 +18,45 @@
             android:id="@+id/toolbarTop"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/brown" />
+            android:background="@color/brown">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="17dp">
+
+
+                <ImageView
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:src="@drawable/ic_logo"
+                    android:background="@null"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="3sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/testo"
+                    android:text="Beer advisor"
+                    android:textColor="@color/orange"
+                    android:textSize="50dp"
+                    android:background="@null"
+                    android:layout_centerInParent="true"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_app_setting"
+                    android:id="@+id/settingBtn"
+                    android:background = "@null"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="3sp"
+                    />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Contenuto variabile -->
@@ -51,18 +89,17 @@
             android:background="@color/brown" >
 
 
-                <RelativeLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                    android:layout_marginEnd="17dp"
-                >
+                    android:layout_marginEnd="17dp">
 
 
             <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/button1"
-                        android:src="@drawable/logo_home"
+                        android:src="@drawable/ic_app_home"
                         android:background="@null"
                         android:layout_alignParentStart="true"
                         />
@@ -70,7 +107,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src = "@drawable/logo_beertappo"
+                        android:src = "@drawable/ic_app_beertappo"
                         android:id="@+id/button2"
                         android:background="@null"
                         android:layout_centerInParent="true"/>
@@ -78,7 +115,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/logo_user"
+                        android:src="@drawable/ic_app_user"
                         android:id="@+id/button3"
                         android:background = "@null"
                         android:layout_alignParentEnd="true"
