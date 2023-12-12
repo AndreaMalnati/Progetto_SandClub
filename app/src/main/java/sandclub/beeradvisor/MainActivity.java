@@ -1,11 +1,14 @@
 package sandclub.beeradvisor;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import sandclub.beeradvisor.database.BeerRoomDatabase;
 
 public class MainActivity extends AppCompatActivity {
     ImageButton home;
@@ -13,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         home = findViewById(R.id.button1);
 
         home.setOnClickListener(new View.OnClickListener() {
