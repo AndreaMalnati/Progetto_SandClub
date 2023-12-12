@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -25,9 +26,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
+
 }
 
 dependencies {
@@ -47,8 +50,12 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 
-    implementation ("androidx.navigation:navigation-fragment:2.7.6")
-    implementation ("androidx.navigation:navigation-ui:2.7.6")
 
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    //room
+    val room_version = "2.6.1"
+    implementation ("androidx.room:room-runtime:$room_version")
+    annotationProcessor ("androidx.room:room-compiler:$room_version")
 
 }
