@@ -1,6 +1,7 @@
 package sandclub.beeradvisor.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -14,22 +15,43 @@ import sandclub.beeradvisor.database.Converters;
 public class Beer {
     @PrimaryKey
     private int id;
+    @ColumnInfo(name = "nome")
     private String name;
+
+    @ColumnInfo(name = "tagline")
     private String tagline;
+
+    @ColumnInfo(name = "description")
     private String description;
+
+    @ColumnInfo(name = "image_url")
     private String image_url;
+
+    @ColumnInfo(name = "abv")
     private double abv;
+
+    @ColumnInfo(name = "ibu")
     private double ibu;
+
+    @ColumnInfo(name = "ebc")
     private double ebc;
+
+    @ColumnInfo(name = "srm")
     private double srm;
-    private List<String> food_pairing;
+
+    @ColumnInfo(name = "food_pairing")
+    private BeerFoodPairing food_pairing;
+
+    @ColumnInfo(name = "brewers_tips")
     private String brewers_tips;
+    @ColumnInfo(name = "contributed_by")
     private String contributed_by;
 
-    // Aggiungi costruttori, getter e setter secondo necessità
+
+// Aggiungi costruttori, getter e setter secondo necessità
 
 
-    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, List<String> food_pairing, String brewers_tips, String contributed_by) {
+    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, BeerFoodPairing food_pairing, String brewers_tips, String contributed_by) {
         this.id = id;
         this.name = name;
         this.tagline = tagline;
@@ -45,6 +67,7 @@ public class Beer {
     }
 
     public Beer() {
+
     }
 
     public int getId() {
@@ -59,7 +82,7 @@ public class Beer {
         return name;
     }
 
-    public void setName(String name) {
+    public static void setName(String name) {
         this.name = name;
     }
 
@@ -67,7 +90,7 @@ public class Beer {
         return tagline;
     }
 
-    public void setTagline(String tagline) {
+    public static void setTagline(String tagline) {
         this.tagline = tagline;
     }
 
@@ -75,7 +98,7 @@ public class Beer {
         return description;
     }
 
-    public void setDescription(String description) {
+    public static void setDescription(String description) {
         this.description = description;
     }
 
@@ -83,7 +106,7 @@ public class Beer {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
+    public static void setImage_url(String image_url) {
         this.image_url = image_url;
     }
 
@@ -91,7 +114,7 @@ public class Beer {
         return abv;
     }
 
-    public void setAbv(double abv) {
+    public static void setAbv(double abv) {
         this.abv = abv;
     }
 
@@ -99,7 +122,7 @@ public class Beer {
         return ibu;
     }
 
-    public void setIbu(double ibu) {
+    public static void setIbu(double ibu) {
         this.ibu = ibu;
     }
 
@@ -107,7 +130,7 @@ public class Beer {
         return ebc;
     }
 
-    public void setEbc(double ebc) {
+    public static void setEbc(double ebc) {
         this.ebc = ebc;
     }
 
@@ -115,15 +138,15 @@ public class Beer {
         return srm;
     }
 
-    public void setSrm(double srm) {
+    public static void setSrm(double srm) {
         this.srm = srm;
     }
 
-    public List<String> getFood_pairing() {
+    public BeerFoodPairing getFood_pairing() {
         return food_pairing;
     }
 
-    public void setFood_pairing(List<String> food_pairing) {
+    public void setFood_pairing(BeerFoodPairing food_pairing) {
         this.food_pairing = food_pairing;
     }
 
@@ -141,5 +164,23 @@ public class Beer {
 
     public void setContributed_by(String contributed_by) {
         this.contributed_by = contributed_by;
+    }
+
+    @Override
+    public String toString() {
+        return "Beer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tagline='" + tagline + '\'' +
+                ", description='" + description + '\'' +
+                ", image_url='" + image_url + '\'' +
+                ", abv=" + abv +
+                ", ibu=" + ibu +
+                ", ebc=" + ebc +
+                ", srm=" + srm +
+                ", food_pairing=" + food_pairing +
+                ", brewers_tips='" + brewers_tips + '\'' +
+                ", contributed_by='" + contributed_by + '\'' +
+                '}';
     }
 }
