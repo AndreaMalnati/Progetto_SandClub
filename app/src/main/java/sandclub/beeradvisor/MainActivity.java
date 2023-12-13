@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import sandclub.beeradvisor.database.BeerRoomDatabase;
+import sandclub.beeradvisor.model.Beer;
 
 public class MainActivity extends AppCompatActivity {
     ImageButton home;
@@ -16,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         home = findViewById(R.id.button1);
 
