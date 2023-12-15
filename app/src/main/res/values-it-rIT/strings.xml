@@ -8,5 +8,7 @@
     <string name="password2Rg">Ripeti Password</string>
     <string name="register">Registrati</string>
     <string name="login">login</string>
+    <string name="error_retrieving_beers">Errore nel recuperare le birre</string>
+
 
 </resources>

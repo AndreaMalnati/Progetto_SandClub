@@ -3,6 +3,7 @@ package sandclub.beeradvisor.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -40,7 +41,7 @@ public class Beer {
     private double srm;
 
     @ColumnInfo(name = "food_pairing")
-    private BeerFoodPairing food_pairing;
+    private List<String> food_pairing;
 
     @ColumnInfo(name = "brewers_tips")
     private String brewers_tips;
@@ -51,7 +52,7 @@ public class Beer {
 // Aggiungi costruttori, getter e setter secondo necessità
 
 
-    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, BeerFoodPairing food_pairing, String brewers_tips, String contributed_by) {
+    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, List<String> food_pairing, String brewers_tips, String contributed_by) {
         this.id = id;
         this.name = name;
         this.tagline = tagline;
@@ -66,8 +67,17 @@ public class Beer {
         this.contributed_by = contributed_by;
     }
 
+    @Ignore
     public Beer() {
 
+    }
+
+    public List<String> getFood_pairing() {
+        return food_pairing;
+    }
+
+    public void setFood_pairing(List<String> food_pairing) {
+        this.food_pairing = food_pairing;
     }
 
     public int getId() {
@@ -82,7 +92,7 @@ public class Beer {
         return name;
     }
 
-    public static void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -90,7 +100,7 @@ public class Beer {
         return tagline;
     }
 
-    public static void setTagline(String tagline) {
+    public void setTagline(String tagline) {
         this.tagline = tagline;
     }
 
@@ -98,7 +108,7 @@ public class Beer {
         return description;
     }
 
-    public static void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -106,7 +116,7 @@ public class Beer {
         return image_url;
     }
 
-    public static void setImage_url(String image_url) {
+    public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
 
@@ -114,7 +124,7 @@ public class Beer {
         return abv;
     }
 
-    public static void setAbv(double abv) {
+    public void setAbv(double abv) {
         this.abv = abv;
     }
 
@@ -122,7 +132,7 @@ public class Beer {
         return ibu;
     }
 
-    public static void setIbu(double ibu) {
+    public void setIbu(double ibu) {
         this.ibu = ibu;
     }
 
@@ -130,7 +140,7 @@ public class Beer {
         return ebc;
     }
 
-    public static void setEbc(double ebc) {
+    public void setEbc(double ebc) {
         this.ebc = ebc;
     }
 
@@ -138,17 +148,10 @@ public class Beer {
         return srm;
     }
 
-    public static void setSrm(double srm) {
+    public void setSrm(double srm) {
         this.srm = srm;
     }
 
-    public BeerFoodPairing getFood_pairing() {
-        return food_pairing;
-    }
-
-    public void setFood_pairing(BeerFoodPairing food_pairing) {
-        this.food_pairing = food_pairing;
-    }
 
     public String getBrewers_tips() {
         return brewers_tips;
