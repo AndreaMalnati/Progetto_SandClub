@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--SISTEMARE MISURE BOTTONE NON AVEVO VOGLIA -->
+<!--SISTEMARE COLORE DI SCRITTE DEI CAMPI E METTERE UNO GRIGIO NON SO DOVE MINCHIA SI TROVI UN GRIGIO DECENTE IN QUELLA PALETTE DI MERDA -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,12 +20,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/testo"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/md_theme_dark_surface"
             android:background="@color/trasparent"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
-            android:textColor="@color/black"
+            android:textColor="@color/md_theme_dark_shadow"
             android:maxLines="1"
             android:lines="1"
             android:singleLine="true"
@@ -31,7 +33,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1sp"
-            android:background="@color/black"
+            android:background="@color/md_theme_dark_shadow"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,11 +50,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/testo"
             android:background="@color/trasparent"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/md_theme_dark_surface"
             android:paddingBottom="2sp"
             android:paddingTop="0dp"
             android:paddingStart="0dp"
-            android:textColor="@color/black"
+            android:textColor="@color/md_theme_dark_shadow"
             android:maxLines="1"
             android:lines="1"
             android:singleLine="true"
@@ -61,17 +63,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1sp"
-            android:background="@color/black"
+            android:background="@color/md_theme_dark_shadow"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/confirmLoginBtn"
-        style = "@style/CustomButtonStyle"
         android:layout_marginTop="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login"
+        android:textColor="@color/md_theme_light_inversePrimary"
+        android:textSize="18dp"
+        android:fontFamily="@font/testo"
         />
 
 

@@ -18,7 +18,7 @@
             android:id="@+id/toolbarTop"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/brown">
+            android:background="@color/md_theme_dark_inversePrimary">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/testo"
                     android:text="Beer advisor"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/md_theme_light_inversePrimary"
                     android:textSize="50dp"
                     android:background="@null"
                     android:layout_centerInParent="true"/>
@@ -86,7 +86,7 @@
             android:id="@+id/toolbarBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/brown" >
+            android:background="@color/md_theme_dark_inversePrimary" >
 
 
             <RelativeLayout
