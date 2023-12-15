@@ -11,12 +11,15 @@ import sandclub.beeradvisor.model.Beer;
 
 @Dao
 public interface BeerDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //aggiunge la birra, se ce un conflitto aggiorna
-    void insertBeer(Beer beer);
+    @Insert
+    void insertAll(Beer... beer);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertBeerList(List<Beer> beerList);
     @Delete
     void deleteBeer(Beer beer);
 
-    @Query("SELECT * FROM beer ORDER BY name ASC")
+    @Query("SELECT * FROM beer ORDER BY nome ASC")
     List<Beer> getBeerOrderByName();
     @Query("SELECT * FROM beer WHERE id = :id")
     Beer getBeer(int id);
