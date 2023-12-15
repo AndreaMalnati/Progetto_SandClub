@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/md_theme_light_primaryContainer">>
 
     <TextView
         android:id="@+id/Title"
@@ -18,7 +18,7 @@
         android:layout_marginBottom="543dp"
         android:fontFamily="@font/testo"
         android:text="Beer advisor"
-        android:textColor="@color/orange"
+        android:textColor="@color/md_theme_light_inversePrimary"
         android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
