@@ -47,4 +47,8 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 
+    implementation ("androidx.navigation:navigation-fragment:2.7.6")
+    implementation ("androidx.navigation:navigation-ui:2.7.6")
+
+
 }
