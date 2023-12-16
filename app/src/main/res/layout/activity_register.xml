@@ -33,13 +33,13 @@
         android:layout_marginTop="1sp" />
 
 
+
     <com.google.android.material.textfield.TextInputLayout
 
         android:layout_width="290sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
         app:hintEnabled="false"
-
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="1sp"
             android:background="@color/md_theme_dark_surface"
-        />
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -200,5 +200,6 @@
         android:fontFamily="@font/testo"
 
         />
+
 
 </LinearLayout>
