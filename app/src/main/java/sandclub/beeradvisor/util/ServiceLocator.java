@@ -39,6 +39,7 @@ public class ServiceLocator {
      * Returns an instance of NewsApiService class using Retrofit.
      * @return an instance of NewsApiService.
      */
+    //creo il mio oggetto retrofit passandogli l'url delle api
     public BeerApiService getBeerApiService() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BEER_API_BASE_URL).
                 addConverterFactory(GsonConverterFactory.create()).build();

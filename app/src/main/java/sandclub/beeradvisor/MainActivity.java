@@ -15,6 +15,7 @@ import java.util.List;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.repository.BeerMockRepository;
+import sandclub.beeradvisor.repository.BeerRepository;
 import sandclub.beeradvisor.repository.ResponseCallback;
 
 
@@ -31,8 +32,11 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
         db.getDatabase(getApplicationContext());
 
-        BeerMockRepository mock = new BeerMockRepository(getApplication(), this);
+        /*BeerMockRepository mock = new BeerMockRepository(getApplication(), this);
         mock.fetchBeer();
+*/
+        BeerRepository rep = new BeerRepository(getApplication(), this);
+        rep.fetchBeer();
 
         home = findViewById(R.id.button1);
 

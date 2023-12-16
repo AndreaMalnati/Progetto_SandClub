@@ -30,7 +30,7 @@ public class BeerMockRepository implements IBeerRepository{
 
     public BeerMockRepository(Application application, ResponseCallback responseCallback) {//ResponseCallback responseCallback, ) {
         this.application = application;
-        //this.responseCallback = responseCallback;
+
         this.responseCallback = responseCallback;
 
         BeerRoomDatabase beerRoomDatabase = ServiceLocator.getInstance().getBeerDao(application);
