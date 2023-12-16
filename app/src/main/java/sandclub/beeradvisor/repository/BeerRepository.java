@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +27,8 @@ public class BeerRepository implements IBeerRepository{
     private final BeerDao beerDao;
     private final ResponseCallback responseCallback;
 
+    private int page = 1;
+
     public BeerRepository(Application application, ResponseCallback responseCallback) {
         this.application = application;
         this.beerApiService = ServiceLocator.getInstance().getBeerApiService();
@@ -37,7 +40,7 @@ public class BeerRepository implements IBeerRepository{
 
     @Override
     public void fetchBeer() {
-        Call<List<Beer>> beerResponseCall = beerApiService.getBeers();
+        Call<List<Beer>> beerResponseCall = beerApiService.get25Beers();
 
         beerResponseCall.enqueue(new Callback<List<Beer>>() {
             @Override
@@ -46,6 +49,30 @@ public class BeerRepository implements IBeerRepository{
                 if(response.body() != null && response.isSuccessful()){
                     List<Beer> beerList = response.body();
                     saveDataInDatabase(beerList);
+                }else{
+                    responseCallback.onFailure(application.getString(R.string.error_retrieving_beers));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Beer>> call, Throwable t) {
+                responseCallback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void fetchAllBeer(){
+        Call<List<Beer>> beerResponseCall = beerApiService.getAllBeer(String.valueOf(page), "80");
+
+        beerResponseCall.enqueue(new Callback<List<Beer>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Beer>> call,
+                                   @NonNull Response<List<Beer>> response) {
+                if(response.body() != null && response.isSuccessful()){
+                    List<Beer> beerList = response.body();
+                    saveDataInDatabase(beerList);
+                    fetchAllBeer();
+                    page++;
                 }else{
                     responseCallback.onFailure(application.getString(R.string.error_retrieving_beers));
                 }

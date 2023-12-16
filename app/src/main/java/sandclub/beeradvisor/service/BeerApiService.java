@@ -1,6 +1,8 @@
 package sandclub.beeradvisor.service;
 
-import static sandclub.beeradvisor.util.Constants.SINGLE_BEER_ENDPOINT;
+import static sandclub.beeradvisor.util.Constants.BEER_ENDPOINT;
+import static sandclub.beeradvisor.util.Constants.BEER_PAGE_AMOUNT;
+import static sandclub.beeradvisor.util.Constants.BEER_PAGE_PARAMETER;
 import static sandclub.beeradvisor.util.Constants.SINGLE_BEER_PARAMETER;
 
 import java.util.List;
@@ -17,11 +19,17 @@ public interface BeerApiService {
 
 
     //Get di una birra con id
-    @GET(SINGLE_BEER_ENDPOINT)
+    @GET(BEER_ENDPOINT)
     Call<BeerResponse> getBeerById(
         @Query(SINGLE_BEER_PARAMETER) int id
     );
 
-    @GET(SINGLE_BEER_ENDPOINT)
-    Call<List<Beer>> getBeers();
+    @GET(BEER_ENDPOINT)
+    Call<List<Beer>> get25Beers();
+
+    @GET(BEER_ENDPOINT)
+    Call<List<Beer>> getAllBeer(
+      @Query(BEER_PAGE_PARAMETER) String page,
+      @Query(BEER_PAGE_AMOUNT) String amount
+    );
 }

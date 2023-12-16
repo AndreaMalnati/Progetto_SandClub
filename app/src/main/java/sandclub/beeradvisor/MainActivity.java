@@ -34,9 +34,10 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
         /*BeerMockRepository mock = new BeerMockRepository(getApplication(), this);
         mock.fetchBeer();
-*/
+        */
         BeerRepository rep = new BeerRepository(getApplication(), this);
-        rep.fetchBeer();
+
+            rep.fetchAllBeer();
 
         home = findViewById(R.id.button1);
 
