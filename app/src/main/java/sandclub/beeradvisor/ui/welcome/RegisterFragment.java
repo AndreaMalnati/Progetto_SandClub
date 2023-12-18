@@ -2,6 +2,8 @@ package sandclub.beeradvisor.ui.welcome;
 
 import static android.content.ContentValues.TAG;
 
+import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,7 +37,7 @@ public class RegisterFragment extends Fragment {
     Button btnConfirmRegister;
     FirebaseAuth mAuth;
 
-    String databaseUrl = "https://progetto-sandclub-default-rtdb.europe-west1.firebasedatabase.app/";
+
     private DatabaseReference mDatabase;
 
     public RegisterFragment() {
@@ -70,7 +72,7 @@ public class RegisterFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.passwordRg);
         editTextPassword2 = view.findViewById(R.id.password2Rg);
         btnConfirmRegister = view.findViewById(R.id.Confirm_Registration);
-        mDatabase = FirebaseDatabase.getInstance(databaseUrl).getReference();
+        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
 
         btnConfirmRegister.setOnClickListener(new View.OnClickListener() {
             @Override

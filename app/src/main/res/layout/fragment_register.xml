@@ -40,7 +40,7 @@
                 android:paddingTop="0dp"
                 android:paddingBottom="2dp"
                 android:singleLine="true"
-                android:textColor="@color/md_theme_light_outline"
+                android:textColor="@color/md_theme_dark_surface"
                 android:textColorHint="@color/md_theme_dark_outline" />
 
             <View

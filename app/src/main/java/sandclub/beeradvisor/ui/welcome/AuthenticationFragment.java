@@ -1,5 +1,7 @@
 package sandclub.beeradvisor.ui.welcome;
 
+import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,13 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
-
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
@@ -43,8 +42,7 @@ public class AuthenticationFragment extends Fragment {
     GoogleSignInClient googleSignInClient;
     int RC_SIGN_IN = 20;
 
-    //DA CAMBIARE E METTERE NEI CONST QUANDO SI MERGERA'
-    String databaseUrl = "https://progetto-sandclub-default-rtdb.europe-west1.firebasedatabase.app/";
+
 
     public AuthenticationFragment() {
         // Required empty public constructor
@@ -151,7 +149,7 @@ public class AuthenticationFragment extends Fragment {
                         if(task.isSuccessful()){
                             FirebaseUser user = auth.getCurrentUser();
                             User newUser = new User(user.getUid(), user.getDisplayName(), user.getDisplayName(), user.getEmail(), "", user.getPhotoUrl().toString());
-                            mDatabase = FirebaseDatabase.getInstance(databaseUrl).getReference().child("user").child(user.getUid()).setValue(newUser);;
+                            mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);;
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             startActivity(intent);
                         }else{
