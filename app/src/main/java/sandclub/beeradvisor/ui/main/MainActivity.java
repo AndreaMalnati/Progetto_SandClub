@@ -1,4 +1,4 @@
-package sandclub.beeradvisor;
+package sandclub.beeradvisor.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import sandclub.beeradvisor.R;
 
 public class MainActivity extends AppCompatActivity {
     ImageButton home;
