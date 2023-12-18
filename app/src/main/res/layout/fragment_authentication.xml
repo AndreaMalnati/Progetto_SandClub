@@ -4,67 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.welcome.AuthenticationFragment"
-    >
+    tools:context=".ui.welcome.AuthenticationFragment">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
 
-        <Button
-            android:id="@+id/loginBtn"
-            android:layout_width="290dp"
-            android:layout_height="48dp"
+                <Button
+                    android:id="@+id/loginBtn"
+                    android:layout_width="290dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="490dp"
+                    android:height="48dp"
+                    android:fontFamily="@font/testo"
+                    android:text="Login"
+                    android:textColor="@color/md_theme_light_inversePrimary"
+                    android:textSize="18dp"
+                    />
 
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="436dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginBottom="250dp"
-            android:height="48dp"
-            android:fontFamily="@font/testo"
-            android:text="Login"
-            android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="18dp"
+                <Button
+                    android:id="@+id/registerBtn"
+                    android:layout_width="290dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginEnd="60dp"
+                    android:fontFamily="@font/testo"
+                    android:text="Registrati"
+                    android:textColor="@color/md_theme_light_inversePrimary"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.52" />
 
-            />
-
-        <Button
-            style="?attr/materialButtonOutlinedStyle"
-            android:id="@+id/registerGoogleBtn"
-            android:layout_width="290dp"
-            android:layout_height="48dp"
-
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="576dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginBottom="250dp"
-            android:height="48dp"
-            app:icon="@drawable/googleg_standard_color_18"
-            app:iconTint = "@null"
-            android:text="@string/login_with_google"
-            app:iconGravity = "textStart"
-
-            />
-
-        <Button
-            android:id="@+id/registerBtn"
-
-            android:layout_width="290dp"
-
-            android:layout_height="48dp"
-
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="506dp"
-            android:layout_marginEnd="60dp"
-
-            android:layout_marginBottom="175dp"
-            android:fontFamily="@font/testo"
-            android:text="Registrati"
-            android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="18dp"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.52" />
-
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:id="@+id/registerGoogleBtn"
+                    android:layout_width="290dp"
+                    android:layout_height="48dp" android:layout_marginTop="10dp"
+                    android:height="48dp"
+                    app:icon="@drawable/googleg_standard_color_18"
+                    app:iconTint = "@null"
+                    android:text="@string/login_with_google"
+                    app:iconGravity = "textStart" />
+        </LinearLayout>
 </FrameLayout>

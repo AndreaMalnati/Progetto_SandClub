@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,15 +22,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.RegisterActivity;
+import sandclub.beeradvisor.model.User;
 
 public class RegisterFragment extends Fragment {
 
     TextInputEditText editTextNome, editTextCognome, editTextEmail, editTextPassword, editTextPassword2;
     Button btnConfirmRegister;
     FirebaseAuth mAuth;
+
+    String databaseUrl = "https://progetto-sandclub-default-rtdb.europe-west1.firebasedatabase.app/";
+    private DatabaseReference mDatabase;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -63,6 +71,7 @@ public class RegisterFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.passwordRg);
         editTextPassword2 = view.findViewById(R.id.password2Rg);
         btnConfirmRegister = view.findViewById(R.id.Confirm_Registration);
+        mDatabase = FirebaseDatabase.getInstance(databaseUrl).getReference();
 
         btnConfirmRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +95,7 @@ public class RegisterFragment extends Fragment {
                 }
 
                 //check email corretta
-                if(TextUtils.isEmpty(Email) || android.util.Patterns.EMAIL_ADDRESS.matcher(Email).matches()){
+                if(TextUtils.isEmpty(Email) || isValidEmail(Email) == false){
                     Toast.makeText(requireActivity(), "Email non valida", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -115,10 +124,15 @@ public class RegisterFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(requireActivity(), "Registrazione Completata.",
                                             Toast.LENGTH_SHORT).show();
+                                    writeNewUser();
+                                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    String errorMessage = "Authentication fallita";
+                                    if (task.getException() != null) {
+                                        errorMessage += " " + task.getException().getMessage();
+                                    }
                                     Toast.makeText(requireActivity(), "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
 
@@ -127,5 +141,28 @@ public class RegisterFragment extends Fragment {
                         });
             }
         });
+    }
+
+    public void sendData(View view){
+        writeNewUser();
+    }
+
+    public void writeNewUser() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (firebaseUser != null) {
+            String userId = firebaseUser.getUid();
+
+            User newUser = new User(userId, editTextNome.getText().toString(),
+                    editTextCognome.getText().toString(),
+                    editTextEmail.getText().toString(),
+                    editTextPassword.getText().toString());
+
+            mDatabase.child("user").child(User.getUserId()).setValue(newUser);
+        }
+    }
+    public boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern);
     }
 }
