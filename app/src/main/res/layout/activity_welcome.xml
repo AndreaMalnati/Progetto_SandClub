@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/md_theme_light_primaryContainer">>
 
     <TextView
         android:id="@+id/Title"
@@ -18,7 +18,7 @@
         android:layout_marginBottom="543dp"
         android:fontFamily="@font/testo"
         android:text="Beer advisor"
-        android:textColor="@color/orange"
+        android:textColor="@color/md_theme_light_inversePrimary"
         android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +27,7 @@
 
 
     <ImageView
+        android:id = "@+id/imageLogo"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_gravity="center"
@@ -43,57 +44,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.42" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        tools:ignore="MissingConstraints">
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginBtn"
-        android:layout_width="290dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="436dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="250dp"
-        android:height="45dp"
-        style = "@style/CustomButtonStyle"
-        android:text="Login"/>
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/welcome_nav_graph" />
 
 
 
-        <ImageButton
-            style = "@style/googleButton"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="576dp"
-            android:layout_marginEnd="60dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:height="45dp"
-            android:id="@+id/registerGoogleBtn"
-            android:text="registrati con google"
-            android:textSize="18dp" >
-
-        </ImageButton>
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            style = "@style/CustomButtonStyle"
-            android:id="@+id/registerBtn"
-        android:layout_width="290dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="506dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="175dp"
-        android:text="Registrati"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.52" />
-
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

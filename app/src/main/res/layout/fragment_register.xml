@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.welcome.RegisterFragment"
+    android:gravity="center">
+
+
+    <!--SISTEMARE COLORE DI SCRITTE DEI CAMPI E METTERE UNO GRIGIO NON SO DOVE MINCHIA SI TROVI UN GRIGIO DECENTE IN QUELLA PALETTE DI MERDA -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="340dp"
+            app:hintEnabled="false"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameRg"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/trasparent"
+                android:fontFamily="@font/latoregular"
+                android:textStyle="bold"
+                android:hint="@string/name"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:textColor="@color/md_theme_light_outline"
+                android:textColorHint="@color/md_theme_dark_outline" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_theme_dark_surface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/surnameRg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/trasparent"
+                android:fontFamily="@font/latoregular"
+                android:textStyle="bold"
+                android:hint="@string/surname"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:textColor="@color/md_theme_dark_surface"
+                android:textColorHint="@color/md_theme_dark_outline"
+
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_theme_dark_surface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailRg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/trasparent"
+                android:fontFamily="@font/latoregular"
+                android:textStyle="bold"
+                android:hint="@string/email"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:textColor="@color/md_theme_dark_surface"
+                android:textColorHint="@color/md_theme_dark_outline" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_theme_dark_surface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordRg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/trasparent"
+                android:fontFamily="@font/latoregular"
+                android:textStyle="bold"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:textColor="@color/md_theme_dark_surface"
+                android:textColorHint="@color/md_theme_dark_outline" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_theme_dark_surface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password2Rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/trasparent"
+                android:fontFamily="@font/latoregular"
+                android:hint="@string/password2Rg"
+                android:textStyle="bold"
+                android:inputType="textPassword"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:textColor="@color/md_theme_dark_surface"
+                android:textColorHint="@color/md_theme_dark_outline"
+
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_theme_dark_surface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/Confirm_Registration"
+            android:layout_width="290dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/register"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="18dp"
+
+            />
+
+
+    </LinearLayout>
+</FrameLayout>
