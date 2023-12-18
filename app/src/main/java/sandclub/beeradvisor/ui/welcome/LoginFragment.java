@@ -29,7 +29,6 @@ public class LoginFragment extends Fragment {
     TextInputEditText editTextEmail, editTextPassword;
     Button buttonLogin;
     FirebaseAuth mAuth;
-    TextView textView;
 
     public LoginFragment() {
         // Required empty public constructor
