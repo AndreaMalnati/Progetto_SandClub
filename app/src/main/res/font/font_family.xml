@@ -5,4 +5,16 @@
         android:fontStyle="normal"
         android:fontWeight="150"
         android:font="@font/testo"/>
+
+    <font
+
+        android:fontStyle="normal"
+        android:fontWeight="150"
+        android:font="@font/robotobold"/>
+
+    <font
+
+        android:fontStyle="normal"
+        android:fontWeight="150"
+        android:font="@font/latoregular"/>
 </font-family>

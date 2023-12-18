@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Beer Advisor</string>
-    <string name="name">Name</string>
-    <string name="surname">Surname</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="password2Rg">Repeat Password</string>
+    <string name="name">NAME</string>
+    <string name="surname">SURNAME</string>
+    <string name="email">EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="password2Rg">REPEAT PASSWORD</string>
     <string name="register">Register</string>
     <string name="default_web_client_id">403704541151-9miqksu7dhjgs99s3assf0up5an4657s.apps.googleusercontent.com</string>
     <string name="login">login</string>

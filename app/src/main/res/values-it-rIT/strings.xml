@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Beer Advisor</string>
-    <string name="name">Nome</string>
-    <string name="surname">Cognome</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="password2Rg">Ripeti Password</string>
+    <string name="name">NOME</string>
+    <string name="surname">COGNOME</string>
+    <string name="email">EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="password2Rg">RIPETI PASSWORD</string>
     <string name="register">Registrati</string>
     <string name="login">login</string>
 
