@@ -8,7 +8,6 @@
     android:gravity="center">
 
 
-    <?xml version="1.0" encoding="utf-8"?>
     <!--SISTEMARE COLORE DI SCRITTE DEI CAMPI E METTERE UNO GRIGIO NON SO DOVE MINCHIA SI TROVI UN GRIGIO DECENTE IN QUELLA PALETTE DI MERDA -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,10 +18,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
 
-            android:layout_width="290sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="340dp"
-            app:hintEnabled="false">
+            app:hintEnabled="false"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameRg"
@@ -49,10 +50,12 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="290sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginTop="5sp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -81,10 +84,12 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="290sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginTop="5sp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -110,9 +115,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="290sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5sp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
 
             app:hintEnabled="false">
 
@@ -140,10 +147,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="290sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginTop="5sp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
