@@ -1,4 +1,4 @@
-package sandclub.beeradvisor;
+package sandclub.beeradvisor.ui.welcome;
 
 import android.content.Intent;
 import android.media.Image;
@@ -28,6 +28,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+
+import sandclub.beeradvisor.R;
 
 public class WelcomeActivity extends AppCompatActivity {
 

@@ -21,8 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import sandclub.beeradvisor.LoginActivity;
-import sandclub.beeradvisor.MainActivity;
+import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 
 public class LoginFragment extends Fragment {
