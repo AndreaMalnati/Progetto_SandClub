@@ -1,4 +1,4 @@
-package sandclub.beeradvisor;
+package sandclub.beeradvisor.ui.main;
 
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.repository.BeerMockRepository;

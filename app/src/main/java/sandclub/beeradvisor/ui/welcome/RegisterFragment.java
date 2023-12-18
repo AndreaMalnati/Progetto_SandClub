@@ -27,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import sandclub.beeradvisor.R;
-import sandclub.beeradvisor.RegisterActivity;
 import sandclub.beeradvisor.model.User;
 
 public class RegisterFragment extends Fragment {
