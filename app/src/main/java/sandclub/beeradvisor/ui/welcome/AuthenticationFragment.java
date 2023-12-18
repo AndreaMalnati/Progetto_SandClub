@@ -59,7 +59,7 @@ public class AuthenticationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AuthenticationFragment newInstance(String param1, String param2) {
+    public static AuthenticationFragment newInstance() {
         AuthenticationFragment fragment = new AuthenticationFragment();
         return fragment;
     }
