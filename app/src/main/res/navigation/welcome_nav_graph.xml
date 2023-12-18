@@ -27,8 +27,4 @@
         android:name="sandclub.beeradvisor.ui.welcome.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
-    <activity
-        android:id="@+id/welcomeActivity"
-        android:name="sandclub.beeradvisor.WelcomeActivity"
-        android:label="WelcomeActivity" />
 </navigation>
