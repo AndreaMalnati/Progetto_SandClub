@@ -30,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
-import sandclub.beeradvisor.RegisterActivity;
 import sandclub.beeradvisor.model.User;
 
 public class AuthenticationFragment extends Fragment {

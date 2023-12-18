@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="sandclub.beeradvisor.MainFragment"
+        android:name="sandclub.beeradvisor.ui.main.MainFragment"
         android:label="MainFragment" />
 </navigation>
