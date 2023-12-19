@@ -37,12 +37,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
                     android:fontFamily="@font/testo"
                     android:text="Beer advisor"
                     android:textColor="@color/md_theme_light_inversePrimary"
-                    android:textSize="50dp"
-                    android:background="@null"
-                    android:layout_centerInParent="true"/>
+                    android:textSize="50dp" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -87,7 +87,6 @@
 
     </FrameLayout>
 
-    <!-- Barra di navigazione in basso -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutBottom"
         android:layout_width="0dp"
@@ -96,52 +95,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarBottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/md_theme_dark_inversePrimary" >
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                    android:layout_marginEnd="17dp">
-
-
-            <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/button1"
-                        android:src="@drawable/ic_app_home"
-                        android:background="@null"
-                        android:layout_alignParentStart="true"
-                        />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src = "@drawable/ic_app_beertappo"
-                        android:id="@+id/button2"
-                        android:background="@null"
-                        android:layout_centerInParent="true"/>
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_app_user"
-                        android:id="@+id/button3"
-                        android:background = "@null"
-                        android:layout_alignParentEnd="true"
-                        />
-                </RelativeLayout>
-
-
-
-
-
-        </androidx.appcompat.widget.Toolbar>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:background="@color/md_theme_light_primary"
+            android:id="@+id/bottom_navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:menu="@menu/bottom_navigation_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

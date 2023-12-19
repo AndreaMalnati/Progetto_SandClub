@@ -6,17 +6,18 @@
   <path
       android:pathData="M300,300m-265,0a265,265 0,1 1,530 0a265,265 0,1 1,-530 0"
       android:strokeWidth="30"
+
       android:fillColor="#00000000"
-      android:strokeColor="#000000"/>
+      android:strokeColor="@color/md_theme_light_inversePrimary"/>
   <path
       android:pathData="M300,230m-115,0a115,115 0,1 1,230 0a115,115 0,1 1,-230 0"
       android:strokeWidth="30"
       android:fillColor="#00000000"
-      android:strokeColor="#000000"/>
+      android:strokeColor="@color/md_theme_light_inversePrimary"/>
   <path
       android:pathData="M106.82,481.4a205,205 1,0 1,386.36 0"
       android:strokeWidth="30"
       android:fillColor="#00000000"
-      android:strokeColor="#000000"
+      android:strokeColor="@color/md_theme_light_inversePrimary"
       android:strokeLineCap="butt"/>
 </vector>
