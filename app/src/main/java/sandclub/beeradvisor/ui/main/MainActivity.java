@@ -40,15 +40,7 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
             rep.fetchAllBeer();
 
-        home = findViewById(R.id.button1);
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Cliccato", Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
     }
 
