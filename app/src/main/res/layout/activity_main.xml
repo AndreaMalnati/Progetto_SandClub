@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,10 +8,10 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutTop"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarTop"
@@ -23,16 +22,19 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="17dp">
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="12dp">
 
 
                 <ImageView
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:src="@drawable/ic_logo"
-                    android:background="@null"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="3sp"/>
+                    android:background="@null"
+                    android:src="@drawable/ic_logo"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -42,17 +44,17 @@
                     android:fontFamily="@font/testo"
                     android:text="Beer advisor"
                     android:textColor="@color/md_theme_light_inversePrimary"
-                    android:textSize="50dp" />
+                    android:textSize="40dp" />
 
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_app_setting"
                     android:id="@+id/settingBtn"
-                    android:background = "@null"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="3sp"
-                    />
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_app_setting"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -92,25 +94,24 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutBottom"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/md_theme_light_primary"
-
-            app:itemIconSize="50dp"
+            app:itemIconSize="25dp"
             app:itemIconTint="@color/md_theme_light_shadow"
+            app:labelVisibilityMode="unlabeled"
             app:menu="@menu/bottom_navigation_menu"
-
             />
 
     </com.google.android.material.appbar.AppBarLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
