@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.common.api.ApiException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -68,13 +70,17 @@ public class BeerRepository implements IBeerRepository{
             @Override
             public void onResponse(@NonNull Call<List<Beer>> call,
                                    @NonNull Response<List<Beer>> response) {
+
                 if(response.body() != null && response.isSuccessful()){
                     List<Beer> beerList = response.body();
                     saveDataInDatabase(beerList);
                     fetchAllBeer();
                     page++;
-                }else{
+                }
+
+                if(response.body() == null){
                     responseCallback.onFailure(application.getString(R.string.error_retrieving_beers));
+
                 }
             }
 
