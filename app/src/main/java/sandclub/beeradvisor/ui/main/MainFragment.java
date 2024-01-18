@@ -61,10 +61,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        RecyclerView recyclerViewNewBeer = view.findViewById(R.id.recyclerViewNewBeer);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(requireContext(),
-                        LinearLayoutManager.HORIZONTAL, false);
 
 
 

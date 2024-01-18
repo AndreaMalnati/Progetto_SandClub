@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Barra di navigazione in alto -->
+
+    <!-- AppBarLayout superiore -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutTop"
         android:layout_width="0dp"
@@ -13,12 +15,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Contenitore AppBarLayout superiore -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarTop"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/md_theme_dark_inversePrimary">
 
+            <!-- Contenuto AppBarLayout superiore -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,6 +30,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="12dp">
 
+                <!-- ... Il tuo contenuto dell'AppBarLayout superiore ... -->
 
                 <ImageView
                     android:layout_width="60dp"
@@ -57,49 +62,39 @@
                     android:src="@drawable/ic_app_setting"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
-
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Contenuto variabile -->
-
+    <!-- FrameLayout per FragmentContainerView -->
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayoutTop"
         app:layout_constraintBottom_toTopOf="@+id/appBarLayoutBottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayoutTop"
         app:layout_constraintVertical_bias="1.0">
 
+        <!-- FragmentContainerView -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/main_nav_graph" />
-
-        <!-- Aggiungere fragment schermate -->
-
     </FrameLayout>
 
+    <!-- AppBarLayout inferiore -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutBottom"
         android:layout_width="0dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
+        <!-- Contenuto AppBarLayout inferiore -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="wrap_content"
@@ -108,10 +103,13 @@
             app:itemIconSize="25dp"
             app:itemIconTint="@color/md_theme_light_shadow"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bottom_navigation_menu"
-            />
-
+            app:menu="@menu/bottom_navigation_menu" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
