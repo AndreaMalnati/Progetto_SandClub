@@ -21,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.adapter.BeerRecyclerViewAdapter;
+import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.repository.BeerRepository;
@@ -66,9 +68,41 @@ public class MainFragment extends Fragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.HORIZONTAL, false);
 
-
-
+        new LoadBeerTask(recyclerViewNewBeer, layoutManager).execute();
 
         super.onViewCreated(view, savedInstanceState);
     }
+
+    private static class LoadBeerTask extends AsyncTask<Void, Void, List<Beer>> {
+
+        private final RecyclerView recyclerView;
+        private final RecyclerView.LayoutManager layoutManager;
+
+        LoadBeerTask(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager) {
+            this.recyclerView = recyclerView;
+            this.layoutManager = layoutManager;
+        }
+
+        @Override
+        protected List<Beer> doInBackground(Void... voids) {
+            BeerRoomDatabase db = BeerRoomDatabase.getDatabase(recyclerView.getContext());
+            BeerDao dao = db.beerDao();
+            return dao.getAll();
+        }
+
+        @Override
+        protected void onPostExecute(List<Beer> beerList) {
+            BeerRecyclerViewAdapter beerRecyclerViewAdapter = new BeerRecyclerViewAdapter(beerList,
+                    new BeerRecyclerViewAdapter.OnItemClickListener() {
+                        @Override
+                        public void onBeerItemClick(Beer beer) {
+                            Toast.makeText(recyclerView.getContext(), beer.getName(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(beerRecyclerViewAdapter);
+        }
+    }
+
 }
