@@ -21,7 +21,7 @@
             android:id="@+id/toolbarTop"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/md_theme_dark_inversePrimary">
+            android:background="@color/md_theme_light_primary">
 
             <!-- Contenuto AppBarLayout superiore -->
             <RelativeLayout
