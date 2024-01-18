@@ -26,4 +26,7 @@ public interface BeerDao {
 
     @Query("SELECT * FROM beer")
     List<Beer> getAll();
+
+    @Query("SELECT * FROM beer ORDER BY RANDOM() LIMIT 10")
+    List<Beer>getRandomBeer();
 }
