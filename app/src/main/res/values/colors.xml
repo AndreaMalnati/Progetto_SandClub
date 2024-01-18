@@ -4,9 +4,10 @@
     <color name="md_theme_light_primary">#825500</color> <!-- marrone tema chiaro-->
     <color name="md_theme_light_primaryContainer">#E9DBC9</color> <!-- sfondo tema chiaro -->
     <color name="md_theme_light_inversePrimary">#E1A10B</color> <!-- giallo tema chiaro -->
-    <!-- colori in piu'
+
+
+    <color name="md_theme_light_onPrimary">#452B00</color>
     <color name="seed">#8D5E0D</color>
-    <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_onPrimaryContainer">#291800</color>
     <color name="md_theme_light_secondary">#705B40</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
@@ -32,14 +33,14 @@
     <color name="md_theme_light_shadow">#000000</color>
     <color name="md_theme_light_surfaceTint">#825500</color>
     <color name="md_theme_light_outlineVariant">#D3C4B4</color>
-    <color name="md_theme_light_scrim">#000000</color> -->
+    <color name="md_theme_light_scrim">#000000</color>
 
 
     <color name="md_theme_dark_primaryContainer">#E9DBC9</color> <!-- sfondo tema scuro-->
     <color name="md_theme_dark_inversePrimary">#E1A10B</color> <!-- giallo tema scuro -->
     <color name="md_theme_dark_primary">#825500</color> <!-- marrone tema scuro-->
 
-    <!-- colori in piu'
+
     <color name="md_theme_dark_onPrimary">#452B00</color>
     <color name="md_theme_dark_onPrimaryContainer">#FFDDB4</color>
     <color name="md_theme_dark_secondary">#DDC2A1</color>
@@ -68,6 +69,6 @@
     <color name="md_theme_dark_outlineVariant">#4F4539</color>
     <color name="md_theme_dark_scrim">#000000</color>
     <color name = "trasparent">#00000080</color>
-    <color name="white">#FFFFFFFF</color> -->
+    <color name="white">#FFFFFFFF</color>
 
 </resources>
