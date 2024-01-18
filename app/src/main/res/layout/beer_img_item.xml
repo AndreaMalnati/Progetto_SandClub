@@ -6,23 +6,21 @@
     android:background="?android:selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:id ="@+id/img_beer"
+        android:id ="@+id/beer_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/ic_beer_item"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         />
-<!--
+
     <TextView
+        android:id = "@+id/beer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="nome_birra"
-        app:layout_constraintTop_toBottomOf="@id/img_beer"
+        app:layout_constraintTop_toBottomOf="@id/beer_image"
         app:layout_constraintStart_toStartOf="parent"
 
         />
-    -->
 </androidx.constraintlayout.widget.ConstraintLayout>
