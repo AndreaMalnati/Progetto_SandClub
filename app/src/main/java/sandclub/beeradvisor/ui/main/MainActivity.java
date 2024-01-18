@@ -9,7 +9,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,12 +20,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
 import sandclub.beeradvisor.R;
-import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.repository.BeerMockRepository;
@@ -61,7 +58,6 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
         rep.fetchAllBeer();
 
 
-
         //Impostazioni bar sotto
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
@@ -79,9 +75,6 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         NavigationUI.setupWithNavController(bottomNav, navController);
-
-
-
 
     }
 

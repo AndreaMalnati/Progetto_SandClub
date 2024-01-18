@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import sandclub.beeradvisor.R;
 
@@ -56,21 +55,12 @@ public class UserFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user, container, false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Stampare un messaggio quando il fragment viene aperto
-        Toast.makeText(getActivity(), "Il fragment User è stato aperto", Toast.LENGTH_SHORT).show();
     }
 }
