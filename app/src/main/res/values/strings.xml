@@ -18,5 +18,7 @@
     <string name="change_password">Change password</string>
     <string name="logout" translatable="false">Logout</string>
 
+    <string name="map_description" translatable="false">Google Maps</string>
+
 
 </resources>
