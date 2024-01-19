@@ -22,6 +22,7 @@ import java.util.List;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.adapter.BeerRecyclerViewAdapter;
+import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
@@ -70,6 +71,12 @@ public class MainFragment extends Fragment {
 
         new LoadBeerTask(recyclerViewNewBeer, layoutManager).execute();
 
+        RecyclerView recyclerViewNewBeer2 = view.findViewById(R.id.recyclerViewNewBeer2);
+        RecyclerView.LayoutManager layoutManager2 =
+                new LinearLayoutManager(requireContext(),
+                        LinearLayoutManager.VERTICAL, false);
+        new LoadVerticalBeerTask(recyclerViewNewBeer2, layoutManager2).execute();
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -77,6 +84,7 @@ public class MainFragment extends Fragment {
 
         private final RecyclerView recyclerView;
         private final RecyclerView.LayoutManager layoutManager;
+
 
         LoadBeerTask(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager) {
             this.recyclerView = recyclerView;
@@ -94,6 +102,38 @@ public class MainFragment extends Fragment {
         protected void onPostExecute(List<Beer> beerList) {
             BeerRecyclerViewAdapter beerRecyclerViewAdapter = new BeerRecyclerViewAdapter(beerList,
                     new BeerRecyclerViewAdapter.OnItemClickListener() {
+                        @Override
+                        public void onBeerItemClick(Beer beer) {
+                            Toast.makeText(recyclerView.getContext(), beer.getName(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(beerRecyclerViewAdapter);
+        }
+    }
+
+    private static class LoadVerticalBeerTask extends AsyncTask<Void, Void, List<Beer>> {
+
+        private RecyclerView recyclerView;
+        private RecyclerView.LayoutManager layoutManager;
+
+        LoadVerticalBeerTask(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager) {
+            this.recyclerView = recyclerView;
+            this.layoutManager = layoutManager;
+        }
+
+        @Override
+        protected List<Beer> doInBackground(Void... voids) {
+            BeerRoomDatabase db = BeerRoomDatabase.getDatabase(recyclerView.getContext());
+            BeerDao dao = db.beerDao();
+            return dao.getAll();
+        }
+
+        @Override
+        protected void onPostExecute(List<Beer> beerList) {
+            NewBeerRecyclerViewAdapter beerRecyclerViewAdapter = new NewBeerRecyclerViewAdapter(beerList,
+                    new NewBeerRecyclerViewAdapter.OnItemClickListener() {
                         @Override
                         public void onBeerItemClick(Beer beer) {
                             Toast.makeText(recyclerView.getContext(), beer.getName(), Toast.LENGTH_SHORT).show();
