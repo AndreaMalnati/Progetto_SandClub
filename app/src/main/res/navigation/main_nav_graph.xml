@@ -13,6 +13,9 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_main" >
 
+        <action
+            android:id="@+id/action_mainFragment_to_beerFragment"
+            app:destination="@id/beerFragment" />
     </fragment>
 
     <fragment
@@ -47,5 +50,9 @@
         android:id="@+id/action_mainActivity_to_settingsFragment"
         app:destination="@id/settingsFragment"
         />
+    <fragment
+        android:id="@+id/beerFragment"
+        android:name="sandclub.beeradvisor.ui.main.BeerFragment"
+        android:label="BeerFragment" />
 
 </navigation>

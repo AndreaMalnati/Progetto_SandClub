@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,6 +106,7 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onBeerItemClick(Beer beer) {
                             Toast.makeText(recyclerView.getContext(), beer.getName(), Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(recyclerView).navigate(R.id.action_mainFragment_to_beerFragment);
                         }
                     });
 
