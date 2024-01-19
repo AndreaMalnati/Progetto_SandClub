@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.SettingsFragment">
+    tools:context=".ui.main.SettingsFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/beer_image"
@@ -76,7 +76,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/testo"
-            android:text="Descrizione"
+            android:text="@string/description"
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
@@ -100,7 +100,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/testo"
-            android:text="Food Pairings"
+            android:text="@string/food_pairings"
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
@@ -116,32 +116,6 @@
             android:textColor="@color/md_theme_light_scrim"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/beer_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/beer_foodPairings_text"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/testo"
-            android:text="Commenti"
-            android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/ic_google_maps_shape"
-            android:contentDescription="@string/map_description"
-            />
-
-
         <RatingBar
             android:id="@+id/ratingBar"
             style="?android:attr/ratingBarStyleSmall"
@@ -152,7 +126,8 @@
             android:layout_toRightOf="@id/beer_image"
             android:numStars="5"
             android:rating="0"
-            android:stepSize="1.0"  />
+            android:stepSize="1.0"
+            android:isIndicator="true"/>
 
         <TextView
             android:id="@+id/ratingBar_text"
@@ -166,6 +141,43 @@
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
+        <TextView
+            android:id="@+id/beer_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_foodPairings_text"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/comments"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_google_maps_shape"
+            android:contentDescription="@string/map_description" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewComments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/mapView"
+            android:layout_below="@id/beer_comments"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="102dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+        </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
 

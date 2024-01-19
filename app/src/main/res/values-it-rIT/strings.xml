@@ -13,4 +13,8 @@
     <string name="change_profile_photo">Cambia foto profilo</string>
     <string name="change_email">Cambia email</string>
     <string name="change_password">Cambia password</string>
+
+    <string name="description" >Descrizione</string>
+    <string name="food_pairings" >Abbinamenti piatti</string>
+    <string name="comments" >Commenti</string>
 </resources>
