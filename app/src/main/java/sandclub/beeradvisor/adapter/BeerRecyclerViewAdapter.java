@@ -79,7 +79,7 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
 
         @Override
         public void onClick(View v) {
-            // fare passaggio al layout della birra cliccata
+            onItemClickListener.onBeerItemClick(beerList.get(getAdapterPosition()));
         }
     }
 }
