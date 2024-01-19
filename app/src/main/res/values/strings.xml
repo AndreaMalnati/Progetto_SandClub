@@ -18,5 +18,12 @@
     <string name="change_password">Change password</string>
     <string name="logout" translatable="false">Logout</string>
 
+    <string name="oldPw">Old Password</string>
+    <string name="newPw">New Password</string>
+    <string name="repeatPw">Repeat Password</string>
+
+
+
+
 
 </resources>

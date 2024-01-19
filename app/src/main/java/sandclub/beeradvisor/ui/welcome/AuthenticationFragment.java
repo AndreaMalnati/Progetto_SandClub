@@ -26,7 +26,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
@@ -148,8 +153,16 @@ public class AuthenticationFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = auth.getCurrentUser();
-                            User newUser = new User(user.getUid(), user.getDisplayName(), user.getDisplayName(), user.getEmail(), "", user.getPhotoUrl().toString());
+                            String[] parts = user.getDisplayName().split(" ");
+                            String nome = parts[0];  // Il primo elemento è il nome
+                            String cognome = parts.length > 1 ? parts[1] : "";  // Il secondo elemento è il cognome, se presente
+
+
+                            User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", user.getPhotoUrl().toString());
                             mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);;
+                            UserViewModel.getInstance().setUser(newUser);
+
+
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             startActivity(intent);
                         }else{

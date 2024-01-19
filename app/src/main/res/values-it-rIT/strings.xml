@@ -13,4 +13,10 @@
     <string name="change_profile_photo">Cambia foto profilo</string>
     <string name="change_email">Cambia email</string>
     <string name="change_password">Cambia password</string>
+
+    <string name="oldPw">Vecchia Password</string>
+    <string name="newPw">Nuova Password</string>
+    <string name="repeatPw">Ripeti Password</string>
+
+
 </resources>
