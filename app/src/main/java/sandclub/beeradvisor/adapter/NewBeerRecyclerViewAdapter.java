@@ -71,7 +71,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<NewBeerRe
         public void bind(Beer beer) {
             beerName.setText(beer.getName());
             beerTagline.setText(beer.getTagline());
-            beerAlcohol.setText(beer.getAbv() + "%");
+            beerAlcohol.setText(String.format("%.1f", beer.getAbv())+ "%");
             String imageUrl = beer.getImage_url();
             if (imageUrl != null && !imageUrl.equalsIgnoreCase("https://images.punkapi.com/v2/keg.png")) {
                 Glide.with(itemView.getContext())
