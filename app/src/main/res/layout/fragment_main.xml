@@ -21,4 +21,16 @@
         android:layout_marginTop="30dp">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id = "@+id/recyclerViewNewBeer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
+        app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="400dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>
