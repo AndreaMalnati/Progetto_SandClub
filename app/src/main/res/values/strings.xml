@@ -13,4 +13,10 @@
     <string name="login_with_google" translatable="false">Login with Google</string>
     <string name="error_retrieving_beers">Error in retrieving the beers</string>
 
+    <string name="change_profile_photo">Change profile photo</string>
+    <string name="change_email">Change email</string>
+    <string name="change_password">Change password</string>
+    <string name="logout" translatable="false">Logout</string>
+
+
 </resources>

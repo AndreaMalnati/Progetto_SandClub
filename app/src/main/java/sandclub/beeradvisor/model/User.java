@@ -1,6 +1,9 @@
 package sandclub.beeradvisor.model;
 
-public class User {
+import androidx.lifecycle.ViewModel;
+
+public class User{
+
     static String userId;
     String nome;
     String cognome;

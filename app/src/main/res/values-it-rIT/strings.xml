@@ -10,5 +10,7 @@
     <string name="login">login</string>
     <string name="error_retrieving_beers">Errore nel recuperare le birre</string>
 
-
+    <string name="change_profile_photo">Cambia foto profilo</string>
+    <string name="change_email">Cambia email</string>
+    <string name="change_password">Cambia password</string>
 </resources>

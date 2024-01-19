@@ -3,22 +3,31 @@ package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -46,12 +55,33 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
         db.getDatabase(getApplicationContext());
 
-        /*BeerMockRepository mock = new BeerMockRepository(getApplication(), this);
-        mock.fetchBeer();
-        */
+        ImageButton settingBtn = findViewById(R.id.settingBtn);
+        settingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+                    ActionBar actionBar = getSupportActionBar();
+                    if (actionBar != null) { //togliere freccia indietro che esce in automatico
+                        if (destination.getId() == R.id.settingsFragment || destination.getId() == R.id.userFragment
+                                || destination.getId() == R.id.mainFragment || destination.getId() == R.id.capsFragment) {
+                            // Nascondi il pulsante indietro quando sei nel fragment dei settings
+                            actionBar.setDisplayHomeAsUpEnabled(false);
+                        } else {
+                            // Mostra il pulsante indietro per gli altri fragment
+                            actionBar.setDisplayHomeAsUpEnabled(true);
+                        }
+                    }
+                });
+                navController.popBackStack();
 
-        //BeerDao dao = db.beerDao();
-        //dao.get
+                navController.navigate(R.id.action_mainActivity_to_settingsFragment);
+
+
+            }
+        });
+
+
 
         //Carcamento birre da api
         BeerRepository rep = new BeerRepository(getApplication(), this);
@@ -69,12 +99,13 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.mainFragment,
-                R.id.settingsFragment,
                 R.id.capsFragment,
                 R.id.userFragment).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         NavigationUI.setupWithNavController(bottomNav, navController);
+
+
 
     }
 

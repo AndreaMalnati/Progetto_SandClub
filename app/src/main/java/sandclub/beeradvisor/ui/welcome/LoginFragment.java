@@ -1,13 +1,19 @@
 package sandclub.beeradvisor.ui.welcome;
 
+import static android.content.ContentValues.TAG;
+
+import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +26,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 
@@ -69,12 +84,12 @@ public class LoginFragment extends Fragment {
                 Email = String.valueOf(editTextEmail.getText());
                 Password = String.valueOf(editTextPassword.getText());
 
-                if(TextUtils.isEmpty(Email) || isValidEmail(Email) == false){
+                if (TextUtils.isEmpty(Email) || isValidEmail(Email) == false) {
                     Toast.makeText(requireActivity(), "Email non valida", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(TextUtils.isEmpty(Password)){
+                if (TextUtils.isEmpty(Password)) {
                     Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -84,25 +99,60 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(requireActivity(), "Autenticazione Completata", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(requireActivity(), "Autenticazione Completata", Toast.LENGTH_SHORT).show();
+                                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                    if (firebaseUser != null) {
+                                        String userId = firebaseUser.getUid();
+                                        //Toast.makeText( requireActivity(), userId, Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    requireActivity().finish();
+                                        // Ora, utilizza l'ID dell'utente per ottenere ulteriori informazioni da Realtime Database
+                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + userId);
 
 
-                                } else {
+                                        databaseReference.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                    User loggedUser = new User();
+                                                    loggedUser.setUserId(dataSnapshot.getKey());
+                                                    loggedUser.setCognome(dataSnapshot.child("cognome").getValue(String.class));
+                                                    loggedUser.setNome(dataSnapshot.child("nome").getValue(String.class));
+                                                    loggedUser.setEmail(dataSnapshot.child("email").getValue(String.class));
+                                                    loggedUser.setPassword(dataSnapshot.child("password").getValue(String.class));
+                                                    UserViewModel.getInstance().setUser(loggedUser);
 
-                                    Toast.makeText(requireActivity(), "Autenticazione Fallita",
-                                            Toast.LENGTH_SHORT).show();
 
+                                                }
+                                                // Utilizza la variabile 'cognome' come necessario
+                                                //Toast.makeText( requireActivity(),cognome, Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                // Gestisci l'errore
+                                            }
+                                        });
+
+
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        startActivity(intent);
+                                        requireActivity().finish();
+
+
+                                    } else {
+                                        Toast.makeText(requireActivity(), "Autenticazione Fallita",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
+
+                            ;
+
                         });
             }
         });
-
-    }
+    };
 
     public boolean isValidEmail(String email) {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -110,3 +160,4 @@ public class LoginFragment extends Fragment {
     }
 
 }
+
