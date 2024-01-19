@@ -35,7 +35,7 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
     @Override
     public BeersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.beer_img_item, parent, false);
+                inflate(R.layout.beer_card_item, parent, false);
 
         return new BeersViewHolder(view);
     }
@@ -59,8 +59,8 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
 
         public BeersViewHolder(@NonNull View itemView) {
             super(itemView);
-            beerName = itemView.findViewById(R.id.beer_name);
-            beerImage = itemView.findViewById(R.id.beer_image);
+            beerName = itemView.findViewById(R.id.beer_card_name);
+            beerImage = itemView.findViewById(R.id.beer_card_image);
             itemView.setOnClickListener(this);
         }
 
