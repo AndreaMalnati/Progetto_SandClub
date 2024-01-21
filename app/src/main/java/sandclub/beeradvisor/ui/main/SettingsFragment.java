@@ -1,25 +1,33 @@
 package sandclub.beeradvisor.ui.main;
 
+import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.REQUEST_CAMERA_PERMISSION;
+import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_CAPTURE;
+import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_PICK;
+
+import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,27 +37,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
+
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class SettingsFragment extends Fragment {
 
-
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_PICK = 2;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -86,15 +94,80 @@ public class SettingsFragment extends Fragment {
             if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
                 // La foto è stata scattata con successo
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-                // Puoi fare qualcosa con l'immagine qui
+                //aggiorna user con url foto
+                User updateUser = UserViewModel.getInstance().getUser();
+                String photourl = bitmapToString(imageBitmap);
+                updateUser.setPhotoUrl(photourl);
 
+                Snackbar.make(requireView(), "Immagine salvata con successo!", Snackbar.LENGTH_SHORT).show();
+                //aggiorna imageview
+                updatePhotoImageView();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
+
+                databaseReference.child("photoUrl").setValue(photourl);
+
+                ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
+                Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
+
+                //non ci sono foto caricate
+                if(updateUser.getPhotoUrl().equals("")) {
+                    Glide.with(requireContext())
+                            .load(R.drawable.ic_app_user)
+                            .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                            .circleCrop()
+                            .into(profilePhoto);
+                }else{
+                    Glide.with(requireContext())
+                            .load(stringToBitmap(updateUser.getPhotoUrl()))
+                            .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                            .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                            .circleCrop()
+                            .into(profilePhoto);
+
+                }
             } else if (requestCode == REQUEST_IMAGE_PICK && data != null) {
                 // L'utente ha scelto un'immagine dalla galleria
                 Uri selectedImageUri = data.getData();
                 // Puoi fare qualcosa con l'URI dell'immagine qui
+
+                try { //converto oggetto Uri in BitMap
+                    Bitmap photo = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
+                    User updateUser = UserViewModel.getInstance().getUser();
+
+                    //converto bitmap in stringa e carico su database
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
+                    String photourl = bitmapToString(photo);
+                    updateUser.setPhotoUrl(photourl);
+
+                    databaseReference.child("photoUrl").setValue(photourl);
+                    //updatePhotoImageView();
+
+                    ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
+                    Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
+
+                    //non ci sono foto caricate
+                    if(updateUser.getPhotoUrl().equals("")) {
+                        Glide.with(requireContext())
+                                .load(R.drawable.ic_app_user)
+                                .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                                .circleCrop()
+                                .into(profilePhoto);
+                    }else{
+                        Glide.with(requireContext())
+                                .load(stringToBitmap(updateUser.getPhotoUrl()))
+                                .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                                .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                                .circleCrop()
+                                .into(profilePhoto);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -105,15 +178,41 @@ public class SettingsFragment extends Fragment {
         nameSurname.setEllipsize(TextUtils.TruncateAt.END);
         nameSurname.setText(user.getNome() + " " + user.getCognome());
 
-        ImageView profilePhoto = view.findViewById(R.id.profilePhoto);
+        FirebaseUser userLo = FirebaseAuth.getInstance().getCurrentUser();
+        ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
 
-        // Carica l'immagine usando Glide
-        Glide.with(requireContext())
-                .load(user.getPhotoUrl())
-                .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                .circleCrop() // Applica la maschera circolare
-                .into(profilePhoto);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(userLo.getUid());
+
+        //se user ha immagine personalizzata
+        if(user.getPhotoUrl() != "") {
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String photo = dataSnapshot.child("photoUrl").getValue().toString();
+                    Glide.with(requireContext())
+                            .load(stringToBitmap(photo))
+                            .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                            .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                            .circleCrop()
+                            .into(profilePhoto);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Gestisci l'errore
+                }
+            });
+
+            //se lo user ha solo l'immagine di google e non quella personalizzata carica quella di google
+        } else if (!user.getPhotoUrlGoogle().isEmpty() && user.getPhotoUrl().equals("")) {
+            Glide.with(requireContext())
+                    .load(user.getPhotoUrlGoogle())
+                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+        }
+
 
         //Listener bottone cambioPw
         Button changePw = view.findViewById(R.id.changePasswordBtn);
@@ -135,22 +234,118 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+
+
         Button photoUser = view.findViewById(R.id.changePhotoBtn);
 
         photoUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                // Verifica se il permesso CAMERA è già concesso
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Se il permesso non è stato concesso, richiedilo
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                    optionMenu();
+                } else {
+                    optionMenu();
+                }
 
-                // Per aprire la galleria
-                Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
+
 
             }
 
         });
 
+
+
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Il permesso CAMERA è stato concesso, avvia l'activity della fotocamera
+                startCameraActivity();
+                // Per aprire la galleria
+
+
+            } else {
+                // Il permesso CAMERA non è stato concesso, gestisci di conseguenza
+                Toast.makeText(requireContext(), "Permesso CAMERA non concesso", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void startCameraActivity() {
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void updatePhotoImageView(){
+        ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
+        User user = UserViewModel.getInstance().getUser();
+
+        if(user.getPhotoUrl() == null) {
+            Glide.with(requireContext())
+                    .load(R.drawable.ic_app_user)
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+        }else{
+            Glide.with(requireContext())
+                    .load(stringToBitmap(user.getPhotoUrl()))
+                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+
+        }
+    }
+
+    //conversione immagine BitMap a string per salvarla su realtime
+    public static String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+    public static Bitmap stringToBitmap(String encodedString) {
+        byte[] decodedBytes = Base64.decode(encodedString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
+    //menu per scegliere tra fotocamera e galleria
+    public void optionMenu(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Scegli un'opzione");
+        String[] options = {"Fotocamera", "Galleria"};
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    // L'utente ha scelto la fotocamera
+                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        // Se il permesso non è stato concesso, richiedilo
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                    } else {
+                        // Il permesso è già concesso, avvia l'activity della fotocamera
+                        startCameraActivity();
+                    }
+                } else if (which == 1) {
+                    // L'utente ha scelto la galleria
+                    Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
+                }
+            }
+        });
+
+        // Visualizza il dialog
+        builder.show();
+    }
+
 }
 

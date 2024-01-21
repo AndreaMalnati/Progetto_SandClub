@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -79,6 +80,7 @@ public class LoginFragment extends Fragment {
         buttonLogin = view.findViewById(R.id.confirmLoginBtn);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
+            Context context = getContext();
             @Override
             public void onClick(View v) {
                 String Email, Password;
@@ -101,13 +103,10 @@ public class LoginFragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                                    Log.d("check", "Dentro1");
 
                                     if (firebaseUser != null) {
                                         String userId = firebaseUser.getUid();
                                             DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + userId);
-
-                                            Log.d("check", "Dentro2");
 
 
                                             databaseReference.addValueEventListener(new ValueEventListener() {
@@ -120,23 +119,21 @@ public class LoginFragment extends Fragment {
                                                          String passwordDb = dataSnapshot.child("password").getValue(String.class);
                                                         Log.d("check", "passwordDb" + passwordDb);
 
-
-
-                                                        Snackbar.make(view, "Password " + Password, Snackbar.LENGTH_SHORT).show();
                                                         User loggedUser = new User();
                                                         loggedUser.setUserId(dataSnapshot.getKey());
                                                         loggedUser.setCognome(dataSnapshot.child("cognome").getValue(String.class));
                                                         loggedUser.setNome(dataSnapshot.child("nome").getValue(String.class));
                                                         loggedUser.setEmail(dataSnapshot.child("email").getValue(String.class));
                                                         loggedUser.setPassword(dataSnapshot.child("password").getValue(String.class));
-                                                        Log.d("Dentro", Password);
-                                                        Log.d("Dentro", dataSnapshot.child("password").getValue(String.class));
+                                                        loggedUser.setPhotoUrl(dataSnapshot.child("photoUrl").getValue(String.class));
+                                                        loggedUser.setPhotoUrlGoogle("");
+                                                        //Toast.makeText(getContext(),dataSnapshot.child("photoUrl").getValue(String.class) , Toast.LENGTH_SHORT).show();
 
 
                                                         UserViewModel.getInstance().setUser(loggedUser);
 
-
-
+                                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                                        startActivity(intent);
                                                 }
                                             }
 
@@ -146,9 +143,7 @@ public class LoginFragment extends Fragment {
                                             }
                                         });
 
-                                        Intent intent = new Intent(getContext(), MainActivity.class);
-                                        startActivity(intent);
-                                        requireActivity().finish();
+
                                     } else {
                                         Toast.makeText(requireActivity(), "Autenticazione Fallita",
                                                 Toast.LENGTH_SHORT).show();
@@ -156,7 +151,7 @@ public class LoginFragment extends Fragment {
                                 }
                             }
 
-                            ;
+
 
                         });
             }

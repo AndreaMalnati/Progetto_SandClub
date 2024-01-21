@@ -38,9 +38,6 @@
             android:src="@drawable/ic_app_user"
             android:layout_below="@id/nameSurname"
             android:layout_centerHorizontal="true"
-
-
-
             />
         <Button
             android:id="@+id/changePhotoBtn"
@@ -61,22 +58,6 @@
 
             android:layout_marginRight="80dp"/>
 
-        <Button
-            android:id="@+id/changeEmailBtn"
-
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
-            android:layout_width="290dp"
-            android:layout_height="48dp"
-            android:fontFamily="@font/testo"
-            android:backgroundTint="@color/md_theme_dark_inversePrimary"
-            android:layout_below="@id/changePhotoBtn"
-            android:text="@string/change_email"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-
-            android:layout_marginLeft="80dp"
-
-            android:layout_marginRight="80dp"/>
 
         <Button
             android:id="@+id/changePasswordBtn"
@@ -86,7 +67,7 @@
             android:layout_height="48dp"
             android:fontFamily="@font/testo"
             android:backgroundTint="@color/md_theme_dark_inversePrimary"
-            android:layout_below="@id/changeEmailBtn"
+            android:layout_below="@id/profilePhoto"
             android:text="@string/change_password"
             android:textColor="@color/white"
             android:textSize="18dp"

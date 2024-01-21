@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -157,14 +158,37 @@ public class AuthenticationFragment extends Fragment {
                             String nome = parts[0];  // Il primo elemento è il nome
                             String cognome = parts.length > 1 ? parts[1] : "";  // Il secondo elemento è il cognome, se presente
 
+                            DatabaseReference userRef = FirebaseDatabase.getInstance(DATABASE_URL)
+                                    .getReference("user")
+                                    .child(user.getUid());
 
-                            User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", user.getPhotoUrl().toString());
-                            mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);;
-                            UserViewModel.getInstance().setUser(newUser);
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) { //se l'utente registrato con google esiste già non creo nuovo utente
+                                        User existingUser = snapshot.getValue(User.class);
+                                        UserViewModel.getInstance().setUser(existingUser);
+
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", "", user.getPhotoUrl().toString());
+                                        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);
+
+                                        UserViewModel.getInstance().setUser(newUser);
 
 
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            startActivity(intent);
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Gestisci l'errore
+                                    Toast.makeText(getContext(), "Errore nel controllo dell'utente esistente", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }else{
                             Toast.makeText(getContext(), "Qualcosa è andato storto", Toast.LENGTH_SHORT).show();
                         }

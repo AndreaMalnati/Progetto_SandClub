@@ -10,4 +10,8 @@ public class Constants {
     public static final String BEER_PAGE_PARAMETER = "page";
     public static final String BEER_PAGE_AMOUNT = "per_page";
     public static final String DATABASE_URL = "https://progetto-sandclub-default-rtdb.europe-west1.firebasedatabase.app/";
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int REQUEST_IMAGE_PICK = 2;
+    public static final int REQUEST_CAMERA_PERMISSION = 100;
+
 }
