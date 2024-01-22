@@ -18,6 +18,13 @@
     <string name="change_password">Change password</string>
     <string name="logout" translatable="false">Logout</string>
 
+    <string name="oldPw">Old Password</string>
+    <string name="newPw">New Password</string>
+    <string name="repeatPw">Repeat Password</string>
+
+
+
+
     <string name="map_description" translatable="false">Google Maps</string>
     <string name="description" >Description</string>
     <string name="food_pairings" >Food Pairings</string>

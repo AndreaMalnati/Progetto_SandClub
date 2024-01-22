@@ -67,9 +67,6 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
                                 || destination.getId() == R.id.mainFragment || destination.getId() == R.id.capsFragment) {
                             // Nascondi il pulsante indietro quando sei nel fragment dei settings
                             actionBar.setDisplayHomeAsUpEnabled(false);
-                        } else {
-                            // Mostra il pulsante indietro per gli altri fragment
-                            actionBar.setDisplayHomeAsUpEnabled(true);
                         }
                     }
                 });

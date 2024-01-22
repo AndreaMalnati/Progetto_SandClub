@@ -19,11 +19,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/settings_Password"
+        android:name="sandclub.beeradvisor.ui.main.SettingsFragmentPassword"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings_password" >
+
+    </fragment>
+
+    <fragment
         android:id="@+id/settingsFragment"
         android:name="sandclub.beeradvisor.ui.main.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
-
 
         <action
             android:id="@+id/action_settingsFragment_to_userFragment2"
@@ -35,6 +42,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_mainFragment2"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_settings_Password"
+            app:destination="@id/settings_Password" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"

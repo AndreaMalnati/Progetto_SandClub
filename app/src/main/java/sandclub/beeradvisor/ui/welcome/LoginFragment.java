@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,6 +80,7 @@ public class LoginFragment extends Fragment {
         buttonLogin = view.findViewById(R.id.confirmLoginBtn);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
+            Context context = getContext();
             @Override
             public void onClick(View v) {
                 String Email, Password;
@@ -99,33 +102,39 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    //Toast.makeText(requireActivity(), "Autenticazione Completata", Toast.LENGTH_SHORT).show();
                                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
                                     if (firebaseUser != null) {
                                         String userId = firebaseUser.getUid();
-                                        //Toast.makeText( requireActivity(), userId, Toast.LENGTH_SHORT).show();
-
-                                        // Ora, utilizza l'ID dell'utente per ottenere ulteriori informazioni da Realtime Database
                                             DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + userId);
 
 
-                                        databaseReference.addValueEventListener(new ValueEventListener() {
+                                            databaseReference.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                                                    User loggedUser = new User();
-                                                    loggedUser.setUserId(dataSnapshot.getKey());
-                                                    loggedUser.setCognome(dataSnapshot.child("cognome").getValue(String.class));
-                                                    loggedUser.setNome(dataSnapshot.child("nome").getValue(String.class));
-                                                    loggedUser.setEmail(dataSnapshot.child("email").getValue(String.class));
-                                                    loggedUser.setPassword(dataSnapshot.child("password").getValue(String.class));
-                                                    UserViewModel.getInstance().setUser(loggedUser);
+                                                //for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
 
+                                                    if (dataSnapshot.exists()) {
+                                                         String passwordDb = dataSnapshot.child("password").getValue(String.class);
+                                                        Log.d("check", "passwordDb" + passwordDb);
+
+                                                        User loggedUser = new User();
+                                                        loggedUser.setUserId(dataSnapshot.getKey());
+                                                        loggedUser.setCognome(dataSnapshot.child("cognome").getValue(String.class));
+                                                        loggedUser.setNome(dataSnapshot.child("nome").getValue(String.class));
+                                                        loggedUser.setEmail(dataSnapshot.child("email").getValue(String.class));
+                                                        loggedUser.setPassword(dataSnapshot.child("password").getValue(String.class));
+                                                        loggedUser.setPhotoUrl(dataSnapshot.child("photoUrl").getValue(String.class));
+                                                        loggedUser.setPhotoUrlGoogle("");
+                                                        //Toast.makeText(getContext(),dataSnapshot.child("photoUrl").getValue(String.class) , Toast.LENGTH_SHORT).show();
+
+
+                                                        UserViewModel.getInstance().setUser(loggedUser);
+
+                                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                                        startActivity(intent);
                                                 }
-                                                // Utilizza la variabile 'cognome' come necessario
-                                                //Toast.makeText( requireActivity(),cognome, Toast.LENGTH_SHORT).show();
-
                                             }
 
                                             @Override
@@ -135,11 +144,6 @@ public class LoginFragment extends Fragment {
                                         });
 
 
-                                        Intent intent = new Intent(getContext(), MainActivity.class);
-                                        startActivity(intent);
-                                        requireActivity().finish();
-
-
                                     } else {
                                         Toast.makeText(requireActivity(), "Autenticazione Fallita",
                                                 Toast.LENGTH_SHORT).show();
@@ -147,7 +151,7 @@ public class LoginFragment extends Fragment {
                                 }
                             }
 
-                            ;
+
 
                         });
             }

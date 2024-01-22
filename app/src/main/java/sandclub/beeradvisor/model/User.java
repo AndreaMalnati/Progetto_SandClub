@@ -1,6 +1,7 @@
 package sandclub.beeradvisor.model;
 
-import androidx.lifecycle.ViewModel;
+import android.graphics.Bitmap;
+
 
 public class User{
 
@@ -10,6 +11,15 @@ public class User{
     String email;
     String password;
     String photoUrl;
+    String photoUrlGoogle;
+
+    public String getPhotoUrlGoogle() {
+        return photoUrlGoogle;
+    }
+
+    public void setPhotoUrlGoogle(String photoUrlGoogle) {
+        this.photoUrlGoogle = photoUrlGoogle;
+    }
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -22,14 +32,18 @@ public class User{
     public User() {
     }
 
+
+
     //User google
-    public User(String userId, String nome, String cognome, String email, String password, String photoUrl) {
+    public User(String userId, String nome, String cognome, String email, String password, String photoUrl, String photoUrlGoogle) {
         this.userId = userId;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
         this.password = password;
         this.photoUrl = photoUrl;
+        this.photoUrlGoogle = photoUrlGoogle;
+
     }
     //User normale
     public User(String userId, String nome, String cognome, String email, String password) {
@@ -38,6 +52,7 @@ public class User{
         this.cognome = cognome;
         this.email = email;
         this.password = password;
+        photoUrl = "";
     }
 
     public void setUserId(String userId) {

@@ -27,6 +27,8 @@ import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.BeerRepository;
 import sandclub.beeradvisor.repository.ResponseCallback;
 
@@ -79,6 +81,10 @@ public class MainFragment extends Fragment {
         new LoadVerticalBeerTask(recyclerViewNewBeer2, layoutManager2).execute();
 
         super.onViewCreated(view, savedInstanceState);
+
+        User u = UserViewModel.getInstance().getUser();
+        Toast.makeText(requireActivity(), u.getNome(), Toast.LENGTH_SHORT).show();
+
     }
 
     private static class LoadBeerTask extends AsyncTask<Void, Void, List<Beer>> {
