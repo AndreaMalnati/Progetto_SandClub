@@ -132,7 +132,7 @@ public class LoginFragment extends Fragment {
 
                                                         UserViewModel.getInstance().setUser(loggedUser);
 
-                                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                                        Intent intent = new Intent(requireContext(), MainActivity.class);
                                                         startActivity(intent);
                                                 }
                                             }
@@ -142,6 +142,7 @@ public class LoginFragment extends Fragment {
                                                 // Gestisci l'errore
                                             }
                                         });
+
 
 
                                     } else {

@@ -99,7 +99,7 @@ public class SettingsFragment extends Fragment {
                 String photourl = bitmapToString(imageBitmap);
                 updateUser.setPhotoUrl(photourl);
 
-                Snackbar.make(requireView(), "Immagine salvata con successo!", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(requireView(), "Immagine salvata con successo!", Snackbar.LENGTH_SHORT).show();
                 //aggiorna imageview
                 updatePhotoImageView();
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
@@ -107,7 +107,7 @@ public class SettingsFragment extends Fragment {
                 databaseReference.child("photoUrl").setValue(photourl);
 
                 ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-                Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
 
                 //non ci sono foto caricate
                 if(updateUser.getPhotoUrl().equals("")) {
@@ -125,6 +125,8 @@ public class SettingsFragment extends Fragment {
                             .into(profilePhoto);
 
                 }
+
+
             } else if (requestCode == REQUEST_IMAGE_PICK && data != null) {
                 // L'utente ha scelto un'immagine dalla galleria
                 Uri selectedImageUri = data.getData();
@@ -143,7 +145,7 @@ public class SettingsFragment extends Fragment {
                     //updatePhotoImageView();
 
                     ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-                    Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
 
                     //non ci sono foto caricate
                     if(updateUser.getPhotoUrl().equals("")) {
@@ -277,11 +279,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    private void startCameraActivity() {
 
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-    }
 
     private void updatePhotoImageView(){
         ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
@@ -334,17 +332,27 @@ public class SettingsFragment extends Fragment {
                     } else {
                         // Il permesso è già concesso, avvia l'activity della fotocamera
                         startCameraActivity();
+
                     }
                 } else if (which == 1) {
                     // L'utente ha scelto la galleria
-                    Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
+                    startGalleryActivity();
                 }
             }
         });
 
         // Visualizza il dialog
         builder.show();
+    }
+
+    private void startCameraActivity() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void startGalleryActivity() {
+        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
     }
 
 }

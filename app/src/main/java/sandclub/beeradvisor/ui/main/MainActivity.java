@@ -63,17 +63,13 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
                 navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
                     ActionBar actionBar = getSupportActionBar();
                     if (actionBar != null) { //togliere freccia indietro che esce in automatico
-                        if (destination.getId() == R.id.settingsFragment || destination.getId() == R.id.userFragment
-                                || destination.getId() == R.id.mainFragment || destination.getId() == R.id.capsFragment) {
+                        if (destination.getId() == R.id.settingsFragment) {
                             // Nascondi il pulsante indietro quando sei nel fragment dei settings
                             actionBar.setDisplayHomeAsUpEnabled(false);
                         }
                     }
                 });
-                navController.popBackStack();
-
                 navController.navigate(R.id.action_mainActivity_to_settingsFragment);
-
 
             }
         });
