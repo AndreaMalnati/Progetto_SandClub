@@ -8,7 +8,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,9 +169,9 @@ public class AuthenticationFragment extends Fragment {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) { //se l'utente registrato con google esiste già non creo nuovo utente
-                                        User existingUser = snapshot.getValue(User.class);
-                                        UserViewModel.getInstance().setUser(existingUser);
+                                        User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", snapshot.child("photoUrl").getValue(String.class), user.getPhotoUrl().toString());
 
+                                        UserViewModel.getInstance().setUser(newUser);
                                         Intent intent = new Intent(getContext(), MainActivity.class);
                                         startActivity(intent);
                                     } else {
@@ -176,7 +179,6 @@ public class AuthenticationFragment extends Fragment {
                                         mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);
 
                                         UserViewModel.getInstance().setUser(newUser);
-
 
                                         Intent intent = new Intent(getContext(), MainActivity.class);
                                         startActivity(intent);
