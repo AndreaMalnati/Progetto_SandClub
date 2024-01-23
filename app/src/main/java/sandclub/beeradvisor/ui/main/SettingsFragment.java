@@ -23,11 +23,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +60,7 @@ import sandclub.beeradvisor.model.UserViewModel;
 
 
 public class SettingsFragment extends Fragment {
+    private boolean isCameraOpen = false;
 
 
     public SettingsFragment() {
@@ -77,7 +81,6 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-
     }
 
     @Override
@@ -86,89 +89,7 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
-                // La foto è stata scattata con successo
-                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-                //aggiorna user con url foto
-                User updateUser = UserViewModel.getInstance().getUser();
-                String photourl = bitmapToString(imageBitmap);
-                updateUser.setPhotoUrl(photourl);
-
-                //Snackbar.make(requireView(), "Immagine salvata con successo!", Snackbar.LENGTH_SHORT).show();
-                //aggiorna imageview
-                updatePhotoImageView();
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
-
-                databaseReference.child("photoUrl").setValue(photourl);
-
-                ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-                //Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
-
-                //non ci sono foto caricate
-                if(updateUser.getPhotoUrl().equals("")) {
-                    Glide.with(requireContext())
-                            .load(R.drawable.ic_app_user)
-                            .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                            .circleCrop()
-                            .into(profilePhoto);
-                }else{
-                    Glide.with(requireContext())
-                            .load(stringToBitmap(updateUser.getPhotoUrl()))
-                            .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                            .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                            .circleCrop()
-                            .into(profilePhoto);
-
-                }
-
-
-            } else if (requestCode == REQUEST_IMAGE_PICK && data != null) {
-                // L'utente ha scelto un'immagine dalla galleria
-                Uri selectedImageUri = data.getData();
-                // Puoi fare qualcosa con l'URI dell'immagine qui
-
-                try { //converto oggetto Uri in BitMap
-                    Bitmap photo = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
-                    User updateUser = UserViewModel.getInstance().getUser();
-
-                    //converto bitmap in stringa e carico su database
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
-                    String photourl = bitmapToString(photo);
-                    updateUser.setPhotoUrl(photourl);
-
-                    databaseReference.child("photoUrl").setValue(photourl);
-                    //updatePhotoImageView();
-
-                    ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-                    //Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
-
-                    //non ci sono foto caricate
-                    if(updateUser.getPhotoUrl().equals("")) {
-                        Glide.with(requireContext())
-                                .load(R.drawable.ic_app_user)
-                                .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                                .circleCrop()
-                                .into(profilePhoto);
-                    }else{
-                        Glide.with(requireContext())
-                                .load(stringToBitmap(updateUser.getPhotoUrl()))
-                                .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                                .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                                .circleCrop()
-                                .into(profilePhoto);
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -180,30 +101,21 @@ public class SettingsFragment extends Fragment {
         nameSurname.setEllipsize(TextUtils.TruncateAt.END);
         nameSurname.setText(user.getNome() + " " + user.getCognome());
 
-        FirebaseUser userLo = FirebaseAuth.getInstance().getCurrentUser();
+        updatePhotoImageView();
+        /*
         ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(userLo.getUid());
 
         //se user ha immagine personalizzata
-        if(user.getPhotoUrl() != "") {
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String photo = dataSnapshot.child("photoUrl").getValue().toString();
-                    Glide.with(requireContext())
-                            .load(stringToBitmap(photo))
-                            .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                            .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                            .circleCrop()
-                            .into(profilePhoto);
-                }
+        if (user.getPhotoUrl() != "") {
+            String photo = user.getPhotoUrl();
+            Glide.with(requireContext())
+                    .load(stringToBitmap(photo))
+                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Gestisci l'errore
-                }
-            });
 
             //se lo user ha solo l'immagine di google e non quella personalizzata carica quella di google
         } else if (!user.getPhotoUrlGoogle().isEmpty() && user.getPhotoUrl().equals("")) {
@@ -213,7 +125,7 @@ public class SettingsFragment extends Fragment {
                     .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
                     .circleCrop()
                     .into(profilePhoto);
-        }
+        }*/
 
 
         //Listener bottone cambioPw
@@ -224,7 +136,8 @@ public class SettingsFragment extends Fragment {
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
                 navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-                    ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();;
+                    ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+                    ;
                     if (actionBar != null) { //togliere freccia indietro che esce in automatico
                         if (destination.getId() == R.id.settings_Password) {
                             // Nascondi il pulsante indietro quando sei nel fragment dei settings
@@ -237,7 +150,6 @@ public class SettingsFragment extends Fragment {
         });
 
 
-
         Button photoUser = view.findViewById(R.id.changePhotoBtn);
 
         photoUser.setOnClickListener(new View.OnClickListener() {
@@ -248,20 +160,15 @@ public class SettingsFragment extends Fragment {
                         != PackageManager.PERMISSION_GRANTED) {
                     // Se il permesso non è stato concesso, richiedilo
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-                    optionMenu();
                 } else {
+                    isCameraOpen = true;
                     optionMenu();
                 }
-
-
-
             }
-
         });
-
-
-
     }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -279,28 +186,11 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-
-
-    private void updatePhotoImageView(){
-        ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-        User user = UserViewModel.getInstance().getUser();
-
-        if(user.getPhotoUrl() == null) {
-            Glide.with(requireContext())
-                    .load(R.drawable.ic_app_user)
-                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                    .circleCrop()
-                    .into(profilePhoto);
-        }else{
-            Glide.with(requireContext())
-                    .load(stringToBitmap(user.getPhotoUrl()))
-                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                    .circleCrop()
-                    .into(profilePhoto);
-
-        }
+    private void startCameraActivity() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
+
 
     //conversione immagine BitMap a string per salvarla su realtime
     public static String bitmapToString(Bitmap bitmap) {
@@ -315,8 +205,12 @@ public class SettingsFragment extends Fragment {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }*/
     //menu per scegliere tra fotocamera e galleria
-    public void optionMenu(){
+    public void optionMenu() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Scegli un'opzione");
         String[] options = {"Fotocamera", "Galleria"};
@@ -331,29 +225,150 @@ public class SettingsFragment extends Fragment {
                         requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     } else {
                         // Il permesso è già concesso, avvia l'activity della fotocamera
-                        startCameraActivity();
-
+                        //startCameraActivity();
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 } else if (which == 1) {
                     // L'utente ha scelto la galleria
-                    startGalleryActivity();
+                    Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
                 }
             }
         });
-
         // Visualizza il dialog
         builder.show();
     }
 
-    private void startCameraActivity() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    private void updatePhotoImageView() {
+        ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
+        User user = UserViewModel.getInstance().getUser();
+
+        if (!user.getPhotoUrl().equals("")) {
+            Log.d("Immagine", "dentro1");
+
+            Glide.with(requireContext())
+                    .load(stringToBitmap(user.getPhotoUrl()))
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+        } else if(!user.getPhotoUrlGoogle().equals("") && user.getPhotoUrl().equals("")){
+            Log.d("Immagine", "dentro2");
+            Log.d("Immagine", user.getPhotoUrl());
+            Glide.with(requireContext())
+                    .load(user.getPhotoUrlGoogle())
+                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+        } else{
+            Glide.with(requireContext())
+                    .load(user.getPhotoUrlGoogle())
+                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                    .circleCrop()
+                    .into(profilePhoto);
+        }
+
     }
 
-    private void startGalleryActivity() {
-        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
+    public void handleImageResult(Bitmap imageBitmap) {
+        // Qui gestisci l'immagine Bitmap ricevuta dall'activity
+        // Esegui le azioni necessarie, ad esempio aggiorna l'UI
+        Log.d("Testone", "dentro");
+
+//aggiorna user con url foto
+
+        User updateUser = UserViewModel.getInstance().getUser();
+        Log.d("Testone", "ID" + updateUser.getUserId());
+
+        String photourl = bitmapToString(imageBitmap);
+        updateUser.setPhotoUrl(photourl);
+        //aggiorna imageview
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
+
+        databaseReference.child("photoUrl").setValue(photourl);
+
+        /*ImageView profilePhoto = getActivity().findViewById(R.id.profilePhoto);
+        //Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
+
+        //non ci sono foto caricate
+        if (updateUser.getPhotoUrl().equals("")) {
+            Glide.with(requireContext())
+                    .load(R.drawable.ic_app_user)
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+        } else {
+            Glide.with(requireContext())
+                    .load(stringToBitmap(updateUser.getPhotoUrl()))
+                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                    .circleCrop()
+                    .into(profilePhoto);
+
+        }*/
+        updatePhotoImageView();
     }
 
+    public void handleImageResult(Uri selectedImageUri) {
+        // Qui gestisci l'URI dell'immagine ricevuto dall'activity
+
+        // Puoi fare qualcosa con l'URI dell'immagine qui
+
+        try { //converto oggetto Uri in BitMap
+            Bitmap photo = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
+            User updateUser = UserViewModel.getInstance().getUser();
+
+            //converto bitmap in stringa e carico su database
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());
+            String photourl = bitmapToString(photo);
+            //Toast.makeText(this, photourl, Toast.LENGTH_SHORT).show();
+            updateUser.setPhotoUrl(photourl);
+
+            databaseReference.child("photoUrl").setValue(photourl);
+            updatePhotoImageView();
+
+            /*ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
+
+            //non ci sono foto caricate
+            if(updateUser.getPhotoUrl().equals("")) {
+                Glide.with(requireContext())
+                        .load(R.drawable.ic_app_user)
+                        .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                        .circleCrop()
+                        .into(profilePhoto);
+            }else{
+                Glide.with(requireContext())
+                        .load(stringToBitmap(updateUser.getPhotoUrl()))
+                        .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
+                        .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                        .circleCrop()
+                        .into(profilePhoto);
+            }*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
+                // La foto è stata scattata con successo
+                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+                // Passa l'immagine al fragment
+                handleImageResult(imageBitmap);
+            }else if (requestCode == REQUEST_IMAGE_PICK && data != null) {
+                // L'utente ha scelto un'immagine dalla galleria
+                Uri selectedImageUri = data.getData();
+                // Passa l'URI dell'immagine al fragment
+                handleImageResult(selectedImageUri);
+            }
+
+        }
+
+    }
 }
 

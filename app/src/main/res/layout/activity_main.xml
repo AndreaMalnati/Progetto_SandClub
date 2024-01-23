@@ -52,15 +52,7 @@
                     android:textColor="@color/md_theme_light_inversePrimary"
                     android:textSize="40dp" />
 
-                <ImageButton
-                    android:id="@+id/settingBtn"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@null"
-                    android:src="@drawable/ic_app_setting"/>
+
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

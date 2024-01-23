@@ -17,7 +17,7 @@ import java.util.List;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Beer;
 
-public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecyclerViewAdapter.BeersViewHolder>{
+public class CommentRecyclerViewAdapter  extends  RecyclerView.Adapter<CommentRecyclerViewAdapter.CommentViewHolder>{
 
     public interface OnItemClickListener {
         void onBeerItemClick(Beer beer);
@@ -26,22 +26,22 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
     private final List<Beer> beerList;
     private final OnItemClickListener onItemClickListener;
 
-    public BeerRecyclerViewAdapter(List<Beer> beerList, OnItemClickListener onItemClickListener) {
+    public CommentRecyclerViewAdapter(List<Beer> beerList, OnItemClickListener onItemClickListener) {
         this.beerList = beerList;
         this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
     @Override
-    public BeersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.beer_card_item, parent, false);
+                inflate(R.layout.comment_card_item, parent, false);
 
-        return new BeersViewHolder(view);
+        return new CommentViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BeersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         holder.bind(beerList.get(position));
     }
 
@@ -53,14 +53,14 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
         return 0;
     }
 
-    public  class BeersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public  class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView beerName;
         private final ImageView beerImage;
 
-        public BeersViewHolder(@NonNull View itemView) {
+        public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-            beerName = itemView.findViewById(R.id.beer_card_name);
-            beerImage = itemView.findViewById(R.id.beer_card_image);
+            beerName = itemView.findViewById(R.id.comment_card_name);
+            beerImage = itemView.findViewById(R.id.comment_card_image);
             itemView.setOnClickListener(this);
         }
 

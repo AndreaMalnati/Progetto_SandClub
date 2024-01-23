@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.SettingsFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/beer_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:src="@drawable/ic_logo" />
+
+        <TextView
+            android:id="@+id/beer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/beer_image"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/testo"
+            android:text="Nome birra"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/beer_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/beer_image"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/testo"
+            android:text="Gradazione %"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_ibu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="100dp"
+            android:layout_toRightOf="@id/beer_grade"
+            android:fontFamily="@font/testo"
+            android:text="ibu"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_tagLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/beer_image"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="70dp"
+            android:fontFamily="@font/testo"
+            android:text="TagLine"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_image"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/description"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_description"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="Descrizione da cambiare"
+            android:textColor="@color/md_theme_light_scrim"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_foodPairings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_description_text"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/food_pairings"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_foodPairings_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_foodPairings"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="Food pairings da cambiare"
+            android:textColor="@color/md_theme_light_scrim"
+            android:textSize="20dp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_grade"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/beer_image"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="1.0"
+            android:isIndicator="true"/>
+
+        <TextView
+            android:id="@+id/ratingBar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/beer_ibu"
+            android:layout_toRightOf="@id/ratingBar"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/testo"
+            android:text="0.0"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/beer_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beer_foodPairings_text"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/comments"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_google_maps_shape"
+            android:contentDescription="@string/map_description" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewComments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/mapView"
+            android:layout_below="@id/beer_comments"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
+
+</FrameLayout>

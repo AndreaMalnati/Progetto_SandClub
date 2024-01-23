@@ -25,5 +25,10 @@
 
 
 
+    <string name="map_description" translatable="false">Google Maps</string>
+    <string name="description" >Description</string>
+    <string name="food_pairings" >Food Pairings</string>
+    <string name="comments" >Comments</string>
+
 
 </resources>
