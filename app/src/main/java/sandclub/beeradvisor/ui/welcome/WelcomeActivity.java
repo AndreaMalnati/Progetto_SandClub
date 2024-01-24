@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class WelcomeActivity extends AppCompatActivity {
     String photoUrlGoogle = ".";
     DataEncryptionUtil dataEncryptionUtil;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
@@ -86,7 +88,9 @@ public class WelcomeActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+
+
+               if (dataSnapshot.exists()) {
                     Log.d("Testina", dataSnapshot.child("photoUrl").getValue(String.class));
                     password = dataSnapshot.child("password").getValue(String.class);
                     photoUrl = dataSnapshot.child("photoUrl").getValue(String.class);
@@ -112,6 +116,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                startActivity(intent);
+
            }
 
            @Override
