@@ -2,7 +2,16 @@ package sandclub.beeradvisor.ui.welcome;
 
 import static android.content.ContentValues.TAG;
 
+import static sandclub.beeradvisor.util.Constants.COGNOME;
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ID;
+import static sandclub.beeradvisor.util.Constants.NOME;
+import static sandclub.beeradvisor.util.Constants.PASSWORD;
+import static sandclub.beeradvisor.util.Constants.PHOTOURL;
+import static sandclub.beeradvisor.util.Constants.PHOTOURLGOOLE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,16 +45,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.util.DataEncryptionUtil;
 
 public class LoginFragment extends Fragment {
 
     TextInputEditText editTextEmail, editTextPassword;
     Button buttonLogin;
     FirebaseAuth mAuth;
+
+    private DataEncryptionUtil dataEncryptionUtil;
+
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -123,13 +142,17 @@ public class LoginFragment extends Fragment {
                                                                 dataSnapshot.child("password").getValue(String.class),
                                                                 dataSnapshot.child("photoUrl").getValue(String.class),
                                                                 "");
-
-
                                                         UserViewModel.getInstance().setUser(loggedUser);
+                                                        //Salva i dati di login in Shared Preferences
+                                                        saveLoginData(dataSnapshot.getKey(), dataSnapshot.child("nome").getValue(String.class),
+                                                                dataSnapshot.child("cognome").getValue(String.class),
+                                                                dataSnapshot.child("email").getValue(String.class),
+                                                                dataSnapshot.child("password").getValue(String.class));
+
 
                                                         Intent intent = new Intent(requireContext(), MainActivity.class);
                                                         startActivity(intent);
-                                                }
+                                                    }
                                             }
 
                                             @Override
@@ -155,9 +178,33 @@ public class LoginFragment extends Fragment {
     };
 
     public boolean isValidEmail(String email) {
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        return email.matches(emailPattern);
+        return EmailValidator.getInstance().isValid(email);
     }
 
+
+
+    private void saveLoginData(String id,String nome, String cognome, String email, String password) {
+        dataEncryptionUtil = new DataEncryptionUtil(requireContext());
+
+        try {
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, NOME, nome);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, COGNOME, cognome);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
+
+
+
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
+                    id.concat(":").concat(nome).concat(":").concat(cognome).concat(":").concat(email).concat(":").concat(password));
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

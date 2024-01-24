@@ -1,6 +1,15 @@
 package sandclub.beeradvisor.ui.welcome;
 
+import static sandclub.beeradvisor.util.Constants.COGNOME;
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ID;
+import static sandclub.beeradvisor.util.Constants.NOME;
+import static sandclub.beeradvisor.util.Constants.PASSWORD;
+import static sandclub.beeradvisor.util.Constants.PHOTOURL;
+import static sandclub.beeradvisor.util.Constants.PHOTOURLGOOLE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,10 +44,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.util.DataEncryptionUtil;
 
 public class AuthenticationFragment extends Fragment {
 
@@ -50,6 +63,9 @@ public class AuthenticationFragment extends Fragment {
     private Task<Void> mDatabase;
     GoogleSignInClient googleSignInClient;
     int RC_SIGN_IN = 20;
+
+    private DataEncryptionUtil dataEncryptionUtil;
+
 
 
 
@@ -172,11 +188,14 @@ public class AuthenticationFragment extends Fragment {
                                         User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", snapshot.child("photoUrl").getValue(String.class), user.getPhotoUrl().toString());
 
                                         UserViewModel.getInstance().setUser(newUser);
+                                        saveLoginData(user.getUid(), nome, cognome, user.getEmail(), "");
+
                                         Intent intent = new Intent(getContext(), MainActivity.class);
                                         startActivity(intent);
                                     } else {
                                         User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", "", user.getPhotoUrl().toString());
                                         mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);
+                                        saveLoginData(user.getUid(), nome, cognome, user.getEmail(), "");
 
                                         UserViewModel.getInstance().setUser(newUser);
 
@@ -196,5 +215,31 @@ public class AuthenticationFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void saveLoginData(String id,String nome, String cognome, String email, String password) {
+        dataEncryptionUtil = new DataEncryptionUtil(requireContext());
+         if(password.equals(""))
+            password = ".";
+
+        try {
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, NOME, nome);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, COGNOME, cognome);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
+
+
+
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
+                    id.concat(":").concat(nome).concat(":").concat(cognome).concat(":").concat(email).concat(":").concat(password));
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

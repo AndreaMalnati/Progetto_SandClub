@@ -42,6 +42,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    //Email validator
+    implementation("commons-validator:commons-validator:1.8.0")
+
     //Google Auth
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-auth")
@@ -65,6 +68,9 @@ dependencies {
 
     //glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
 
 
 }

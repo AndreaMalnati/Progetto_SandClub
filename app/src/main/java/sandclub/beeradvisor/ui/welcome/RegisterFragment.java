@@ -21,12 +21,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
@@ -86,34 +89,34 @@ public class RegisterFragment extends Fragment {
 
                 //CONTROLLI campi vuoti e/o campi non corretti
                 if(TextUtils.isEmpty(Nome)){
-                    Toast.makeText(requireActivity(), "Inserisci nome", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getString(R.string.insertName), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(Cognome)){
-                    Toast.makeText(requireActivity(), "Inserisci cognome", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getString(R.string.insertSurname), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 //check email corretta
                 if(TextUtils.isEmpty(Email) || isValidEmail(Email) == false){
-                    Toast.makeText(requireActivity(), "Email non valida", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getString(R.string.emailNovalid), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(Password)){
-                    Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getString(R.string.insertPassword), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(Password2)){
-                    Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getString(R.string.insertRepeatPassword), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 //check se ripeti password uguale a password
                 if(Password.equals(Password2) == false){
-                    Toast.makeText(requireActivity(), "Password non valida", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getString(R.string.noEqualPassword), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -123,8 +126,9 @@ public class RegisterFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(requireActivity(), "Registrazione Completata.",
-                                            Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(requireView(), getString(R.string.RegisterComplete),
+                                            Snackbar.LENGTH_SHORT).show();
+
                                     writeNewUser();
                                     Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
 
@@ -134,8 +138,9 @@ public class RegisterFragment extends Fragment {
                                     if (task.getException() != null) {
                                         errorMessage += " " + task.getException().getMessage();
                                     }
-                                    Toast.makeText(requireActivity(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(requireView(), getString(R.string.RegisterFailed),
+                                            Snackbar.LENGTH_SHORT).show();
+
 
                                 }
                             }
@@ -157,13 +162,13 @@ public class RegisterFragment extends Fragment {
             User newUser = new User(userId, editTextNome.getText().toString(),
                     editTextCognome.getText().toString(),
                     editTextEmail.getText().toString(),
-                    editTextPassword.getText().toString());
+                    editTextPassword.getText().toString(),
+                    "", "");
 
             mDatabase.child("user").child(User.getUserId()).setValue(newUser);
         }
     }
     public boolean isValidEmail(String email) {
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        return email.matches(emailPattern);
+        return EmailValidator.getInstance().isValid(email);
     }
 }

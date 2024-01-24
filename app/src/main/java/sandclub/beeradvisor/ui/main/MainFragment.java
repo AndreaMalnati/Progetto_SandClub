@@ -83,7 +83,7 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         User u = UserViewModel.getInstance().getUser();
-        Toast.makeText(requireActivity(), u.getNome(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(requireActivity(), u.getNome(), Toast.LENGTH_SHORT).show();
 
     }
 

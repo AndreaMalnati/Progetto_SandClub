@@ -14,4 +14,20 @@ public class Constants {
     public static final int REQUEST_IMAGE_PICK = 2;
     public static final int REQUEST_CAMERA_PERMISSION = 100;
 
+    public static final String ENCRYPTED_SHARED_PREFERENCES_FILE_NAME = "sandclub.beeradvisor.encrypted_preferences";
+    public static final String EMAIL_ADDRESS = "email";
+    public static final String PASSWORD = "password";
+    public static final String ID = "id";
+
+    public static final String NOME = "nome";
+    public static final String COGNOME = "cognome";
+    public static final String PHOTOURL = "photoUrl";
+    public static final String PHOTOURLGOOLE = "photoUrlGoogle";
+
+
+
+    public static final String ENCRYPTED_DATA_FILE_NAME = "sandclub.beeradvisor.encrypted_file.txt";
+
+
+
 }

@@ -1,8 +1,12 @@
 package sandclub.beeradvisor.ui.welcome;
 
+import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,23 +29,105 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.ui.main.MainActivity;
+import sandclub.beeradvisor.util.DataEncryptionUtil;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-
-
+    String password = ".";
+    String photoUrl = ".";
+    String photoUrlGoogle = ".";
+    DataEncryptionUtil dataEncryptionUtil;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        dataEncryptionUtil = new DataEncryptionUtil(this);
+
+        try {
+            // Leggi le informazioni di login dal file crittografato
+            String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
+
+            if (storedLoginData != null && !storedLoginData.isEmpty()) {
+                // Se le credenziali sono presenti, esegui il login automatico
+                performAutoLogin(storedLoginData);
+                Log.d("Testone", "Stored login data: " + storedLoginData);
+                //performAutoLogin(storedLoginData);
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void performAutoLogin(String storedLoginData) {
+
+        String[] loginInfo = storedLoginData.split(":");
+        String storedId = loginInfo[0];
+        String storedName = loginInfo[1];
+        String storedSurname = loginInfo[2];
+        String storedEmail = loginInfo[3];
+        String storedPassword = loginInfo[4];
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + storedId);
 
 
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+            if (dataSnapshot.exists()) {
+            Log.d("Testina", dataSnapshot.child("photoUrl").getValue(String.class));
+            password = dataSnapshot.child("password").getValue(String.class);
+            photoUrl = dataSnapshot.child("photoUrl").getValue(String.class);
+            photoUrlGoogle = dataSnapshot.child("photoUrlGoogle").getValue(String.class);
+                }
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+           // Gestisci l'errore
+           }
+        });
+
+        Log.d("Testone", photoUrl);
+
+        Log.d("Testone", password);
+
+        Log.d("Testone", photoUrlGoogle);
+        if( photoUrl.equals(".")&& photoUrlGoogle.equals(".")){
+            Log.d("Testone", "Nessuna delle due foto");
+            UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, storedPassword, "", ""));
+
+        }else if(photoUrlGoogle.equals(".") && !photoUrl.equals(".")){
+            Log.d("Testone", "Solo foto personalizzata");
+            UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, storedPassword, photoUrl, ""));
+
+        }else if(!photoUrlGoogle.equals(".") && photoUrl.equals(".")){
+            Log.d("Testone", "Solo foto google");
+            UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, storedPassword, "", photoUrlGoogle));
+
+        }else if(!photoUrlGoogle.equals(".") && !photoUrl.equals(".")){
+            Log.d("Testone", "Entrambe le foto");
+            UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, storedPassword, photoUrl, photoUrlGoogle));
+        }
+
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 

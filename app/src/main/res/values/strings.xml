@@ -22,6 +22,21 @@
     <string name="newPw">New Password</string>
     <string name="repeatPw">Repeat Password</string>
 
+    //String register
+    <string name="insertName">Insert name</string>
+    <string name="insertSurname">Insert surname</string>
+    <string name="emailNovalid">No valid Email</string>
+    <string name="insertPassword">Insert Password</string>
+    <string name="insertRepeatPassword">Insert repeat Password</string>
+    <string name="noEqualPassword">No equal password</string>
+
+    <string name="RegisterComplete">Registration completed</string>
+    <string name="RegisterFailed">Registration failed</string>
+
+
+
+
+
 
 
 
