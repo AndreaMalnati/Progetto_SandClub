@@ -109,7 +109,7 @@ public class LoginFragment extends Fragment {
                                             DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + userId);
 
 
-                                            databaseReference.addValueEventListener(new ValueEventListener() {
+                                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
 
