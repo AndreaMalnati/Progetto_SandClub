@@ -8,13 +8,26 @@
     <string name="password2Rg">RIPETI PASSWORD</string>
     <string name="register">Registrati</string>
     <string name="login">login</string>
+
+    //messaggi snackbar
     <string name="error_retrieving_beers">Errore nel recuperare le birre</string>
+    <string name="camera_permission_denied">Permesso camera negato</string>
+    <string name="wrong_password">Password errata</string>
+    <string name="already_google_login">Impossibile cambiare password se loggati con Google</string>
+    <string name="sign_in_failed">Sign in fallito</string>
+    <string name="something_went_wrong">Qualcosa è andato storto</string>
+    <string name="no_valid_email">Email non valida</string>
+    <string name="no_valid_password">Password non valida</string>
+    <string name="auth_failed">Autenticazione fallita</string>
 
     <string name="change_profile_photo">Cambia foto profilo</string>
     <string name="change_email">Cambia email</string>
     <string name="change_password">Cambia password</string>
 
+    <string name="find_beer">Cerca Birra</string>
+
     <string name="description" >Descrizione</string>
+    <string name="gradiaton" >Gradi %</string>
     <string name="food_pairings" >Abbinamenti piatti</string>
     <string name="comments" >Commenti</string>
     <string name="oldPw">Vecchia Password</string>

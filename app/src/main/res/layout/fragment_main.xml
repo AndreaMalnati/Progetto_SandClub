@@ -32,7 +32,7 @@
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Cerca Birra"
+                android:hint="@string/find_beer"
                 android:elevation="4dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>

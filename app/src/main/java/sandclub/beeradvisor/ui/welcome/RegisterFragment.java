@@ -1,26 +1,23 @@
 package sandclub.beeradvisor.ui.welcome;
 
-import static android.content.ContentValues.TAG;
-
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,34 +83,34 @@ public class RegisterFragment extends Fragment {
 
                 //CONTROLLI campi vuoti e/o campi non corretti
                 if(TextUtils.isEmpty(Nome)){
-                    Toast.makeText(requireActivity(), "Inserisci nome", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Inserisci nome", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(Cognome)){
-                    Toast.makeText(requireActivity(), "Inserisci cognome", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Inserisci cognome", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 //check email corretta
                 if(TextUtils.isEmpty(Email) || isValidEmail(Email) == false){
-                    Toast.makeText(requireActivity(), "Email non valida", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Email non valida", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(Password)){
-                    Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Inserisci Password", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(Password2)){
-                    Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Inserisci Password", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 //check se ripeti password uguale a password
                 if(Password.equals(Password2) == false){
-                    Toast.makeText(requireActivity(), "Password non valida", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Password non valida", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -134,8 +131,7 @@ public class RegisterFragment extends Fragment {
                                     if (task.getException() != null) {
                                         errorMessage += " " + task.getException().getMessage();
                                     }
-                                    Toast.makeText(requireActivity(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_SHORT).show();
 
                                 }
                             }

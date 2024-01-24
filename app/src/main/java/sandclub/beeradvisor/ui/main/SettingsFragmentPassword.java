@@ -3,17 +3,14 @@ package sandclub.beeradvisor.ui.main;
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -88,11 +85,11 @@ public class SettingsFragmentPassword extends Fragment {
                                     user.updatePassword(newPw.getText().toString());
 
                                 } else {
-                                    Snackbar.make(view, "Nuova password errata", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view, getResources().getString(R.string.wrong_password), Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         }else{
-                            Snackbar.make(view, "Impossibile cambiare password se loggati con google", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(view, getResources().getString(R.string.already_google_login), Snackbar.LENGTH_SHORT).show();
 
                         }
 

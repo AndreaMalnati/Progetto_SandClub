@@ -4,19 +4,16 @@ import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,10 +33,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.ui.main.MainActivity;
 
 public class AuthenticationFragment extends Fragment {
 
@@ -137,13 +135,13 @@ public class AuthenticationFragment extends Fragment {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     firebaseAuth(account.getIdToken());
                 } catch (ApiException e) {
-                    Toast.makeText(requireActivity(), "ApiException: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "ApiException: " + e.getStatusCode(), Snackbar.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(requireActivity(), "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "Exception: " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                 }
             } else {
                 // Handle the case where the sign-in was not successful
-                Toast.makeText(requireActivity(), "Sign-in failed", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), getResources().getString(R.string.sign_in_failed), Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -188,11 +186,10 @@ public class AuthenticationFragment extends Fragment {
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     // Gestisci l'errore
-                                    Toast.makeText(getContext(), "Errore nel controllo dell'utente esistente", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }else{
-                            Toast.makeText(getContext(), "Qualcosa è andato storto", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(getView(), getResources().getString(R.string.something_went_wrong), Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });

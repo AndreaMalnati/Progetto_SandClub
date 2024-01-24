@@ -1,26 +1,20 @@
 package sandclub.beeradvisor.ui.welcome;
 
-import static android.content.ContentValues.TAG;
-
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,13 +27,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
-import sandclub.beeradvisor.R;
 
 public class LoginFragment extends Fragment {
 
@@ -88,12 +81,12 @@ public class LoginFragment extends Fragment {
                 Password = String.valueOf(editTextPassword.getText());
 
                 if (TextUtils.isEmpty(Email) || isValidEmail(Email) == false) {
-                    Toast.makeText(requireActivity(), "Email non valida", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getResources().getString(R.string.no_valid_email), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(Password)) {
-                    Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getResources().getString(R.string.no_valid_password), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -140,8 +133,7 @@ public class LoginFragment extends Fragment {
 
 
                                     } else {
-                                        Toast.makeText(requireActivity(), "Autenticazione Fallita",
-                                                Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(requireView(), getResources().getString(R.string.auth_failed), Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
                             }
