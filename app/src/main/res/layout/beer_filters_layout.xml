@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+
+        android:background="@drawable/ic_google_maps_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/filters_text"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/bitterness_filter"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/lessBitterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="50dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/from_the_less_bitter"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/moreBitterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/from_the_most_bitter"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="160dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/abv_filter"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/lessAlcholicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="190dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/from_the_less_alcholic"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/mostAlcholicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="190dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/from_the_most_alcholic"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

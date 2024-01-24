@@ -20,7 +20,7 @@
                     android:layout_marginTop="490dp"
                     android:height="48dp"
                     android:fontFamily="@font/testo"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textColor="@color/md_theme_light_inversePrimary"
                     android:textSize="18dp"
                     />
@@ -33,7 +33,7 @@
                     android:layout_marginStart="60dp"
                     android:layout_marginEnd="60dp"
                     android:fontFamily="@font/testo"
-                    android:text="Registrati"
+                    android:text="@string/register"
                     android:textColor="@color/md_theme_light_inversePrimary"
                     android:textSize="18dp"
                     app:layout_constraintBottom_toTopOf="parent"

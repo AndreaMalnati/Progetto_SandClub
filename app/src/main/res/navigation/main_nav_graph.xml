@@ -52,20 +52,11 @@
             app:destination="@id/settings_Password" />
     </fragment>
     <fragment
-        android:id="@+id/userFragment"
-        android:name="sandclub.beeradvisor.ui.main.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
-    <fragment
         android:id="@+id/capsFragment"
         android:name="sandclub.beeradvisor.ui.main.CapsFragment"
         android:label="fragment_caps"
         tools:layout="@layout/fragment_caps" />
-    <!--<action
-        android:id="@+id/action_mainActivity_to_settingsFragment"
-        app:destination="@id/settingsFragment"
-        />
--->    <fragment
+        <fragment
         android:id="@+id/beerFragment"
         android:name="sandclub.beeradvisor.ui.main.BeerFragment"
         android:label="BeerFragment" />

@@ -8,10 +8,22 @@
     <string name="register">Register</string>
     <string name="default_web_client_id">403704541151-9miqksu7dhjgs99s3assf0up5an4657s.apps.googleusercontent.com</string>
     <string name="login">login</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="login_with_google" translatable="false">Login with Google</string>
+
+    //messaggi snackbar
     <string name="error_retrieving_beers">Error in retrieving the beers</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="already_google_login">Unable to change password when logged in with Google</string>
+    <string name="sign_in_failed">Sign in failed</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="no_valid_email">No valid email</string>
+    <string name="no_valid_password">No valid password</string>
+    <string name="auth_failed">Authentication failed</string>
 
     <string name="change_profile_photo">Change profile photo</string>
     <string name="change_email">Change email</string>
@@ -39,11 +51,26 @@
 
 
 
+    <string name="find_beer">Find beer</string>
 
     <string name="map_description" translatable="false">Google Maps</string>
     <string name="description" >Description</string>
+    <string name="gradiaton" >Gradiation %</string>
     <string name="food_pairings" >Food Pairings</string>
     <string name="comments" >Comments</string>
 
+    <string name="lastDrunk">Last drunk</string>
+    <string name="discoverNewBeers">Discover new beers</string>
+    <string name="seeAll">See all</string>
+    <string name="searchBarHint">Search beer</string>
+
+    <string name="filters_text">Filters</string>
+    <string name="bitterness_filter">Bitterness</string>
+    <string name="from_the_most_bitter">From most bitter</string>
+    <string name="from_the_less_bitter">From less bitter</string>
+    <string name="abv_filter">Abv</string>
+    <string name="from_the_most_alcholic">From most alcholic</string>
+    <string name="from_the_less_alcholic">From less alcholic</string>
+    <string name="all_beers">All beers</string>
 
 </resources>

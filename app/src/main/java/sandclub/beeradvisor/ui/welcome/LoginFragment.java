@@ -25,6 +25,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +41,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.validator.routines.EmailValidator;
@@ -45,6 +48,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
@@ -102,12 +106,12 @@ public class LoginFragment extends Fragment {
                 Password = String.valueOf(editTextPassword.getText());
 
                 if (TextUtils.isEmpty(Email) || isValidEmail(Email) == false) {
-                    Toast.makeText(requireActivity(), "Email non valida", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getResources().getString(R.string.no_valid_email), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(Password)) {
-                    Toast.makeText(requireActivity(), "Inserisci Password", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), getResources().getString(R.string.no_valid_password), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -159,8 +163,7 @@ public class LoginFragment extends Fragment {
 
 
                                     } else {
-                                        Toast.makeText(requireActivity(), "Autenticazione Fallita",
-                                                Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(requireView(), getResources().getString(R.string.auth_failed), Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
                             }
