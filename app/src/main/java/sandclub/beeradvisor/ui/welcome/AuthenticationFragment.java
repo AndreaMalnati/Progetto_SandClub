@@ -8,8 +8,6 @@ import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_F
 import static sandclub.beeradvisor.util.Constants.ID;
 import static sandclub.beeradvisor.util.Constants.NOME;
 import static sandclub.beeradvisor.util.Constants.PASSWORD;
-import static sandclub.beeradvisor.util.Constants.PHOTOURL;
-import static sandclub.beeradvisor.util.Constants.PHOTOURLGOOLE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;

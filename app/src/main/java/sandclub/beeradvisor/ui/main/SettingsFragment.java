@@ -102,30 +102,6 @@ public class SettingsFragment extends Fragment {
         nameSurname.setText(user.getNome() + " " + user.getCognome());
 
         updatePhotoImageView();
-        /*
-        ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-
-
-        //se user ha immagine personalizzata
-        if (user.getPhotoUrl() != "") {
-            String photo = user.getPhotoUrl();
-            Glide.with(requireContext())
-                    .load(stringToBitmap(photo))
-                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                    .circleCrop()
-                    .into(profilePhoto);
-
-
-            //se lo user ha solo l'immagine di google e non quella personalizzata carica quella di google
-        } else if (!user.getPhotoUrlGoogle().isEmpty() && user.getPhotoUrl().equals("")) {
-            Glide.with(requireContext())
-                    .load(user.getPhotoUrlGoogle())
-                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                    .circleCrop()
-                    .into(profilePhoto);
-        }*/
 
 
         //Listener bottone cambioPw
@@ -205,10 +181,7 @@ public class SettingsFragment extends Fragment {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
-    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-    }*/
     //menu per scegliere tra fotocamera e galleria
     public void optionMenu() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -289,25 +262,6 @@ public class SettingsFragment extends Fragment {
 
         databaseReference.child("photoUrl").setValue(photourl);
 
-        /*ImageView profilePhoto = getActivity().findViewById(R.id.profilePhoto);
-        //Snackbar.make(requireView(), updateUser.getPhotoUrl(), Snackbar.LENGTH_SHORT).show();
-
-        //non ci sono foto caricate
-        if (updateUser.getPhotoUrl().equals("")) {
-            Glide.with(requireContext())
-                    .load(R.drawable.ic_app_user)
-                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                    .circleCrop()
-                    .into(profilePhoto);
-        } else {
-            Glide.with(requireContext())
-                    .load(stringToBitmap(updateUser.getPhotoUrl()))
-                    .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                    .circleCrop()
-                    .into(profilePhoto);
-
-        }*/
         updatePhotoImageView();
     }
 
@@ -329,23 +283,7 @@ public class SettingsFragment extends Fragment {
             databaseReference.child("photoUrl").setValue(photourl);
             updatePhotoImageView();
 
-            /*ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
 
-            //non ci sono foto caricate
-            if(updateUser.getPhotoUrl().equals("")) {
-                Glide.with(requireContext())
-                        .load(R.drawable.ic_app_user)
-                        .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                        .circleCrop()
-                        .into(profilePhoto);
-            }else{
-                Glide.with(requireContext())
-                        .load(stringToBitmap(updateUser.getPhotoUrl()))
-                        .placeholder(R.drawable.ic_app_user) // Immagine di fallback nel caso il caricamento fallisca
-                        .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
-                        .circleCrop()
-                        .into(profilePhoto);
-            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -353,7 +291,6 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
                 // La foto è stata scattata con successo

@@ -21,10 +21,6 @@ public class Constants {
 
     public static final String NOME = "nome";
     public static final String COGNOME = "cognome";
-    public static final String PHOTOURL = "photoUrl";
-    public static final String PHOTOURLGOOLE = "photoUrlGoogle";
-
-
 
     public static final String ENCRYPTED_DATA_FILE_NAME = "sandclub.beeradvisor.encrypted_file.txt";
 
