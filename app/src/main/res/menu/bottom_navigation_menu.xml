@@ -15,8 +15,13 @@
     <item
         android:id="@+id/userFragment"
         android:enabled="true"
-        android:title="user_settings"
+        android:title="user"
         android:icon="@drawable/ic_app_user"/>
 
+    <item
+        android:id="@+id/settingsFragment"
+        android:enabled="true"
+        android:title="user"
+        android:icon="@drawable/ic_app_setting"/>
 
 </menu>

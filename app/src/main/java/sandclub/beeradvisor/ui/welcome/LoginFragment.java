@@ -112,22 +112,17 @@ public class LoginFragment extends Fragment {
                                             databaseReference.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                //for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-
 
                                                     if (dataSnapshot.exists()) {
                                                          String passwordDb = dataSnapshot.child("password").getValue(String.class);
                                                         Log.d("check", "passwordDb" + passwordDb);
 
-                                                        User loggedUser = new User();
-                                                        loggedUser.setUserId(dataSnapshot.getKey());
-                                                        loggedUser.setCognome(dataSnapshot.child("cognome").getValue(String.class));
-                                                        loggedUser.setNome(dataSnapshot.child("nome").getValue(String.class));
-                                                        loggedUser.setEmail(dataSnapshot.child("email").getValue(String.class));
-                                                        loggedUser.setPassword(dataSnapshot.child("password").getValue(String.class));
-                                                        loggedUser.setPhotoUrl(dataSnapshot.child("photoUrl").getValue(String.class));
-                                                        loggedUser.setPhotoUrlGoogle("");
-                                                        //Toast.makeText(getContext(),dataSnapshot.child("photoUrl").getValue(String.class) , Toast.LENGTH_SHORT).show();
+                                                        User loggedUser = new User(dataSnapshot.getKey(),dataSnapshot.child("nome").getValue(String.class),
+                                                                dataSnapshot.child("cognome").getValue(String.class),
+                                                                dataSnapshot.child("email").getValue(String.class),
+                                                                dataSnapshot.child("password").getValue(String.class),
+                                                                dataSnapshot.child("photoUrl").getValue(String.class),
+                                                                "");
 
 
                                                         UserViewModel.getInstance().setUser(loggedUser);
