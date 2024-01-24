@@ -5,27 +5,60 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/mainFragment">
 
+
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="sandclub.beeradvisor.ui.main.MainFragment"
-        android:label="MainFragment" >
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_main" >
+
         <action
-            android:id="@+id/action_mainFragment_to_settingsFragment"
+            android:id="@+id/action_mainFragment_to_beerFragment"
+            app:destination="@id/beerFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment2"
             app:destination="@id/settingsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settings_Password"
+        android:name="sandclub.beeradvisor.ui.main.SettingsFragmentPassword"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings_password" >
+
+    </fragment>
+    <action
+        android:id="@+id/action_mainActivity_to_settingsFragment"
+        app:destination="@id/settingsFragment"
+        />
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="sandclub.beeradvisor.ui.main.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/userFragment"
-        android:name="sandclub.beeradvisor.ui.main.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_settings" >
+
+        <action
+            android:id="@+id/action_settingsFragment_to_userFragment2"
+            app:destination="@id/userFragment"
+            />
+        <action
+            android:id="@+id/action_settingsFragment_to_capsFragment2"
+            app:destination="@id/capsFragment" />
+
+        <action
+            android:id="@+id/action_settingsFragment_to_settings_Password"
+            app:destination="@id/settings_Password" />
+    </fragment>
     <fragment
         android:id="@+id/capsFragment"
         android:name="sandclub.beeradvisor.ui.main.CapsFragment"
         android:label="fragment_caps"
         tools:layout="@layout/fragment_caps" />
+        <fragment
+        android:id="@+id/beerFragment"
+        android:name="sandclub.beeradvisor.ui.main.BeerFragment"
+        android:label="BeerFragment" />
+
 </navigation>

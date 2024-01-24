@@ -8,7 +8,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +29,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
@@ -148,10 +157,40 @@ public class AuthenticationFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = auth.getCurrentUser();
-                            User newUser = new User(user.getUid(), user.getDisplayName(), user.getDisplayName(), user.getEmail(), "", user.getPhotoUrl().toString());
-                            mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);;
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            startActivity(intent);
+                            String[] parts = user.getDisplayName().split(" ");
+                            String nome = parts[0];  // Il primo elemento è il nome
+                            String cognome = parts.length > 1 ? parts[1] : "";  // Il secondo elemento è il cognome, se presente
+
+                            DatabaseReference userRef = FirebaseDatabase.getInstance(DATABASE_URL)
+                                    .getReference("user")
+                                    .child(user.getUid());
+
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) { //se l'utente registrato con google esiste già non creo nuovo utente
+                                        User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", snapshot.child("photoUrl").getValue(String.class), user.getPhotoUrl().toString());
+
+                                        UserViewModel.getInstance().setUser(newUser);
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        User newUser = new User(user.getUid(), nome, cognome, user.getEmail(), "", "", user.getPhotoUrl().toString());
+                                        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference().child("user").child(user.getUid()).setValue(newUser);
+
+                                        UserViewModel.getInstance().setUser(newUser);
+
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Gestisci l'errore
+                                    Toast.makeText(getContext(), "Errore nel controllo dell'utente esistente", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }else{
                             Toast.makeText(getContext(), "Qualcosa è andato storto", Toast.LENGTH_SHORT).show();
                         }
