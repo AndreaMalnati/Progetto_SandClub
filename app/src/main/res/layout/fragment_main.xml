@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.MainFragment"
-
     >
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="MAIN" />
+        android:layout_height="match_parent" >
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -26,6 +25,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.search.SearchBar
@@ -37,25 +37,76 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <com.google.android.material.search.SearchView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Cerca Birra"
+            android:layout_height="wrap_content"
+            android:hint="@string/find_beer"
             app:layout_anchor="@id/search_bar"
             android:elevation="4dp">
-
         </com.google.android.material.search.SearchView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <TextView
+            android:id="@+id/last_drunk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/lastDrunk"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/seeAllLastDrunk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/testo"
+        android:text="@string/seeAll"
+        android:textColor="@color/md_theme_light_inversePrimary"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id = "@+id/recyclerViewNewBeer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:orientation="horizontal"
-        app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginTop="100dp">
+        app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+
+    <TextView
+        android:id="@+id/discoverBeer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="220dp"
+        android:fontFamily="@font/testo"
+        android:text="@string/discoverNewBeers"
+        android:textColor="@color/md_theme_light_inversePrimary"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/seeAllNewBeers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="220dp"
+        android:fontFamily="@font/testo"
+        android:text="@string/seeAll"
+        android:textColor="@color/md_theme_light_inversePrimary"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id = "@+id/recyclerViewNewBeer2"
@@ -65,7 +116,8 @@
         android:layout_marginEnd="10dp"
         android:orientation="vertical"
         app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginTop="250dp">
+        android:layout_marginTop="240dp">
 
     </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 </FrameLayout>
