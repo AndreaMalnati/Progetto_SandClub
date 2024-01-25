@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 import sandclub.beeradvisor.model.Beer;
@@ -29,4 +30,9 @@ public interface BeerDao {
 
     @Query("SELECT * FROM beer ORDER BY RANDOM() LIMIT 10")
     List<Beer>getRandomBeer();
+
+    @Update
+    int updateSingleFavoriteBeer(Beer beer);
+
+
 }

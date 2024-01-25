@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,20 +19,25 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.BeerViewModel;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.repository.BeerRepository;
+import sandclub.beeradvisor.repository.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.ResponseCallback;
+import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
+import sandclub.beeradvisor.util.ServiceLocator;
 
 
 public class MainActivity  extends  AppCompatActivity implements ResponseCallback {
     BeerRoomDatabase db;
 
 
-    private List<Beer> beerList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +53,7 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
 
 
-        //Carcamento birre da api
-        BeerRepository rep = new BeerRepository(getApplication(), this);
-        rep.fetchAllBeer();
+
 
         NavController navController;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -80,9 +84,6 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
                         destination.getId() == R.id.capsFragment || destination.getId() == R.id.userFragment) {
                     // Nascondi la freccia indietro quando sei nel fragment delle impostazioni
                     actionBar.setDisplayHomeAsUpEnabled(false);
-                } else {
-                    // Mostra la freccia indietro per tutte le altre destinazioni
-                    actionBar.setDisplayHomeAsUpEnabled(true);
                 }
             }
         });

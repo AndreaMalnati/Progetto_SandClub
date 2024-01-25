@@ -24,6 +24,14 @@ public class Constants {
 
     public static final String ENCRYPTED_DATA_FILE_NAME = "sandclub.beeradvisor.encrypted_file.txt";
 
+    public static final String API_KEY_ERROR = "api_key_error";
+    public static final String RETROFIT_ERROR = "retrofit_error";
+    public static final String UNEXPECTED_ERROR = "unexpected_error";
+    public static final int FRESH_TIMEOUT = 1000;
+
+
+
+
 
 
 }

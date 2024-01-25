@@ -20,9 +20,10 @@ import sandclub.beeradvisor.model.BeerResponse;
 import sandclub.beeradvisor.service.BeerApiService;
 import sandclub.beeradvisor.util.ServiceLocator;
 
-public class BeerRepository implements IBeerRepository{
+public class BeerRepository {
 
-    private static final String TAG = BeerRepository.class.getSimpleName();
+
+   /* private static final String TAG = BeerRepository.class.getSimpleName();
 
     private final Application application;
     private final BeerApiService beerApiService;
@@ -63,7 +64,7 @@ public class BeerRepository implements IBeerRepository{
         });
     }
 
-    public void fetchAllBeer(){
+    /*public void fetchAllBeer(){
         Call<List<Beer>> beerResponseCall = beerApiService.getAllBeer(String.valueOf(page), "80");
 
         beerResponseCall.enqueue(new Callback<List<Beer>>() {
@@ -89,9 +90,9 @@ public class BeerRepository implements IBeerRepository{
                 responseCallback.onFailure(t.getMessage());
             }
         });
-    }
+    }*/
 
-    private void saveDataInDatabase(List<Beer> beerList) {
+    /*private void saveDataInDatabase(List<Beer> beerList) {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
 
 
@@ -109,4 +110,4 @@ public class BeerRepository implements IBeerRepository{
         });
     }
 
-}
+*/}

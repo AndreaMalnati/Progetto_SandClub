@@ -1,5 +1,8 @@
 package sandclub.beeradvisor.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -8,12 +11,13 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.List;
+import java.util.Objects;
 
 import sandclub.beeradvisor.database.Converters;
 
 @Entity
 @TypeConverters(Converters.class)
-public class Beer {
+public class Beer implements Parcelable {
     @PrimaryKey
     private int id;
     @ColumnInfo(name = "nome")
@@ -186,4 +190,82 @@ public class Beer {
                 ", contributed_by='" + contributed_by + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Beer beer = (Beer) o;
+        return Objects.equals(name, beer.name) && Objects.equals(tagline, beer.tagline) && Objects.equals(description, beer.description) && Objects.equals(image_url, beer.image_url) && Objects.equals(abv, beer.abv) && Objects.equals(ibu, beer.ibu) && Objects.equals(ebc, beer.ebc) && Objects.equals(srm, beer.srm) && Objects.equals(food_pairing, beer.food_pairing) && Objects.equals(brewers_tips, beer.brewers_tips) && Objects.equals(contributed_by, beer.contributed_by);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, tagline, description, image_url, abv, ibu, ebc, srm, food_pairing, brewers_tips, contributed_by);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+       dest.writeInt(this.id);
+       dest.writeString(this.name);
+       dest.writeString(this.tagline);
+       dest.writeString(this.description);
+       dest.writeString(this.image_url);
+       dest.writeDouble(this.abv);
+       dest.writeDouble(this.ibu);
+       dest.writeDouble(this.ebc);
+       dest.writeDouble(this.srm);
+       dest.writeStringList(this.food_pairing);
+       dest.writeString(this.brewers_tips);
+       dest.writeString(this.contributed_by);
+
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.id = source.readInt();
+        this.name = source.readString();
+        this.tagline = source.readString();
+        this.description = source.readString();
+        this.image_url = source.readString();
+        this.abv = source.readDouble();
+        this.ibu = source.readDouble();
+        this.ebc = source.readDouble();
+        this.srm = source.readDouble();
+        this.food_pairing = source.createStringArrayList();
+        this.brewers_tips = source.readString();
+        this.contributed_by = source.readString();
+    }
+
+    protected Beer(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.tagline = in.readString();
+        this.description = in.readString();
+        this.image_url = in.readString();
+        this.abv = in.readDouble();
+        this.ibu = in.readDouble();
+        this.ebc = in.readDouble();
+        this.srm = in.readDouble();
+        this.food_pairing = in.createStringArrayList();
+        this.brewers_tips = in.readString();
+        this.contributed_by = in.readString();
+    }
+
+
+    public static final Parcelable.Creator<Beer> CREATOR = new Parcelable.Creator<Beer>() {
+        @Override
+        public Beer createFromParcel(Parcel source) {
+            return new Beer(source);
+        }
+
+        @Override
+        public Beer[] newArray(int size) {
+            return new Beer[size];
+        }
+    };
 }
