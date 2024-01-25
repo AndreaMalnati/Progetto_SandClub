@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,6 +80,22 @@ public class MainFragment extends Fragment {
         User u = UserViewModel.getInstance().getUser();
         Snackbar.make(requireView(), u.getNome(), Snackbar.LENGTH_SHORT).show();
 
+        TextView seeAllNewBeers = view.findViewById(R.id.seeAllNewBeers);
+        seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_allBeersFragment);
+            }
+        });
+
+        TextView seeAllLastDrunk = view.findViewById(R.id.seeAllLastDrunk);
+        seeAllLastDrunk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_capsFragment);
+            }
+        });
+
     }
 
     private static class LoadBeerTask extends AsyncTask<Void, Void, List<Beer>> {
@@ -139,6 +156,7 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onBeerItemClick(Beer beer) {
                             Snackbar.make(recyclerView, beer.getName(), Snackbar.LENGTH_SHORT).show();
+                            Navigation.findNavController(recyclerView).navigate(R.id.action_mainFragment_to_beerFragment);
                         }
                     });
 
