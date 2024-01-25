@@ -7,15 +7,20 @@ import android.app.Application;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
-import sandclub.beeradvisor.repository.BeerRepositoryWithLiveData;
-import sandclub.beeradvisor.repository.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.BeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.repository.user.UserRepository;
 import sandclub.beeradvisor.service.BeerApiService;
-import sandclub.beeradvisor.source.BaseBeerLocalDataSource;
-import sandclub.beeradvisor.source.BaseBeerRemoteDataSource;
-import sandclub.beeradvisor.source.BeerLocalDataSource;
-import sandclub.beeradvisor.source.BeerRemoteDataSource;
+import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
+import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
+import sandclub.beeradvisor.source.beer.BeerLocalDataSource;
+import sandclub.beeradvisor.source.beer.BeerRemoteDataSource;
+import sandclub.beeradvisor.source.user.BaseUserAuthenticationRemoteDataSource;
+import sandclub.beeradvisor.source.user.BaseUserDataRemoteDataSource;
+import sandclub.beeradvisor.source.user.UserAuthenticationRemoteDataSource;
+import sandclub.beeradvisor.source.user.UserDataRemoteDataSource;
 
 /**
  *  Registry to provide the dependencies for the classes
@@ -78,6 +83,26 @@ public class ServiceLocator {
         beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil);
 
         return new BeerRepositoryWithLiveData(beerRemoteDataSource, beerLocalDataSource);
+    }
+
+    /**
+     * Creates an instance of IUserRepository.
+     * @return An instance of IUserRepository.
+     */
+    public IUserRepository getUserRepository(Application application) {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
+
+        BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource =
+                new UserAuthenticationRemoteDataSource();
+
+        BaseUserDataRemoteDataSource userDataRemoteDataSource =
+                new UserDataRemoteDataSource(sharedPreferencesUtil);
+
+        BaseBeerLocalDataSource beerLocalDataSource =
+                new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil);
+
+        return new UserRepository(userRemoteAuthenticationDataSource,
+                beerLocalDataSource, userDataRemoteDataSource);
     }
 
 }

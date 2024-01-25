@@ -1,4 +1,4 @@
-package sandclub.beeradvisor.repository;
+package sandclub.beeradvisor.repository.beer;
 
 import static sandclub.beeradvisor.util.Constants.FRESH_TIMEOUT;
 
@@ -10,9 +10,9 @@ import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerApiResponse;
 import sandclub.beeradvisor.model.BeerResponse;
 import sandclub.beeradvisor.model.Result;
-import sandclub.beeradvisor.source.BaseBeerLocalDataSource;
-import sandclub.beeradvisor.source.BaseBeerRemoteDataSource;
-import sandclub.beeradvisor.source.BeerCallback;
+import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
+import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
+import sandclub.beeradvisor.source.beer.BeerCallback;
 
 public class BeerRepositoryWithLiveData implements IBeerRepositoryWithLiveData, BeerCallback {
     private static final String TAG = BeerRepositoryWithLiveData.class.getSimpleName();

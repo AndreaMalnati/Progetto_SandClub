@@ -1,4 +1,4 @@
-package sandclub.beeradvisor.source;
+package sandclub.beeradvisor.source.beer;
 
 import static sandclub.beeradvisor.util.Constants.API_KEY_ERROR;
 import static sandclub.beeradvisor.util.Constants.RETROFIT_ERROR;
@@ -10,10 +10,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sandclub.beeradvisor.model.BeerApiResponse;
 import sandclub.beeradvisor.service.BeerApiService;
+import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
 import sandclub.beeradvisor.util.ServiceLocator;
 
 //logica che fa recupero dei dati da remoto e notifica con callback
-public class BeerRemoteDataSource extends BaseBeerRemoteDataSource{
+public class BeerRemoteDataSource extends BaseBeerRemoteDataSource {
     private int page = 1;
     private final BeerApiService beerApiService;
 

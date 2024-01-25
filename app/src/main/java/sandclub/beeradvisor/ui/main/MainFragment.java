@@ -2,7 +2,6 @@ package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,14 +24,12 @@ import java.util.List;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.adapter.BeerRecyclerViewAdapter;
 import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
-import sandclub.beeradvisor.database.BeerDao;
-import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.repository.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
@@ -90,7 +87,6 @@ public class MainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager;
         RecyclerView recyclerViewNewBeer2;
         RecyclerView.LayoutManager layoutManager2;
-        //beerViewModel.getBeer(System.currentTimeMillis());
 
 
         recyclerViewNewBeer = view.findViewById(R.id.recyclerViewNewBeer);
@@ -98,7 +94,6 @@ public class MainFragment extends Fragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.HORIZONTAL, false);
 
-        //new LoadBeerTask(recyclerViewNewBeer, layoutManager).execute();
 
         BeerRecyclerViewAdapter beerRecyclerViewAdapter = new BeerRecyclerViewAdapter(beerList,
                 new BeerRecyclerViewAdapter.OnItemClickListener() {

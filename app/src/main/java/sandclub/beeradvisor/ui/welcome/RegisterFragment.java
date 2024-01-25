@@ -116,6 +116,7 @@ public class RegisterFragment extends Fragment {
                     return;
                 }
 
+                //TODO: Quando toglierò tutto il codice di autenticazione qua rimane il cambio a fragment di login
                 //CREAZIONE UTENTE
                 mAuth.createUserWithEmailAndPassword(Email, Password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

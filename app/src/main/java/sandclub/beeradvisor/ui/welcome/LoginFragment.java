@@ -116,6 +116,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
 
+                //TODO:Quando toglierò il metodo tenere intent per cambiare a mainactivity
                 mAuth.signInWithEmailAndPassword(Email, Password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override

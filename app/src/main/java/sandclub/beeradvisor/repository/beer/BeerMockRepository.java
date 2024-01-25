@@ -1,4 +1,4 @@
-package sandclub.beeradvisor.repository;
+package sandclub.beeradvisor.repository.beer;
 
 import static sandclub.beeradvisor.util.Constants.BEER_API_TEST_JSON;
 
@@ -18,7 +18,7 @@ import sandclub.beeradvisor.util.JSONParserUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 
 
-public class BeerMockRepository implements IBeerRepository{
+public class BeerMockRepository implements IBeerRepository {
 
     private final Application application;
     //private final ResponseCallback responseCallback;

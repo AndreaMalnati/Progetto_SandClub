@@ -1,4 +1,4 @@
-package sandclub.beeradvisor.repository;
+package sandclub.beeradvisor.repository.beer;
 
 import java.util.List;
 

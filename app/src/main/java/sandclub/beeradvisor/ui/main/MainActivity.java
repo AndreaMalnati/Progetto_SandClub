@@ -10,7 +10,6 @@ import android.util.Log;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,19 +18,12 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
-import sandclub.beeradvisor.model.BeerViewModel;
-import sandclub.beeradvisor.model.Result;
-import sandclub.beeradvisor.repository.BeerRepository;
-import sandclub.beeradvisor.repository.IBeerRepositoryWithLiveData;
-import sandclub.beeradvisor.repository.ResponseCallback;
-import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
-import sandclub.beeradvisor.util.ServiceLocator;
+import sandclub.beeradvisor.repository.beer.ResponseCallback;
 
 
 public class MainActivity  extends  AppCompatActivity implements ResponseCallback {

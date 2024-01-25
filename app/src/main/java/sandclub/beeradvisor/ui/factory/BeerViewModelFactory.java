@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import sandclub.beeradvisor.model.BeerViewModel;
-import sandclub.beeradvisor.repository.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 
 public class BeerViewModelFactory implements ViewModelProvider.Factory{
     private final IBeerRepositoryWithLiveData iBeerRepositoryWithLiveData;

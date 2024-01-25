@@ -3,7 +3,7 @@ package sandclub.beeradvisor.model;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import sandclub.beeradvisor.repository.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 
 public class BeerViewModel extends ViewModel {
     private static final String TAG = BeerViewModel.class.getSimpleName();

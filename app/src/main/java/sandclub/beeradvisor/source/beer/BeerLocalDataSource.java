@@ -1,19 +1,11 @@
-package sandclub.beeradvisor.source;
-
-import static sandclub.beeradvisor.util.Constants.UNEXPECTED_ERROR;
-
-import androidx.annotation.NonNull;
+package sandclub.beeradvisor.source.beer;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
-import sandclub.beeradvisor.model.BeerApiResponse;
-import sandclub.beeradvisor.service.BeerApiService;
+import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
 public class BeerLocalDataSource extends BaseBeerLocalDataSource {
