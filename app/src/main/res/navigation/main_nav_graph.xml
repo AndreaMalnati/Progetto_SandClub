@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_mainFragment_to_capsFragment"
             app:destination="@id/capsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_favoriteBeersFragment2"
+            app:destination="@id/favoriteBeersFragment" />
     </fragment>
 
     <fragment
@@ -45,10 +48,7 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
 
-        <action
-            android:id="@+id/action_settingsFragment_to_userFragment2"
-            app:destination="@id/userFragment"
-            />
+
         <action
             android:id="@+id/action_settingsFragment_to_capsFragment2"
             app:destination="@id/capsFragment" />
@@ -80,6 +80,14 @@
         <action
             android:id="@+id/action_allBeersFragment_to_beerFragment"
             app:destination="@id/beerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteBeersFragment"
+        android:name="sandclub.beeradvisor.ui.main.FavoriteBeersFragment"
+        android:label="FavoriteBeersFragment" >
+        <action
+            android:id="@+id/action_favoriteBeersFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 
 </navigation>

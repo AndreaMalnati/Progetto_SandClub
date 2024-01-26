@@ -74,4 +74,6 @@
     <string name="all_beers">All beers</string>
     <string name="caps_drunk_beers">Caps drunk beers</string>
 
+    <string name="favorite_beers">Favorite beers</string>
+
 </resources>

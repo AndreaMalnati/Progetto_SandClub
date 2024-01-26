@@ -74,7 +74,7 @@ public class CapsAdapter extends RecyclerView.Adapter<CapsAdapter.CapsViewHolder
             beerName.setText(beer.getName());
             if(image_url == null || image_url.equals(".") ) {
                 Glide.with(itemView.getContext())
-                        .load(R.drawable.ic_logo)
+                        .load(R.drawable.ic_app_beertappo)
                         .circleCrop()
                         .into(beerImage);
             }

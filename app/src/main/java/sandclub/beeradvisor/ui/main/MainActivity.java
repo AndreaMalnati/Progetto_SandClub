@@ -65,7 +65,7 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.mainFragment,
                 R.id.capsFragment,
-                R.id.userFragment,
+                R.id.favoriteBeersFragment,
                 R.id.settingsFragment).build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -77,7 +77,7 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 if (destination.getId() == R.id.settingsFragment || destination.getId() == R.id.mainFragment ||
-                        destination.getId() == R.id.capsFragment || destination.getId() == R.id.userFragment) {
+                        destination.getId() == R.id.capsFragment || destination.getId() == R.id.favoriteBeersFragment) {
                     // Nascondi la freccia indietro quando sei nel fragment delle impostazioni
                     actionBar.setDisplayHomeAsUpEnabled(false);
                 } else {

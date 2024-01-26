@@ -62,4 +62,6 @@
     <string name="all_beers">Tutte le birre</string>
 
     <string name="caps_drunk_beers">Tappi birre bevute</string>
+
+    <string name="favorite_beers">Birre preferite</string>
 </resources>
