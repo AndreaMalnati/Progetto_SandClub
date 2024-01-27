@@ -51,17 +51,7 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
         });
     }
 
-    @Override
-    public void deleteAll() {
-        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-            int beerCounter = beerDao.getAll().size();
-            int beerDelete = beerDao.deleteAll();
 
-            //if(beerCounter == beerDelete)
-                //beerCallback.onSuccessDeletion();
-
-        });
-    }
 
 
 }

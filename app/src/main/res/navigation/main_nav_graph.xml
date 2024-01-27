@@ -48,7 +48,7 @@
             android:id="@+id/action_settingsFragment_to_settings_Password"
             app:destination="@id/settings_Password" />
         <action
-            android:id="@+id/settingsFragment_to_welcomeActivity"
+            android:id="@+id/action_settingsFragment_to_welcomeActivity"
             app:destination="@id/welcomeActivity" />
         <action
             android:id="@+id/action_settingsFragment_to_mainFragment"

@@ -85,5 +85,9 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
     }
 
+    @Override
+    public void onSuccessDeletion(){
+
+    }
 
 }

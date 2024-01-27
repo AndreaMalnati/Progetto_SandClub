@@ -108,6 +108,20 @@ public class SettingsFragment extends Fragment {
         nameSurname.setMaxLines(1);  // Imposta il numero massimo di linee a 1
         nameSurname.setEllipsize(TextUtils.TruncateAt.END);
 
+        //Listener bottone logout
+        logout.setOnClickListener(v -> {
+            userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccessUser()) {
+                    Navigation.findNavController(view).navigate(
+                            R.id.action_settingsFragment_to_welcomeActivity);
+                } else {
+                    Snackbar.make(view,
+                            requireActivity().getString(R.string.unexpected_error),
+                            Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        });
+
         //Observer per settare nome e cognome
         userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
                 getViewLifecycleOwner(), result -> {
@@ -123,24 +137,7 @@ public class SettingsFragment extends Fragment {
                     }
                 });
 
-        //Listener bottone logout
-        /*logout.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
-                                              if (result.isSuccessUser()) {
-                                                  Navigation.findNavController(view).navigate(
-                                                          R.id.settingsFragment_to_welcomeActivity);
 
-                                              } else {
-                                                  Snackbar.make(view,
-                                                          requireActivity().getString(R.string.unexpected_error),
-                                                          Snackbar.LENGTH_SHORT).show();
-                                              }
-                                          });
-                                      }
-                                    }
-        );*/
 
         updatePhotoImageView();
 
