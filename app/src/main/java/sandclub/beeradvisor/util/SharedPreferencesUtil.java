@@ -64,4 +64,12 @@ public class SharedPreferencesUtil {
                 Context.MODE_PRIVATE);
         return sharedPref.getStringSet(key, null);
     }
+
+    public void deleteAll(String sharedPreferencesFileName) {
+        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
 }

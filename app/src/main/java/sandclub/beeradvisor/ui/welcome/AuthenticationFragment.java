@@ -158,8 +158,7 @@ public class AuthenticationFragment extends Fragment {
                                 userViewModel.setAuthenticationError(false);
 
                                 retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
-                                Intent intent = new Intent(requireContext(), MainActivity.class);
-                                startActivity(intent);
+
                             } else {
                                 userViewModel.setAuthenticationError(true);
                                 //progressIndicator.setVisibility(View.GONE);

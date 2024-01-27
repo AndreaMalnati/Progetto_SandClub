@@ -13,6 +13,7 @@ public class Constants {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_IMAGE_PICK = 2;
     public static final int REQUEST_CAMERA_PERMISSION = 100;
+    public static final String SHARED_PREFERENCES_FILE_NAME = "sandclub.beeradvisor.preferences";
 
     public static final String ENCRYPTED_SHARED_PREFERENCES_FILE_NAME = "sandclub.beeradvisor.encrypted_preferences";
     public static final String EMAIL_ADDRESS = "email";

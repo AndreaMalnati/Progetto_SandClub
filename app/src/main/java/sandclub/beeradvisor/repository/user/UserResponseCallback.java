@@ -9,6 +9,7 @@ public interface UserResponseCallback {
     void onSuccessFromAuthentication(User user);
     void onFailureFromAuthentication(String message);
     void onSuccessFromRemoteDatabase(User user);
+    void onSuccessDeletion();
     void onSuccessFromRemoteDatabase(List<Beer> beerList);
     void onSuccessFromGettingUserPreferences();
     void onFailureFromRemoteDatabase(String message);

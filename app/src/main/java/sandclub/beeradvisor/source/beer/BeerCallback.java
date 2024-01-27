@@ -14,4 +14,6 @@ public interface BeerCallback {
     void onNewsFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer); //Aggiornamento di una singola birra
     void onNewsFavoriteStatusChanged(List<Beer> beer); //Aggiornamento di tutte la lista birre
     void onDeleteFavoriteNewsSuccess(List<Beer> favoriteBeer); //Listener per la cancellazione di tutte le birre preferite
+
+
 }

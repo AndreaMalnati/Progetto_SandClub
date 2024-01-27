@@ -145,8 +145,6 @@ public class MainFragment extends Fragment {
                     }
                 });
 
-        User u = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
-        Snackbar.make(requireView(), u.getNome(), Snackbar.LENGTH_SHORT).show();
 
     }
 

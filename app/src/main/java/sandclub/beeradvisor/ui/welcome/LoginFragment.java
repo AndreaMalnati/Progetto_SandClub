@@ -126,6 +126,7 @@ public class LoginFragment extends Fragment {
                                         //saveLoginData(email, password, user.getIdToken());
                                         userViewModel.setAuthenticationError(false);
                                         retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
+
                                     } else {
                                         userViewModel.setAuthenticationError(true);
                                         //progressIndicator.setVisibility(View.GONE);

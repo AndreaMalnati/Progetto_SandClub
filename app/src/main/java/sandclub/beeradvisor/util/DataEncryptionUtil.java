@@ -150,4 +150,14 @@ public class DataEncryptionUtil {
         byte[] plaintext = byteArrayOutputStream.toByteArray();
         return new String(plaintext, StandardCharsets.UTF_8);
     }
+
+    public void deleteAll(String encryptedSharedPreferencesFileName, String encryptedFileDataFileName) {
+        SharedPreferences sharedPref = context.getSharedPreferences(encryptedSharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+
+        new File(context.getFilesDir(), encryptedFileDataFileName).delete();
+    }
 }

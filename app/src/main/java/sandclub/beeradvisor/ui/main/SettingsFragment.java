@@ -1,6 +1,9 @@
 package sandclub.beeradvisor.ui.main;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
+import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
 import static sandclub.beeradvisor.util.Constants.REQUEST_CAMERA_PERMISSION;
 import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_CAPTURE;
 import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_PICK;
@@ -32,11 +35,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -44,14 +49,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.BeerViewModel;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.util.ServiceLocator;
 
 
 public class SettingsFragment extends Fragment {
     private boolean isCameraOpen = false;
-
-
+    Button changePw;
+    Button logout;
+    private UserViewModel userViewModel;
+    TextView nameSurname;
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -68,7 +82,13 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(
+                        requireActivity().getApplication()
+                );
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
     }
 
@@ -83,18 +103,50 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        User user = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
-
-        TextView nameSurname = view.findViewById(R.id.nameSurname);
+        logout = view.findViewById(R.id.logoutBtn);
+        nameSurname = view.findViewById(R.id.nameSurname);
         nameSurname.setMaxLines(1);  // Imposta il numero massimo di linee a 1
         nameSurname.setEllipsize(TextUtils.TruncateAt.END);
-        nameSurname.setText(user.getNome() + " " + user.getCognome());
+
+        //Observer per settare nome e cognome
+        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
+                getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessUser()) {
+                        User user = ((Result.UserResponseSuccess) result).getData();
+                        nameSurname.setText(user.getNome() + " " + user.getCognome());
+
+                    } else {
+                        //progressIndicator.setVisibility(View.GONE);
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+
+        //Listener bottone logout
+        /*logout.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
+                                              if (result.isSuccessUser()) {
+                                                  Navigation.findNavController(view).navigate(
+                                                          R.id.settingsFragment_to_welcomeActivity);
+
+                                              } else {
+                                                  Snackbar.make(view,
+                                                          requireActivity().getString(R.string.unexpected_error),
+                                                          Snackbar.LENGTH_SHORT).show();
+                                              }
+                                          });
+                                      }
+                                    }
+        );*/
 
         updatePhotoImageView();
 
 
         //Listener bottone cambioPw
-        Button changePw = view.findViewById(R.id.changePasswordBtn);
+        changePw = view.findViewById(R.id.changePasswordBtn);
         changePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +154,7 @@ public class SettingsFragment extends Fragment {
 
                 navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
                     ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-                    ;
+
                     if (actionBar != null) { //togliere freccia indietro che esce in automatico
                         if (destination.getId() == R.id.settings_Password) {
                             // Nascondi il pulsante indietro quando sei nel fragment dei settings
@@ -133,7 +185,16 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case INVALID_CREDENTIALS_ERROR:
+                return requireActivity().getString(R.string.error_login_password_message);
+            case INVALID_USER_ERROR:
+                return requireActivity().getString(R.string.error_login_user_message);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {

@@ -39,10 +39,7 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
 
-        <action
-            android:id="@+id/action_settingsFragment_to_userFragment2"
-            app:destination="@id/userFragment"
-            />
+
         <action
             android:id="@+id/action_settingsFragment_to_capsFragment2"
             app:destination="@id/capsFragment" />
@@ -50,6 +47,12 @@
         <action
             android:id="@+id/action_settingsFragment_to_settings_Password"
             app:destination="@id/settings_Password" />
+        <action
+            android:id="@+id/settingsFragment_to_welcomeActivity"
+            app:destination="@id/welcomeActivity" />
+        <action
+            android:id="@+id/action_settingsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/capsFragment"
@@ -60,5 +63,9 @@
         android:id="@+id/beerFragment"
         android:name="sandclub.beeradvisor.ui.main.BeerFragment"
         android:label="BeerFragment" />
+    <activity
+        android:id="@+id/welcomeActivity"
+        android:name="sandclub.beeradvisor.ui.welcome.WelcomeActivity"
+        android:label="WelcomeActivity" />
 
 </navigation>

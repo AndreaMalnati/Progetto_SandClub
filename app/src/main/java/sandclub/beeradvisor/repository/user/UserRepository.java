@@ -76,13 +76,13 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
 
     @Override
     public MutableLiveData<Result> logout() {
-        return null;
+        userRemoteDataSource.logout();
+        return userMutableLiveData;
     }
 
     @Override
     public User getLoggedUser() {
-        return null;
-    }
+        return userRemoteDataSource.getLoggedUser();    }
 
     @Override
     public void signUp(String nome, String cognome, String email, String password) {
@@ -119,6 +119,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
+    public void onSuccessDeletion() {
+        Result.UserResponseSuccess result = new Result.UserResponseSuccess(null);
+        userMutableLiveData.postValue(result);
+    }
+
+    @Override
     public void onSuccessFromRemoteDatabase(List<Beer> beerList) {
 
     }
@@ -135,7 +141,6 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
 
     @Override
     public void onSuccessLogout() {
-
     }
 
     @Override

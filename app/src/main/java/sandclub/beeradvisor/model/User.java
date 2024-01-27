@@ -62,6 +62,12 @@ public class User{
         this.password = password;
     }
 
+    //Costruttore per getLoggedUser
+    public User(String userId, String email){
+        this.userId = userId;
+        this.email = email;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

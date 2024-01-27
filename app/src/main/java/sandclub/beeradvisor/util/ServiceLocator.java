@@ -66,6 +66,7 @@ public class ServiceLocator {
     public BeerRoomDatabase getBeerDao(Application application) {
         return BeerRoomDatabase.getDatabase(application);
     }
+
     public IBeerRepositoryWithLiveData getBeerRepository(Application application/*, boolean debugMode*/) {
         BaseBeerRemoteDataSource beerRemoteDataSource;
         BaseBeerLocalDataSource beerLocalDataSource;

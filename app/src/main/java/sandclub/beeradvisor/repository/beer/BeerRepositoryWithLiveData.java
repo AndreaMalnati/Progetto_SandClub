@@ -84,4 +84,6 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     public void onDeleteFavoriteNewsSuccess(List<Beer> favoriteBeer) {
 
     }
+
+
 }

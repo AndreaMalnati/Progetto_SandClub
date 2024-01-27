@@ -34,5 +34,6 @@ public interface BeerDao {
     @Update
     int updateSingleFavoriteBeer(Beer beer);
 
-
+    @Query("DELETE FROM beer")
+    int deleteAll();
 }
