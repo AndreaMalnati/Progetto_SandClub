@@ -16,12 +16,20 @@
         <action
             android:id="@+id/action_authenticationFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_authenticationFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="sandclub.beeradvisor.ui.welcome.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+    <action
+        android:id="@+id/action_loginFragment_to_mainActivity"
+        app:destination="@id/mainActivity" />
+    </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="sandclub.beeradvisor.ui.welcome.RegisterFragment"
@@ -31,4 +39,10 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="sandclub.beeradvisor.ui.main.MainActivity"
+        android:label="MainActivity" />
+
+
 </navigation>

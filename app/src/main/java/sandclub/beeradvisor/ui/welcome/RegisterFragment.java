@@ -1,6 +1,8 @@
 package sandclub.beeradvisor.ui.welcome;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.USER_COLLISION_ERROR;
+import static sandclub.beeradvisor.util.Constants.WEAK_PASSWORD_ERROR;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,14 +31,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.UserViewModel;
 
 public class RegisterFragment extends Fragment {
 
     TextInputEditText editTextNome, editTextCognome, editTextEmail, editTextPassword, editTextPassword2;
     Button btnConfirmRegister;
     FirebaseAuth mAuth;
-
+    private UserViewModel userViewModel;
 
     private DatabaseReference mDatabase;
 
@@ -51,6 +56,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        userViewModel.setAuthenticationError(false);
     }
 
     @Override
@@ -84,85 +91,67 @@ public class RegisterFragment extends Fragment {
                 Password2 = String.valueOf(editTextPassword2.getText());
 
                 //CONTROLLI campi vuoti e/o campi non corretti
-                if(TextUtils.isEmpty(Nome)){
+                if (TextUtils.isEmpty(Nome)) {
                     Snackbar.make(requireView(), getString(R.string.insertName), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(TextUtils.isEmpty(Cognome)){
+                if (TextUtils.isEmpty(Cognome)) {
                     Snackbar.make(requireView(), getString(R.string.insertSurname), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 //check email corretta
-                if(TextUtils.isEmpty(Email) || isValidEmail(Email) == false){
+                if (TextUtils.isEmpty(Email) || isValidEmail(Email) == false) {
                     Snackbar.make(requireView(), getString(R.string.emailNovalid), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(TextUtils.isEmpty(Password)){
+                if (TextUtils.isEmpty(Password)) {
                     Snackbar.make(requireView(), getString(R.string.insertPassword), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(TextUtils.isEmpty(Password2)){
+                if (TextUtils.isEmpty(Password2)) {
                     Snackbar.make(requireView(), getString(R.string.insertRepeatPassword), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 //check se ripeti password uguale a password
-                if(Password.equals(Password2) == false){
+                if (Password.equals(Password2) == false) {
                     Snackbar.make(requireView(), getString(R.string.noEqualPassword), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                //TODO: Quando toglierò tutto il codice di autenticazione qua rimane il cambio a fragment di login
                 //CREAZIONE UTENTE
-                mAuth.createUserWithEmailAndPassword(Email, Password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Snackbar.make(requireView(), getString(R.string.RegisterComplete),
-                                            Snackbar.LENGTH_SHORT).show();
-
-                                    writeNewUser();
-                                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
-
+                if (!userViewModel.isAuthenticationError()) {
+                    userViewModel.getUserMutableLiveData(Nome, Cognome, Email, Password, false).observe(
+                            getViewLifecycleOwner(), result -> {
+                                if (result.isSuccessUser()) {
+                                    userViewModel.setAuthenticationError(false);
+                                    Navigation.findNavController(view).navigate(
+                                            R.id.action_registerFragment_to_loginFragment);
                                 } else {
-                                    // If sign in fails, display a message to the user.
-                                    String errorMessage = "Authentication fallita";
-                                    if (task.getException() != null) {
-                                        errorMessage += " " + task.getException().getMessage();
-                                    }
-                                    Snackbar.make(requireView(), getString(R.string.RegisterFailed),
+                                    userViewModel.setAuthenticationError(true);
+                                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                            getErrorMessage(((Result.Error) result).getMessage()),
                                             Snackbar.LENGTH_SHORT).show();
-
-
                                 }
-                            }
-                        });
+                            });
+                } else {
+                    userViewModel.getUser(Nome, Cognome, Email, Password, false);
+                }
             }
         });
     }
-
-    public void sendData(View view){
-        writeNewUser();
-    }
-
-    public void writeNewUser() {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (firebaseUser != null) {
-            String userId = firebaseUser.getUid();
-
-            User newUser = new User(userId, editTextNome.getText().toString(),
-                    editTextCognome.getText().toString(),
-                    editTextEmail.getText().toString(),
-                    editTextPassword.getText().toString(),
-                    "", "");
-
-            mDatabase.child("user").child(User.getUserId()).setValue(newUser);
+    private String getErrorMessage(String message) {
+        switch(message) {
+        case WEAK_PASSWORD_ERROR:
+            return requireActivity().getString(R.string.error_password);
+        case USER_COLLISION_ERROR:
+            return requireActivity().getString(R.string.error_user_collision_message);
+        default:
+            return requireActivity().getString(R.string.unexpected_error);
         }
     }
     public boolean isValidEmail(String email) {

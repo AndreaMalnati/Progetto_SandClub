@@ -1,5 +1,7 @@
 package sandclub.beeradvisor.repository.user;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
@@ -31,28 +33,40 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         this.userMutableLiveData = new MutableLiveData<>();
         //this.userFavoriteBeerMutableLiveData = new MutableLiveData<>();
         this.userPreferencesMutableLiveData = new MutableLiveData<>();
+        this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);
         this.beerLocalDataSource.setBeerCallback(this);
     }
 
     @Override
-    public MutableLiveData<Result> getUser(String email, String password, boolean isUserRegistered) {
+    public MutableLiveData<Result> getUser(String nome, String cognome, String email, String password, boolean isUserRegistered) {
         if(isUserRegistered){
             signIn(email, password);
         }else{
-            signUp(email, password);
+            signUp(nome, cognome, email, password);
         }
+        return userMutableLiveData;
+    }
+
+
+    @Override
+    public MutableLiveData<Result> getUserSignIn(String email, String password, boolean isUserRegistered) {
+        if(isUserRegistered)
+            signIn(email, password);
         return userMutableLiveData;
     }
 
     @Override
     public MutableLiveData<Result> getGoogleUser(String idToken) {
-        return null;
+        signInWithGoogle(idToken);
+        return userMutableLiveData;
     }
 
     @Override
-    public MutableLiveData<Result> getUserFavoriteNews(String idToken) {
-        return null;
+    public MutableLiveData<Result> getUserData(String idToken) {
+        Log.d("Testozza", "Dentro getUserData di user repository" + idToken);
+        userDataRemoteDataSource.getUserData(idToken);
+        return userMutableLiveData;
     }
 
     @Override
@@ -71,8 +85,8 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
-    public void signUp(String email, String password) {
-        userRemoteDataSource.signUp(email, password);
+    public void signUp(String nome, String cognome, String email, String password) {
+        userRemoteDataSource.signUp(nome, cognome, email, password);
     }
 
     @Override
@@ -82,19 +96,20 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
 
     @Override
     public void signInWithGoogle(String token) {
-
+        userRemoteDataSource.signInWithGoogle(token);
     }
 
     @Override
     public void onSuccessFromAuthentication(User user) {
         if(user != null){
-            userMutableLiveData.saveUserData(user);
+            userDataRemoteDataSource.saveUserData(user);
         }
     }
 
     @Override
     public void onFailureFromAuthentication(String message) {
-
+        Result.Error result = new Result.Error(message);
+        userMutableLiveData.postValue(result);
     }
 
     @Override

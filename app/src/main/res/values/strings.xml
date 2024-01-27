@@ -74,5 +74,11 @@
     <string name="from_the_most_alcholic">From most alcholic</string>
     <string name="from_the_less_alcholic">From less alcholic</string>
     <string name="all_beers">All beers</string>
+    <string name="error_password">Password Error</string>
+    <string name="error_user_collision_message" translatable="false">User collision error</string>
+    <string name="error_login_password_message">login password error</string>
+    <string name="error_login_user_message">Error user login</string>
+    <string name="check_login_data_message">Check the data you inserted</string>
+    <string name="error_no_google_account_found_message">No google account found</string>
 
 </resources>

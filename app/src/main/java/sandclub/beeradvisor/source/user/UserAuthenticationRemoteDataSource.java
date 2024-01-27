@@ -7,12 +7,16 @@ import static sandclub.beeradvisor.util.Constants.UNEXPECTED_ERROR;
 import static sandclub.beeradvisor.util.Constants.USER_COLLISION_ERROR;
 import static sandclub.beeradvisor.util.Constants.WEAK_PASSWORD_ERROR;
 
+import android.util.Log;
+
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import sandclub.beeradvisor.model.User;
 
@@ -20,6 +24,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
 
         private static final String TAG = UserAuthenticationRemoteDataSource.class.getSimpleName();
         private final FirebaseAuth firebaseAuth;
+        private UserDataRemoteDataSource userDataRemoteDataSource;
         public UserAuthenticationRemoteDataSource() {
             firebaseAuth = FirebaseAuth.getInstance();
         }
@@ -39,13 +44,13 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
         }
 
         @Override
-        public void signUp(String email, String password) {
+        public void signUp(String nome, String cognome, String email, String password) {
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
                         userResponseCallback.onSuccessFromAuthentication(
-                                new User() //TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
+                                new User(firebaseUser.getUid(), nome, cognome, email, password,"", "" ) //TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
                         );
                     } else {
                         userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
@@ -62,8 +67,9 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
+
                         userResponseCallback.onSuccessFromAuthentication(
-                                new User() //TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
+                                new User(firebaseUser.getUid(), email, password) //TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
                         );
                     } else {
                         userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
@@ -76,7 +82,44 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
 
         @Override
         public void signInWithGoogle(String idToken) {
+            if (idToken !=  null) {
+                // Got an ID token from Google. Use it to authenticate with Firebase.
+                AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+                firebaseAuth.signInWithCredential(firebaseCredential).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            String[] parts = firebaseUser.getDisplayName().split(" ");
+                            String nome = parts[0];  // Il primo elemento è il nome
+                            String cognome = parts.length > 1 ? parts[1] : "";  // Il secondo elemento è il cognome, se presente
 
+                            Log.d("Testone", firebaseUser.getUid());
+                            Log.d("Testone", nome);
+                            Log.d("Testone", cognome);
+                            Log.d("Testone", firebaseUser.getEmail());
+                            Log.d("Testone", firebaseUser.getPhotoUrl().toString());
+
+
+                            userResponseCallback.onSuccessFromAuthentication(
+                                    new User(firebaseUser.getUid(),
+                                    nome, cognome,
+                                    firebaseUser.getEmail(),
+                                    "",
+                                    "",
+                                    firebaseUser.getPhotoUrl().toString()));
+                        } else {
+                            userResponseCallback.onFailureFromAuthentication(
+                                    getErrorMessage(task.getException()));
+                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+                    }
+                });
+            }
         }
 
         //Gestore di errori

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 
 public class User{
 
-    static String userId;
+    String userId;
     String nome;
     String cognome;
     String email;
@@ -55,6 +55,13 @@ public class User{
         photoUrl = "";
     }
 
+    //Costruttore per login
+    public User(String userId, String email, String password){
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -75,7 +82,7 @@ public class User{
         this.password = password;
     }
 
-    public static String getUserId() {
+    public  String getUserId() {
         return userId;
     }
 

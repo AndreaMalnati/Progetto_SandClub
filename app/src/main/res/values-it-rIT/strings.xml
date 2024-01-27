@@ -60,4 +60,9 @@
     <string name="from_the_most_alcholic">Dalla più alcolica</string>
     <string name="from_the_less_alcholic">Dalla meno alcolica</string>
     <string name="all_beers">Tutte le birre</string>
+    <string name="error_password">Errore password</string>
+    <string name="error_login_password_message">Errore password login</string>
+    <string name="error_login_user_message">Errore user login</string>
+    <string name="check_login_data_message">Controlla i dati inseriti</string>
+    <string name="error_no_google_account_found_message">Nessun account google trovato</string>
 </resources>

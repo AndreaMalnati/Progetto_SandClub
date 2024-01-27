@@ -54,7 +54,7 @@ public class SettingsFragmentPassword extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button confirmChangePw = view.findViewById(R.id.confirmChangePasswordBtn);
-        User user = UserViewModel.getInstance().getUser();
+        User user = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
 
         TextInputEditText oldPw = view.findViewById(R.id.oldPw);
         TextInputEditText newPw = view.findViewById(R.id.newPw);
@@ -79,9 +79,9 @@ public class SettingsFragmentPassword extends Fragment {
                             }else {
                                 if (newPw.getText().toString().equals(repeatPw.getText().toString())) {
                                     databaseReference.child("password").setValue(newPw.getText().toString());
-                                    User updateUser = UserViewModel.getInstance().getUser();
+                                    User updateUser = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
                                     updateUser.setPassword(newPw.getText().toString());
-                                    UserViewModel.getInstance().setUser(updateUser);
+                                    //UserViewModel.getInstance().setUser(updateUser);
                                     user.updatePassword(newPw.getText().toString());
 
                                 } else {

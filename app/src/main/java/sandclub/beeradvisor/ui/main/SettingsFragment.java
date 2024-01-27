@@ -83,7 +83,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        User user = UserViewModel.getInstance().getUser();
+        User user = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
 
         TextView nameSurname = view.findViewById(R.id.nameSurname);
         nameSurname.setMaxLines(1);  // Imposta il numero massimo di linee a 1
@@ -204,7 +204,7 @@ public class SettingsFragment extends Fragment {
 
     private void updatePhotoImageView() {
         ImageView profilePhoto = requireView().findViewById(R.id.profilePhoto);
-        User user = UserViewModel.getInstance().getUser();
+        User user = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
 
         if (!user.getPhotoUrl().equals("")) {
             Log.d("Immagine", "dentro1");
@@ -240,7 +240,7 @@ public class SettingsFragment extends Fragment {
 
 //aggiorna user con url foto
 
-        User updateUser = UserViewModel.getInstance().getUser();
+        User updateUser = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
         Log.d("Testone", "ID" + updateUser.getUserId());
 
         String photourl = bitmapToString(imageBitmap);
@@ -261,7 +261,7 @@ public class SettingsFragment extends Fragment {
 
         try { //converto oggetto Uri in BitMap
             Bitmap photo = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
-            User updateUser = UserViewModel.getInstance().getUser();
+            User updateUser = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
 
             //converto bitmap in stringa e carico su database
             DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(updateUser.getUserId());

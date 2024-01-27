@@ -7,6 +7,10 @@ public class Result {
         return this instanceof Success;
     }
 
+    public boolean isSuccessUser() {
+        return this instanceof UserResponseSuccess;
+    }
+
     /**
      * Class that represents a successful action during the interaction
      * with a Web Service or a local database.

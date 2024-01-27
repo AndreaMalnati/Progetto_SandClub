@@ -58,9 +58,9 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        dataEncryptionUtil = new DataEncryptionUtil(this);
+        //dataEncryptionUtil = new DataEncryptionUtil(this);
 
-        try {
+        /*try {
             // Leggi i dati di login dal file
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
 
@@ -70,10 +70,10 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
-    private void performAutoLogin(String storedLoginData) {
+    /*private void performAutoLogin(String storedLoginData) {
 
 
         String[] loginInfo = storedLoginData.split(":");
@@ -117,6 +117,7 @@ public class WelcomeActivity extends AppCompatActivity {
                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                startActivity(intent);
 
+               return null;
            }
 
            @Override
@@ -124,5 +125,5 @@ public class WelcomeActivity extends AppCompatActivity {
            // Gestisci l'errore
            }
         });
-    }
+    }*/
 }

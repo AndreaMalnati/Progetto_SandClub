@@ -3,15 +3,16 @@ package sandclub.beeradvisor.ui.welcome;
 import static android.content.ContentValues.TAG;
 
 import static sandclub.beeradvisor.util.Constants.COGNOME;
-import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ID;
+import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
+import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
 import static sandclub.beeradvisor.util.Constants.NOME;
 import static sandclub.beeradvisor.util.Constants.PASSWORD;
+import static sandclub.beeradvisor.util.Constants.USE_NAVIGATION_COMPONENT;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,29 +21,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -50,17 +42,21 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.ui.main.MainActivity;
-import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
+import sandclub.beeradvisor.util.ServiceLocator;
 
 public class LoginFragment extends Fragment {
 
     TextInputEditText editTextEmail, editTextPassword;
     Button buttonLogin;
     FirebaseAuth mAuth;
+    private UserViewModel userViewModel;
 
     private DataEncryptionUtil dataEncryptionUtil;
 
@@ -79,7 +75,11 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        IUserRepository userRepository = ServiceLocator.getInstance().
+                getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(
+                requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -99,7 +99,6 @@ public class LoginFragment extends Fragment {
         buttonLogin = view.findViewById(R.id.confirmLoginBtn);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
-            Context context = getContext();
             @Override
             public void onClick(View v) {
                 String Email, Password;
@@ -116,72 +115,80 @@ public class LoginFragment extends Fragment {
                     return;
                 }
 
-                //TODO:Quando toglierò il metodo tenere intent per cambiare a mainactivity
-                mAuth.signInWithEmailAndPassword(Email, Password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                                    if (firebaseUser != null) {
-                                        String userId = firebaseUser.getUid();
-                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + userId);
-
-
-                                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                    if (dataSnapshot.exists()) {
-                                                         String passwordDb = dataSnapshot.child("password").getValue(String.class);
-                                                        Log.d("check", "passwordDb" + passwordDb);
-
-                                                        User loggedUser = new User(dataSnapshot.getKey(),dataSnapshot.child("nome").getValue(String.class),
-                                                                dataSnapshot.child("cognome").getValue(String.class),
-                                                                dataSnapshot.child("email").getValue(String.class),
-                                                                dataSnapshot.child("password").getValue(String.class),
-                                                                dataSnapshot.child("photoUrl").getValue(String.class),
-                                                                "");
-                                                        UserViewModel.getInstance().setUser(loggedUser);
-                                                        //Salva i dati di login in Shared Preferences
-                                                        saveLoginData(dataSnapshot.getKey(), dataSnapshot.child("nome").getValue(String.class),
-                                                                dataSnapshot.child("cognome").getValue(String.class),
-                                                                dataSnapshot.child("email").getValue(String.class),
-                                                                dataSnapshot.child("password").getValue(String.class));
-
-
-                                                        Intent intent = new Intent(requireContext(), MainActivity.class);
-                                                        startActivity(intent);
-                                                    }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                                // Gestisci l'errore
-                                            }
-                                        });
-
-
-
+                // Start login if email and password are ok
+                if (isValidEmail(Email) & isPasswordOk(Password)) {
+                    if (!userViewModel.isAuthenticationError()) {
+                        //progressIndicator.setVisibility(View.VISIBLE);
+                        userViewModel.getUserMutableLiveData(Email, Password, true).observe(
+                                getViewLifecycleOwner(), result -> {
+                                    if (result.isSuccessUser()) {
+                                        User user = ((Result.UserResponseSuccess) result).getData();
+                                        //saveLoginData(email, password, user.getIdToken());
+                                        userViewModel.setAuthenticationError(false);
+                                        retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
                                     } else {
-                                        Snackbar.make(requireView(), getResources().getString(R.string.auth_failed), Snackbar.LENGTH_SHORT).show();
+                                        userViewModel.setAuthenticationError(true);
+                                        //progressIndicator.setVisibility(View.GONE);
+                                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                                getErrorMessage(((Result.Error) result).getMessage()),
+                                                Snackbar.LENGTH_SHORT).show();
                                     }
-                                }
-                            }
-
-
-
-                        });
+                                });
+                    } else {
+                        userViewModel.getUser(Email, Password, true);
+                    }
+                } else {
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                            R.string.check_login_data_message, Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
+    private void retrieveUserInformationAndStartActivity(User user, int destination) {
+        //progressIndicator.setVisibility(View.VISIBLE);
+
+        userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
+                getViewLifecycleOwner(), userDataRetrivalResul -> {
+                    //progressIndicator.setVisibility(View.GONE);
+                    startActivityBasedOnCondition(MainActivity.class, destination);
+                }
+        );
+    }
+
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case INVALID_CREDENTIALS_ERROR:
+                return requireActivity().getString(R.string.error_login_password_message);
+            case INVALID_USER_ERROR:
+                return requireActivity().getString(R.string.error_login_user_message);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
+    }
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+        if (USE_NAVIGATION_COMPONENT) {
+            Navigation.findNavController(requireView()).navigate(destination);
+        } else {
+            Intent intent = new Intent(requireContext(), destinationActivity);
+            startActivity(intent);
+        }
+        requireActivity().finish();
+    }
     public boolean isValidEmail(String email) {
         return EmailValidator.getInstance().isValid(email);
     }
 
-
+    private boolean isPasswordOk(String password) {
+        // Check if the password length is correct
+        if (password.isEmpty()) {
+            editTextPassword.setError(getString(R.string.error_password));
+            return false;
+        } else {
+            editTextPassword.setError(null);
+            return true;
+        }
+    }
 
     private void saveLoginData(String id,String nome, String cognome, String email, String password) {
         dataEncryptionUtil = new DataEncryptionUtil(requireContext());

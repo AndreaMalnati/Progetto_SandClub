@@ -34,6 +34,10 @@ public class Constants {
 
     public static final String INVALID_USER_ERROR = "invalid_user";
     public static final String USER_COLLISION_ERROR = "user_collision";
+    public static final String USER_DATABASE_REFERENCE = "user";
+
+    public static final boolean USE_NAVIGATION_COMPONENT = true;
+
 
 
 
