@@ -65,4 +65,10 @@
     <string name="error_login_user_message">Errore user login</string>
     <string name="check_login_data_message">Controlla i dati inseriti</string>
     <string name="error_no_google_account_found_message">Nessun account google trovato</string>
+    <string name="old_password_error">Password vecchia invalida</string>
+    <string name="new_password_error">Scegli un altra password</string>
+    <string name="password_changed">Password cambiata!</string>
+    <string name="password_error_google">Impossibile cambiare password da un account google</string>
+    <string name="empty_fields">Riempi tutti i campi</string>
+    <string name="passwords_not_match">Le due password non corrispondono</string>
 </resources>

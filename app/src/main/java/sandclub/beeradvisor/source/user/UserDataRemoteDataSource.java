@@ -1,18 +1,24 @@
 package sandclub.beeradvisor.source.user;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.NEW_PASSWORD_ERROR;
+import static sandclub.beeradvisor.util.Constants.PASSWORD_DATABASE_REFERENCE;
+import static sandclub.beeradvisor.util.Constants.PASSWORD_ERROR_GOOGLE;
 import static sandclub.beeradvisor.util.Constants.USER_DATABASE_REFERENCE;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
@@ -50,39 +56,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
         });
     }
 
-    /*@Override
-    public void getLoggedUserData(String idToken, boolean fromGoogleSignin) {
-        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    if (!fromGoogleSignin) {
-                         User loggedUser = new User(snapshot.getKey(), snapshot.child("nome").getValue(String.class),
-                                snapshot.child("cognome").getValue(String.class),
-                                snapshot.child("email").getValue(String.class),
-                                snapshot.child("password").getValue(String.class),
-                                snapshot.child("photoUrl").getValue(String.class),
-                                "");
-                    } else {
-                        User loggedUser = new User(snapshot.getKey(), snapshot.child("nome").getValue(String.class),
-                                snapshot.child("cognome").getValue(String.class),
-                                snapshot.child("email").getValue(String.class),
-                                snapshot.child("password").getValue(String.class),
-                                snapshot.child("photoUrl").getValue(String.class),
-                                snapshot.child("photoUrlGoogle").getValue(String.class));
-                        userResponseCallback.onSuccessFromRemoteDatabase(loggedUser);
-                    }
-                }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                userResponseCallback.onFailureFromRemoteDatabase(error.getMessage());
-            }
-        });
-
-    }*/
 
     public User returnUSerData(User user){
         return user;
@@ -90,7 +64,6 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
     @Override
     public void getUserData(String idToken) {
-        Log.d("Testozza", idToken);
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.d(TAG, "Error getting data", task.getException());
@@ -101,4 +74,47 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             }
         });
     }
+    @Override
+    public void changePassword(String idToken, String newPw, String oldPw){
+
+
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String passwordDb = snapshot.child(PASSWORD_DATABASE_REFERENCE).getValue(String.class);
+                    //controllo se vecchia password inserita è uguale a quella dentro database
+                    if(passwordDb.equals(oldPw)){
+                        if(!passwordDb.equals(newPw)){
+                            databaseReference.child(USER_DATABASE_REFERENCE).
+                                    child(idToken).child(PASSWORD_DATABASE_REFERENCE).setValue(newPw);
+                            FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+                            fUser.updatePassword(newPw);
+                            databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
+                                if (!task.isSuccessful()) {
+                                    Log.d(TAG, "Error getting data", task.getException());
+                                    userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
+                                } else {
+                                    User user = task.getResult().getValue(User.class);
+                                    userResponseCallback.onSuccessFromRemoteDatabase(user);
+                                }
+                            });
+                        }else{
+                            userResponseCallback.onFailureFromRemoteDatabase(NEW_PASSWORD_ERROR);
+                        }
+                    }else if(passwordDb.equals("")){
+                        userResponseCallback.onFailureFromRemoteDatabase(PASSWORD_ERROR_GOOGLE);
+                    }else{
+                        userResponseCallback.onFailureFromRemoteDatabase("old_password_error");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                userResponseCallback.onFailureFromRemoteDatabase(error.getMessage());
+            }
+        });
+    }
+
 }

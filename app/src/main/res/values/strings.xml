@@ -80,5 +80,11 @@
     <string name="error_login_user_message">Error user login</string>
     <string name="check_login_data_message">Check the data you inserted</string>
     <string name="error_no_google_account_found_message">No google account found</string>
+    <string name="old_password_error">Invalid old password</string>
+    <string name="new_password_error">Choose another password</string>
+    <string name="password_changed">Password changed!</string>
+    <string name="password_error_google">Can\'t change password from google account</string>
+    <string name="empty_fields">Empty fields</string>
+    <string name="passwords_not_match">Password not match</string>
 
 </resources>

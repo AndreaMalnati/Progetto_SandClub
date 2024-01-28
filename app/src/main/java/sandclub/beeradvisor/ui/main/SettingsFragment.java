@@ -35,6 +35,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -61,7 +62,6 @@ import sandclub.beeradvisor.util.ServiceLocator;
 
 
 public class SettingsFragment extends Fragment {
-    private boolean isCameraOpen = false;
     Button changePw;
     Button logout;
     private UserViewModel userViewModel;
@@ -89,6 +89,8 @@ public class SettingsFragment extends Fragment {
         userViewModel = new ViewModelProvider(
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
+
 
     }
 
@@ -147,19 +149,10 @@ public class SettingsFragment extends Fragment {
         changePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
-                navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-                    ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+                Navigation.findNavController(requireView()).navigate(R.id.action_settingsFragment_to_settings_Password);
 
-                    if (actionBar != null) { //togliere freccia indietro che esce in automatico
-                        if (destination.getId() == R.id.settings_Password) {
-                            // Nascondi il pulsante indietro quando sei nel fragment dei settings
-                            actionBar.setDisplayHomeAsUpEnabled(false);
-                        }
-                    }
-                });
-                navController.navigate(R.id.action_settingsFragment_to_settings_Password);
+                //navController.navigate(R.id.action_settingsFragment_to_settings_Password);
             }
         });
 
@@ -175,7 +168,6 @@ public class SettingsFragment extends Fragment {
                     // Se il permesso non è stato concesso, richiedilo
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                 } else {
-                    isCameraOpen = true;
                     optionMenu();
                 }
             }
@@ -192,6 +184,8 @@ public class SettingsFragment extends Fragment {
                 return requireActivity().getString(R.string.unexpected_error);
         }
     }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {

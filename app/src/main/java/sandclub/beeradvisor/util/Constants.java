@@ -39,7 +39,12 @@ public class Constants {
 
     public static final boolean USE_NAVIGATION_COMPONENT = true;
 
+    public static final String PASSWORD_DATABASE_REFERENCE = "password";
 
+    public static final String NEW_PASSWORD_ERROR = "new_password_error";
+    public static final String PASSWORD_ERROR_GOOGLE = "password_error_google";
+
+    public static final String OLD_PASSWORD_ERROR = "old_password_error";
 
 
 

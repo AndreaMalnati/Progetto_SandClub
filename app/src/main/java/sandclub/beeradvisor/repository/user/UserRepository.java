@@ -64,7 +64,6 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
 
     @Override
     public MutableLiveData<Result> getUserData(String idToken) {
-        Log.d("Testozza", "Dentro getUserData di user repository" + idToken);
         userDataRemoteDataSource.getUserData(idToken);
         return userMutableLiveData;
     }
@@ -77,6 +76,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     @Override
     public MutableLiveData<Result> logout() {
         userRemoteDataSource.logout();
+        return userMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> changePassword(String token, String newPw, String oldPw){
+        userDataRemoteDataSource.changePassword(token, newPw, oldPw);
         return userMutableLiveData;
     }
 
@@ -98,6 +103,8 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     public void signInWithGoogle(String token) {
         userRemoteDataSource.signInWithGoogle(token);
     }
+
+
 
     @Override
     public void onSuccessFromAuthentication(User user) {
@@ -136,7 +143,8 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
 
     @Override
     public void onFailureFromRemoteDatabase(String message) {
-
+        Result.Error result = new Result.Error(message);
+        userMutableLiveData.postValue(result);
     }
 
     @Override

@@ -14,6 +14,9 @@ public abstract class BaseUserDataRemoteDataSource {
     //public abstract void getLoggedUserData(String idToken, boolean fromGoogleSignin);
     public abstract User returnUSerData(User user);
     public abstract void getUserData(String idToken);
+
+
+    public abstract void changePassword(String token, String newPw, String oldPw);
         //public abstract void getUserFavoriteNews(String idToken);
     //public abstract void getUserPreferences(String idToken);
     //public abstract void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);

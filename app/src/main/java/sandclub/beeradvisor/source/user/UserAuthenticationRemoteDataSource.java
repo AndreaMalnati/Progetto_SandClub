@@ -63,7 +63,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
                         userResponseCallback.onSuccessFromAuthentication(
-                                new User(firebaseUser.getUid(), nome, cognome, email, password,"", "" ) //TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
+                                new User(firebaseUser.getUid(), nome, cognome, email, password,"", "" )
                         );
                     } else {
                         userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
@@ -82,7 +82,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                     if (firebaseUser != null) {
 
                         userResponseCallback.onSuccessFromAuthentication(
-                                new User(firebaseUser.getUid(), email, password) //TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
+                                new User(firebaseUser.getUid(), email, password)
                         );
                     } else {
                         userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));

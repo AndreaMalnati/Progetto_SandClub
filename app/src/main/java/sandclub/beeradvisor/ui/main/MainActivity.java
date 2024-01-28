@@ -27,20 +27,11 @@ import sandclub.beeradvisor.repository.beer.ResponseCallback;
 
 
 public class MainActivity  extends  AppCompatActivity implements ResponseCallback {
-    BeerRoomDatabase db;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-
-        db.getDatabase(getApplicationContext());
-
-
 
 
 
@@ -73,7 +64,8 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 if (destination.getId() == R.id.settingsFragment || destination.getId() == R.id.mainFragment ||
-                        destination.getId() == R.id.capsFragment || destination.getId() == R.id.userFragment) {
+                        destination.getId() == R.id.capsFragment || destination.getId() == R.id.userFragment ||
+                        destination.getId() == R.id.settings_Password) {
                     // Nascondi la freccia indietro quando sei nel fragment delle impostazioni
                     actionBar.setDisplayHomeAsUpEnabled(false);
                 }

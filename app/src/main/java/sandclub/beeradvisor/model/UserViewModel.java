@@ -38,7 +38,6 @@ public class UserViewModel extends ViewModel {
     }
     public MutableLiveData<Result> getUserDataMutableLiveData(
             String idToken) {
-        Log.d("Testozza", "Dentro getUserDataMutableLiveData" + idToken);
         if (userMutableLiveData == null) {
             getUserData(idToken);
         }
@@ -48,6 +47,13 @@ public class UserViewModel extends ViewModel {
     public MutableLiveData<Result> getGoogleUserMutableLiveData(String token) {
         if (userMutableLiveData == null) {
             getGoogleUserData(token);
+        }
+        return userMutableLiveData;
+    }
+
+    public MutableLiveData<Result> changePasswordMutableLiveData(String token, String newPw, String oldPw){
+        if(userMutableLiveData == null){
+            changePassword(token, newPw, oldPw);
         }
         return userMutableLiveData;
     }
@@ -94,6 +100,10 @@ public class UserViewModel extends ViewModel {
         userRepository.getUser(nome, cognome, email, password, isUserRegistered);
     }
 
+    private void changePassword(String token, String newPw, String oldPw){
+        userMutableLiveData = userRepository.changePassword(token, newPw, oldPw);
+    }
+
     public void getUser(String email, String password, boolean isUserRegistered) {
         userRepository.getUserSignIn(email, password, isUserRegistered);
     }
@@ -114,12 +124,10 @@ public class UserViewModel extends ViewModel {
     }
 
     private void getUserData(String token) {
-        Log.d("Testozza", "Dentro getUserData" + token);
         userMutableLiveData = userRepository.getUserData(token);
     }
 
     private void getGoogleUserData(String token) {
-        Log.d("Testozza", "Dentro getUserData" + token);
         userMutableLiveData = userRepository.getGoogleUser(token);
     }
 }

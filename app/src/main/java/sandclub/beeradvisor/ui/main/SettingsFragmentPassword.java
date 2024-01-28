@@ -1,6 +1,8 @@
 package sandclub.beeradvisor.ui.main;
 
-import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.NEW_PASSWORD_ERROR;
+import static sandclub.beeradvisor.util.Constants.OLD_PASSWORD_ERROR;
+import static sandclub.beeradvisor.util.Constants.PASSWORD_ERROR_GOOGLE;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,22 +13,21 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import sandclub.beeradvisor.R;
-import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.util.ServiceLocator;
 
 public class SettingsFragmentPassword extends Fragment {
+    private UserViewModel userViewModel;
 
     public SettingsFragmentPassword() {
         // Required empty public constructor
@@ -41,6 +42,13 @@ public class SettingsFragmentPassword extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(
+                        requireActivity().getApplication()
+                );
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
     }
 
@@ -54,54 +62,49 @@ public class SettingsFragmentPassword extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button confirmChangePw = view.findViewById(R.id.confirmChangePasswordBtn);
-        User user = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
 
         TextInputEditText oldPw = view.findViewById(R.id.oldPw);
         TextInputEditText newPw = view.findViewById(R.id.newPw);
         TextInputEditText repeatPw = view.findViewById(R.id.repeatPw);
-        String userId = user.getUserId();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user").child(userId);
 
-        confirmChangePw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String passwordDatabase = dataSnapshot.child("password").getValue(String.class);
-                        String password = oldPw.getText().toString();
+        confirmChangePw.setOnClickListener(v -> {
+            if (oldPw.getText().toString().isEmpty() || newPw.getText().toString().isEmpty() || repeatPw.getText().toString().isEmpty()) {
+                Snackbar.make(view, getResources().getString(R.string.empty_fields), Snackbar.LENGTH_SHORT).show();
+            }else if(!newPw.getText().toString().equals(repeatPw.getText().toString())) {
+                Snackbar.make(view, getResources().getString(R.string.passwords_not_match), Snackbar.LENGTH_SHORT).show();
 
-                        if(!passwordDatabase.equals("")) {
-                            if (!password.equals(passwordDatabase)) {
-                                Snackbar.make(view, "Password vecchia errata: " + password + " deve essere " + passwordDatabase, Snackbar.LENGTH_SHORT).show();
-                            }else {
-                                if (newPw.getText().toString().equals(repeatPw.getText().toString())) {
-                                    databaseReference.child("password").setValue(newPw.getText().toString());
-                                    User updateUser = new User (".", ".", ".", ".", ".", ".", ".");//UserViewModel.getInstance().getUser();
-                                    updateUser.setPassword(newPw.getText().toString());
-                                    //UserViewModel.getInstance().setUser(updateUser);
-                                    user.updatePassword(newPw.getText().toString());
-
-                                } else {
-                                    Snackbar.make(view, getResources().getString(R.string.wrong_password), Snackbar.LENGTH_SHORT).show();
-                                }
+            }else{
+                userViewModel.changePasswordMutableLiveData(userViewModel.getLoggedUser().getUserId(),
+                                newPw.getText().toString(), oldPw.getText().toString())
+                        .observe(getViewLifecycleOwner(), result -> {
+                            if (result.isSuccessUser()) {
+                                Snackbar.make(view, getResources().getString(R.string.password_changed), Snackbar.LENGTH_SHORT).show();
+                                Navigation.findNavController(view).navigate(
+                                        R.id.action_settingsPasswordFragment_to_settingsFragment);
+                            } else {
+                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                        Snackbar.LENGTH_SHORT).show();
                             }
-                        }else{
-                            Snackbar.make(view, getResources().getString(R.string.already_google_login), Snackbar.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Gestisci l'errore
-                    }
-                });
+                        });
             }
-        });
+            });
 
+
+
+    }
+
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case NEW_PASSWORD_ERROR:
+                return requireActivity().getString(R.string.new_password_error);
+            case OLD_PASSWORD_ERROR:
+                return requireActivity().getString(R.string.old_password_error);
+            case PASSWORD_ERROR_GOOGLE:
+                return requireActivity().getString(R.string.password_error_google);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
     }
 }
