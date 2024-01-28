@@ -1,5 +1,7 @@
 package sandclub.beeradvisor.repository.user;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.MutableLiveData;
 
 import sandclub.beeradvisor.model.Result;
@@ -20,5 +22,6 @@ public interface IUserRepository {
     void signInWithGoogle(String token);
     //void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);
     MutableLiveData<Result> changePassword(String token, String newPw, String oldPw);
+    MutableLiveData<Result> changePhoto(String token, String imageBitmap);
 
 }

@@ -117,4 +117,18 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
         });
     }
 
+
+    @Override
+    public void changePhoto(String idToken, String imageBitmap){
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child("photoUrl").setValue(imageBitmap);
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d(TAG, "Error getting data", task.getException());
+                userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
+            } else {
+                User user = task.getResult().getValue(User.class);
+                userResponseCallback.onSuccessFromRemoteDatabase(user);
+            }
+        });
+    }
 }

@@ -1,9 +1,12 @@
 package sandclub.beeradvisor.repository.user;
 
+import android.graphics.Bitmap;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import sandclub.beeradvisor.model.Beer;
@@ -85,6 +88,11 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         return userMutableLiveData;
     }
 
+    @Override
+    public MutableLiveData<Result> changePhoto(String token, String imageBitmap){
+        userDataRemoteDataSource.changePhoto(token, imageBitmap);
+        return userMutableLiveData;
+    }
     @Override
     public User getLoggedUser() {
         return userRemoteDataSource.getLoggedUser();    }
@@ -188,4 +196,5 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     public void onDeleteFavoriteNewsSuccess(List<Beer> favoriteBeer) {
 
     }
+
 }

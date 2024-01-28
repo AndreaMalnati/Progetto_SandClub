@@ -17,6 +17,7 @@ public abstract class BaseUserDataRemoteDataSource {
 
 
     public abstract void changePassword(String token, String newPw, String oldPw);
+    public abstract void changePhoto(String token, String imageBitmap);
         //public abstract void getUserFavoriteNews(String idToken);
     //public abstract void getUserPreferences(String idToken);
     //public abstract void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);

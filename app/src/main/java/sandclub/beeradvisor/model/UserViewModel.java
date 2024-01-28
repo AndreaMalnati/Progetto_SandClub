@@ -1,5 +1,6 @@
 package sandclub.beeradvisor.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -58,6 +59,12 @@ public class UserViewModel extends ViewModel {
         return userMutableLiveData;
     }
 
+    public MutableLiveData<Result> changePhotoMutableLiveData(String token, String imageBitmap){
+            changePhoto(token, imageBitmap);
+
+        return userMutableLiveData;
+    }
+
     /*public MutableLiveData<Result> getUserFavoriteNewsMutableLiveData(String idToken) {
         if (userFavoriteNewsMutableLiveData == null) {
             getUserFavoriteNews(idToken);
@@ -103,7 +110,9 @@ public class UserViewModel extends ViewModel {
     private void changePassword(String token, String newPw, String oldPw){
         userMutableLiveData = userRepository.changePassword(token, newPw, oldPw);
     }
-
+    private void changePhoto(String token, String imageBitmap){
+        userMutableLiveData = userRepository.changePhoto(token, imageBitmap);
+    }
     public void getUser(String email, String password, boolean isUserRegistered) {
         userRepository.getUserSignIn(email, password, isUserRegistered);
     }
