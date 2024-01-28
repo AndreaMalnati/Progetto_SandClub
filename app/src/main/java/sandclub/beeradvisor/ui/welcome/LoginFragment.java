@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 
 import androidx.lifecycle.ViewModelProvider;
@@ -59,7 +60,7 @@ public class LoginFragment extends Fragment {
     private UserViewModel userViewModel;
 
     private DataEncryptionUtil dataEncryptionUtil;
-
+    ProgressBar progressIndicator;
 
 
     public LoginFragment() {
@@ -93,7 +94,7 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-
+        progressIndicator = view.findViewById(R.id.progressIndicatorLogin);
         editTextEmail = view.findViewById(R.id.emailLg);
         editTextPassword = view.findViewById(R.id.passwordLg);
         buttonLogin = view.findViewById(R.id.confirmLoginBtn);
@@ -118,18 +119,18 @@ public class LoginFragment extends Fragment {
                 // Start login if email and password are ok
                 if (isValidEmail(Email) & isPasswordOk(Password)) {
                     if (!userViewModel.isAuthenticationError()) {
-                        //progressIndicator.setVisibility(View.VISIBLE);
+                        progressIndicator.setVisibility(View.VISIBLE);
                         userViewModel.getUserMutableLiveData(Email, Password, true).observe(
                                 getViewLifecycleOwner(), result -> {
                                     if (result.isSuccessUser()) {
                                         User user = ((Result.UserResponseSuccess) result).getData();
-                                        //saveLoginData(email, password, user.getIdToken());
+                                        saveLoginData(user.getUserId(), Email, Password);
                                         userViewModel.setAuthenticationError(false);
                                         retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
 
                                     } else {
                                         userViewModel.setAuthenticationError(true);
-                                        //progressIndicator.setVisibility(View.GONE);
+                                        progressIndicator.setVisibility(View.GONE);
                                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                                 getErrorMessage(((Result.Error) result).getMessage()),
                                                 Snackbar.LENGTH_SHORT).show();
@@ -191,16 +192,12 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void saveLoginData(String id,String nome, String cognome, String email, String password) {
+    private void saveLoginData(String id,String email, String password) {
         dataEncryptionUtil = new DataEncryptionUtil(requireContext());
 
         try {
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
-            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
-                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, NOME, nome);
-            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
-                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, COGNOME, cognome);
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
@@ -209,7 +206,7 @@ public class LoginFragment extends Fragment {
 
 
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
-                    id.concat(":").concat(nome).concat(":").concat(cognome).concat(":").concat(email).concat(":").concat(password));
+                    id.concat(":").concat(email).concat(":").concat(password));
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }

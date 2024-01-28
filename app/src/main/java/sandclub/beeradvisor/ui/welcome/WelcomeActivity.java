@@ -2,6 +2,9 @@ package sandclub.beeradvisor.ui.welcome;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
+import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
+import static sandclub.beeradvisor.util.Constants.USE_NAVIGATION_COMPONENT;
 
 import android.content.Intent;
 import android.media.Image;
@@ -11,11 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,26 +48,35 @@ import java.security.GeneralSecurityException;
 import java.util.HashMap;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
+import sandclub.beeradvisor.util.ServiceLocator;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    String password = ".";
-    String photoUrl = ".";
-    String photoUrlGoogle = ".";
+
     DataEncryptionUtil dataEncryptionUtil;
-
-
+    UserViewModel userViewModel;
+    ProgressBar progressIndicator;
+    TextView textView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        //dataEncryptionUtil = new DataEncryptionUtil(this);
+        IUserRepository userRepository = ServiceLocator.getInstance().
+                getUserRepository(getApplication());
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        dataEncryptionUtil = new DataEncryptionUtil(this);
 
-        /*try {
+
+        try {
             // Leggi i dati di login dal file
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
 
@@ -70,60 +86,65 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
-    /*private void performAutoLogin(String storedLoginData) {
 
+    private void performAutoLogin(String storedLoginData) {
 
+        progressIndicator = findViewById(R.id.progressBar);
+        textView = findViewById(R.id.automaticLoginText);
+        textView.setVisibility(View.VISIBLE);
+        progressIndicator.setVisibility(View.VISIBLE);
         String[] loginInfo = storedLoginData.split(":");
-        String storedId = loginInfo[0];
-        String storedName = loginInfo[1];
-        String storedSurname = loginInfo[2];
-        String storedEmail = loginInfo[3];
+        String storedEmail = loginInfo[1];
+        String storedPassword = loginInfo[2];
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("user/" + storedId);
+        userViewModel.getUserMutableLiveData(storedEmail, storedPassword, true).observe(
+                this, result -> {
+                    if (result.isSuccessUser()) {
+                        User user = ((Result.UserResponseSuccess) result).getData();
+                        userViewModel.setAuthenticationError(false);
+                        retrieveUserInformationAndStartActivity(user, R.id.action_welcomeActivity_to_mainActivity);
 
+                    } else {
+                        userViewModel.setAuthenticationError(true);
+                        progressIndicator.setVisibility(View.GONE);
+                        textView.setVisibility(View.GONE);
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case INVALID_CREDENTIALS_ERROR:
+                return getString(R.string.error_login_password_message);
+            case INVALID_USER_ERROR:
+                return getString(R.string.error_login_user_message);
+            default:
+                return getString(R.string.unexpected_error);
+        }
+    }
+    private void retrieveUserInformationAndStartActivity(User user, int destination) {
+        //progressIndicator.setVisibility(View.VISIBLE);
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-               if (dataSnapshot.exists()) {
-                    Log.d("Testina", dataSnapshot.child("photoUrl").getValue(String.class));
-                    password = dataSnapshot.child("password").getValue(String.class);
-                    photoUrl = dataSnapshot.child("photoUrl").getValue(String.class);
-                    photoUrlGoogle = dataSnapshot.child("photoUrlGoogle").getValue(String.class);
+        userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
+                this, userDataRetrivalResul -> {
+                    //progressIndicator.setVisibility(View.GONE);
+                    startActivityBasedOnCondition(MainActivity.class, destination);
                 }
+        );
+    }
 
-               if( photoUrl.equals(".")&& photoUrlGoogle.equals(".")){
-                   Log.d("Testone", "Nessuna delle due foto");
-                   UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, password, "", ""));
-
-               }else if(photoUrlGoogle.equals(".") && !photoUrl.equals(".")){
-                   Log.d("Testone", "Solo foto personalizzata");
-                   UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, password, photoUrl, ""));
-
-               }else if(!photoUrlGoogle.equals(".") && photoUrl.equals(".")){
-                   Log.d("Testone", "Solo foto google");
-                   UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, "", "", photoUrlGoogle));
-
-               }else if(!photoUrlGoogle.equals(".") && !photoUrl.equals(".")){
-                   Log.d("Testone", "Entrambe le foto");
-                   UserViewModel.getInstance().setUser(new User(storedId, storedName, storedSurname, storedEmail, "", photoUrl, photoUrlGoogle));
-               }
-
-               Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-               startActivity(intent);
-
-               return null;
-           }
-
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-           // Gestisci l'errore
-           }
-        });
-    }*/
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+        if (USE_NAVIGATION_COMPONENT) {
+            Navigation.findNavController(this, R.id.welcome_nav_host_fragment).navigate(destination);
+        } else {
+            Intent intent = new Intent(this, destinationActivity);
+            startActivity(intent);
+        }
+        finish();
+    }
 }

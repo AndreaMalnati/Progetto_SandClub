@@ -44,20 +44,49 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.42" />
 
+
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
+        android:id="@+id/welcome_nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
 
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/welcome_nav_graph" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintEnd_toEndOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintHorizontal_bias="0.253"
+        app:layout_constraintStart_toStartOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintTop_toTopOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintVertical_bias="0.938"
+        />
 
+    <TextView
+        android:id="@+id/automaticLoginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/testo"
+        android:text="Accesso automatico in corso"
+        android:textColor="@color/md_theme_light_outline"
+        app:layout_constraintBottom_toBottomOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintEnd_toEndOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintTop_toTopOf="@id/welcome_nav_host_fragment"
+        app:layout_constraintVertical_bias="0.935"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,8 @@ package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
 import static sandclub.beeradvisor.util.Constants.REQUEST_CAMERA_PERMISSION;
@@ -17,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -62,6 +65,7 @@ import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 
 
@@ -70,6 +74,7 @@ public class SettingsFragment extends Fragment {
     Button logout;
     Button photoUser;
     ImageView profilePhoto;
+    DataEncryptionUtil dataEncryptionUtil;
     private UserViewModel userViewModel;
     TextView nameSurname;
     public SettingsFragment() {
@@ -95,6 +100,7 @@ public class SettingsFragment extends Fragment {
         userViewModel = new ViewModelProvider(
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        dataEncryptionUtil = new DataEncryptionUtil(getActivity().getApplication());
 
 
 
@@ -122,6 +128,7 @@ public class SettingsFragment extends Fragment {
         logout.setOnClickListener(v -> {
             userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccessUser()) {
+                    dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME,ENCRYPTED_DATA_FILE_NAME);
                     Navigation.findNavController(view).navigate(
                             R.id.action_settingsFragment_to_welcomeActivity);
                 } else {

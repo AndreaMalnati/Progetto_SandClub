@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class RegisterFragment extends Fragment {
     TextInputEditText editTextNome, editTextCognome, editTextEmail, editTextPassword, editTextPassword2;
     Button btnConfirmRegister;
     FirebaseAuth mAuth;
+    ProgressBar progressIndicator;
     private UserViewModel userViewModel;
 
     private DatabaseReference mDatabase;
@@ -71,7 +73,7 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-
+        progressIndicator = view.findViewById(R.id.progressIndicatorRegister);
         editTextNome = view.findViewById(R.id.nameRg);
         editTextCognome = view.findViewById(R.id.surnameRg);
         editTextEmail = view.findViewById(R.id.emailRg);
@@ -125,6 +127,7 @@ public class RegisterFragment extends Fragment {
 
                 //CREAZIONE UTENTE
                 if (!userViewModel.isAuthenticationError()) {
+                    progressIndicator.setVisibility(View.VISIBLE);
                     userViewModel.getUserMutableLiveData(Nome, Cognome, Email, Password, false).observe(
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {
@@ -133,6 +136,7 @@ public class RegisterFragment extends Fragment {
                                             R.id.action_registerFragment_to_loginFragment);
                                 } else {
                                     userViewModel.setAuthenticationError(true);
+                                    progressIndicator.setVisibility(View.GONE);
                                     Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                             getErrorMessage(((Result.Error) result).getMessage()),
                                             Snackbar.LENGTH_SHORT).show();

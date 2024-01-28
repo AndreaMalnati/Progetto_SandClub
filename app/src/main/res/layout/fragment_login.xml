@@ -86,6 +86,14 @@ tools:context=".ui.welcome.LoginFragment">
         android:textColor="@color/md_theme_light_inversePrimary"
         android:textSize="18dp" />
 
+    <ProgressBar
+        android:layout_marginTop="5dp"
+        android:id="@+id/progressIndicatorLogin"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
 </LinearLayout>
 
 </FrameLayout>

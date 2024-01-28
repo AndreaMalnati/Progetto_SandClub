@@ -43,6 +43,14 @@
         android:id="@+id/mainActivity"
         android:name="sandclub.beeradvisor.ui.main.MainActivity"
         android:label="MainActivity" />
+    <activity
+        android:id="@+id/welcomeActivity"
+        android:name="sandclub.beeradvisor.ui.welcome.WelcomeActivity"
+        android:label="WelcomeActivity" >
 
+    </activity>
+    <action
+        android:id="@+id/action_welcomeActivity_to_mainActivity"
+        app:destination="@id/mainActivity" />
 
 </navigation>
