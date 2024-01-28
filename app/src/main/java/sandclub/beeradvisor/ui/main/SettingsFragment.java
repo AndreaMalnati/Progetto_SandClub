@@ -28,6 +28,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -176,8 +180,14 @@ public class SettingsFragment extends Fragment {
         photoUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    // Se hai già il permesso CAMERA, avvia l'attività della fotocamera
+                    cameraActivityResultLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+
+                } else {
+                    // Se non hai il permesso CAMERA, richiedilo all'utente
+                    requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+                }
             }
         });
     }
@@ -194,24 +204,6 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Il permesso CAMERA è stato concesso, avvia l'activity della fotocamera
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                // Per aprire la galleria
-
-
-            } else {
-                // Il permesso CAMERA non è stato concesso, gestisci di conseguenza
-                Snackbar.make(requireView(), getResources().getString(R.string.camera_permission_denied), Snackbar.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 
     //conversione immagine BitMap a string per salvarla su realtime
     public static String bitmapToString(Bitmap bitmap) {
@@ -226,27 +218,29 @@ public class SettingsFragment extends Fragment {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
-                // La foto è stata scattata con successo
-                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-                // Passa l'immagine al fragment
-                userViewModel.changePhotoMutableLiveData(userViewModel.getLoggedUser().getUserId(), bitmapToString(imageBitmap));
-            }/*else if (requestCode == REQUEST_IMAGE_PICK && data != null) {
-                // L'utente ha scelto un'immagine dalla galleria
-                Uri selectedImageUri = data.getData();
-                try {
-                    Bitmap photo = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
-                    userViewModel.changePhotoMutableLiveData(userViewModel.getLoggedUser().getUserId(), bitmapToString(photo));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+
+
+
+    ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    userViewModel.changePhotoMutableLiveData(userViewModel.getLoggedUser().getUserId(), bitmapToString((Bitmap) result.getData().getExtras().get("data")));
                 }
-            }*/
+            });
 
-        }
 
-    }
+    // Dichiarazione del launcher per la richiesta di autorizzazione CAMERA
+    private final ActivityResultLauncher<String> requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (isGranted) {
+                    // Il permesso CAMERA è stato concesso, avvia l'attività della fotocamera
+                    cameraActivityResultLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+                } else {
+                    // Il permesso CAMERA non è stato concesso, gestisci di conseguenza
+                    Snackbar.make(requireView(), getResources().getString(R.string.camera_permission_denied), Snackbar.LENGTH_SHORT).show();
+                }
+            });
 }
 
