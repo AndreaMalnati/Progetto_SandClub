@@ -86,5 +86,8 @@
     <string name="password_error_google">Can\'t change password from google account</string>
     <string name="empty_fields">Empty fields</string>
     <string name="passwords_not_match">Password not match</string>
+    <string name="caps_drunk_beers">Caps drunk beers</string>
+
+    <string name="favorite_beers">Favorite beers</string>
 
 </resources>

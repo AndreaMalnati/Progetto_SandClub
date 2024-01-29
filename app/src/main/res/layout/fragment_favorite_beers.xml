@@ -18,12 +18,12 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/testo"
-            android:text="@string/all_beers"
+            android:text="@string/favorite_beers"
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id = "@+id/recyclerViewNewBeer2"
+            android:id = "@+id/recyclerViewFavoriteBeers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"

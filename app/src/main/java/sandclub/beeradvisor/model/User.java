@@ -2,6 +2,9 @@ package sandclub.beeradvisor.model;
 
 import android.graphics.Bitmap;
 
+import java.util.HashMap;
+import java.util.List;
+
 
 public class User{
 
@@ -12,6 +15,8 @@ public class User{
     String password;
     String photoUrl;
     String photoUrlGoogle;
+    List<Beer> birrePreferite;
+    HashMap<Beer, String> birreBevute;
 
     public String getPhotoUrlGoogle() {
         return photoUrlGoogle;

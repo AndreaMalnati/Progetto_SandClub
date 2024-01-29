@@ -71,4 +71,8 @@
     <string name="password_error_google">Impossibile cambiare password da un account google</string>
     <string name="empty_fields">Riempi tutti i campi</string>
     <string name="passwords_not_match">Le due password non corrispondono</string>
+
+    <string name="caps_drunk_beers">Tappi birre bevute</string>
+
+    <string name="favorite_beers">Birre preferite</string>
 </resources>

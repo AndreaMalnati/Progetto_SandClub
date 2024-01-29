@@ -19,6 +19,15 @@
         <action
             android:id="@+id/action_mainFragment_to_settingsFragment2"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_allBeersFragment"
+            app:destination="@id/allBeersFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_capsFragment"
+            app:destination="@id/capsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_favoriteBeersFragment2"
+            app:destination="@id/favoriteBeersFragment" />
     </fragment>
 
     <fragment
@@ -61,7 +70,11 @@
         android:id="@+id/capsFragment"
         android:name="sandclub.beeradvisor.ui.main.CapsFragment"
         android:label="fragment_caps"
-        tools:layout="@layout/fragment_caps" />
+        tools:layout="@layout/fragment_caps" >
+        <action
+            android:id="@+id/action_capsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
         <fragment
         android:id="@+id/beerFragment"
         android:name="sandclub.beeradvisor.ui.main.BeerFragment"
@@ -70,5 +83,24 @@
         android:id="@+id/welcomeActivity"
         android:name="sandclub.beeradvisor.ui.welcome.WelcomeActivity"
         android:label="WelcomeActivity" />
+    <fragment
+        android:id="@+id/allBeersFragment"
+        android:name="sandclub.beeradvisor.ui.main.AllBeersFragment"
+        android:label="AllBeersFragment" >
+        <action
+            android:id="@+id/action_allBeersFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_allBeersFragment_to_beerFragment"
+            app:destination="@id/beerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteBeersFragment"
+        android:name="sandclub.beeradvisor.ui.main.FavoriteBeersFragment"
+        android:label="FavoriteBeersFragment" >
+        <action
+            android:id="@+id/action_favoriteBeersFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 
 </navigation>

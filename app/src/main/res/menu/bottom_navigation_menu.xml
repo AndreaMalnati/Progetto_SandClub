@@ -13,15 +13,15 @@
         android:title="caps"
         android:icon="@drawable/ic_app_beertappo"/>
     <item
-        android:id="@+id/userFragment"
+        android:id="@+id/favoriteBeersFragment"
         android:enabled="true"
-        android:title="user"
-        android:icon="@drawable/ic_app_user"/>
+        android:title="favorite"
+        android:icon="@drawable/ic_favourite_filled_24dp"/>
 
     <item
         android:id="@+id/settingsFragment"
         android:enabled="true"
-        android:title="user"
+        android:title="settings"
         android:icon="@drawable/ic_app_setting"/>
 
 </menu>
