@@ -17,17 +17,11 @@
             android:id="@+id/action_mainFragment_to_beerFragment"
             app:destination="@id/beerFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_settingsFragment2"
-            app:destination="@id/settingsFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_allBeersFragment"
             app:destination="@id/allBeersFragment" />
         <action
             android:id="@+id/action_mainFragment_to_capsFragment"
             app:destination="@id/capsFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_favoriteBeersFragment2"
-            app:destination="@id/favoriteBeersFragment" />
     </fragment>
 
     <fragment
@@ -40,10 +34,6 @@
             app:destination="@id/settingsFragment"
             />
     </fragment>
-    <action
-        android:id="@+id/action_mainActivity_to_settingsFragment"
-        app:destination="@id/settingsFragment"
-        />
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -53,18 +43,11 @@
 
 
         <action
-            android:id="@+id/action_settingsFragment_to_capsFragment2"
-            app:destination="@id/capsFragment" />
-
-        <action
             android:id="@+id/action_settingsFragment_to_settings_Password"
             app:destination="@id/settings_Password" />
         <action
             android:id="@+id/action_settingsFragment_to_welcomeActivity"
             app:destination="@id/welcomeActivity" />
-        <action
-            android:id="@+id/action_settingsFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/capsFragment"
@@ -97,10 +80,6 @@
     <fragment
         android:id="@+id/favoriteBeersFragment"
         android:name="sandclub.beeradvisor.ui.main.FavoriteBeersFragment"
-        android:label="FavoriteBeersFragment" >
-        <action
-            android:id="@+id/action_favoriteBeersFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-    </fragment>
+        android:label="FavoriteBeersFragment" />
 
 </navigation>

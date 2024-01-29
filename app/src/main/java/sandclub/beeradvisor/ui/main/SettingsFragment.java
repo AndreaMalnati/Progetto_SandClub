@@ -177,7 +177,6 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
 
                 Navigation.findNavController(requireView()).navigate(R.id.action_settingsFragment_to_settings_Password);
-
                 //navController.navigate(R.id.action_settingsFragment_to_settings_Password);
             }
         });

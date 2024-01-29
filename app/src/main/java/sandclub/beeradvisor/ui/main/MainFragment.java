@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,9 @@ public class MainFragment extends Fragment {
     private BeerViewModel beerViewModel;
 
     private List<Beer> beerList;
+
+    TextView seeAllNewBeers;
+    TextView seeAllLastDrunk;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -83,6 +87,9 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        seeAllNewBeers = view.findViewById(R.id.seeAllNewBeers);
+        seeAllLastDrunk = view.findViewById(R.id.seeAllLastDrunk);
 
         RecyclerView recyclerViewNewBeer;
         RecyclerView.LayoutManager layoutManager;
@@ -122,6 +129,8 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onBeerItemClick(Beer beer) {
                         Snackbar.make(recyclerViewNewBeer2, beer.getName(), Snackbar.LENGTH_SHORT).show();
+                        Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment);
+
                     }
                 });
 
@@ -146,6 +155,19 @@ public class MainFragment extends Fragment {
                     }
                 });
 
+        seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_allBeersFragment);
+            }
+        });
+
+        seeAllLastDrunk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_capsFragment);
+            }
+        });
 
     }
 

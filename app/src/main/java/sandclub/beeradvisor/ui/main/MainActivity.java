@@ -65,7 +65,8 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
             if (actionBar != null) {
                 if (destination.getId() == R.id.settingsFragment || destination.getId() == R.id.mainFragment ||
                         destination.getId() == R.id.capsFragment || destination.getId() == R.id.favoriteBeersFragment ||
-                        destination.getId() == R.id.settings_Password) {
+                        destination.getId() == R.id.settings_Password || destination.getId() == R.id.beerFragment
+                        || destination.getId() == R.id.allBeersFragment) {
 
                     // Nascondi la freccia indietro quando sei nel fragment delle impostazioni
                     actionBar.setDisplayHomeAsUpEnabled(false);
