@@ -55,8 +55,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
@@ -162,6 +164,8 @@ public class SettingsFragment extends Fragment {
                                     .circleCrop()
                                     .into(profilePhoto);
                         }
+
+
                     } else {
                         //progressIndicator.setVisibility(View.GONE);
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
@@ -169,6 +173,7 @@ public class SettingsFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
 
         //Listener bottone cambioPw
         changePw = view.findViewById(R.id.changePasswordBtn);

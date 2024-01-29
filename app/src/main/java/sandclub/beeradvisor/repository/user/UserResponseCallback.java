@@ -14,4 +14,5 @@ public interface UserResponseCallback {
     void onSuccessFromGettingUserPreferences();
     void onFailureFromRemoteDatabase(String message);
     void onSuccessLogout();
+    void onSuccessFromGettingListBeer(List<Beer> beerlist);
 }

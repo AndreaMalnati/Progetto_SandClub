@@ -1,5 +1,7 @@
 package sandclub.beeradvisor.model;
 
+import java.util.List;
+
 public class Result {
     private Result() {}
 
@@ -9,6 +11,11 @@ public class Result {
 
     public boolean isSuccessUser() {
         return this instanceof UserResponseSuccess;
+    }
+
+
+    public boolean isSuccessBeerList() {
+        return this instanceof BeerListSuccess;
     }
 
     /**
@@ -33,6 +40,16 @@ public class Result {
         }
         public User getData() {
             return user;
+        }
+    }
+
+    public static final class BeerListSuccess extends Result {
+        private final List<Beer> beerList;
+        public BeerListSuccess(List<Beer> beerList) {
+            this.beerList = beerList;
+        }
+        public List<Beer> getData() {
+            return beerList;
         }
     }
     /**

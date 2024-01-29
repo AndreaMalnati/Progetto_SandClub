@@ -32,7 +32,9 @@ import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 
@@ -47,6 +49,8 @@ public class MainFragment extends Fragment {
     private BeerViewModel beerViewModel;
 
     private List<Beer> beerList;
+
+    private UserViewModel userViewModel;
 
     TextView seeAllNewBeers;
     TextView seeAllLastDrunk;
@@ -74,6 +78,14 @@ public class MainFragment extends Fragment {
                 new BeerViewModelFactory(beerRepositoryWithLiveData)).get(BeerViewModel.class);
 
         beerList = new ArrayList<>();
+
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(
+                        requireActivity().getApplication()
+                );
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -96,7 +108,22 @@ public class MainFragment extends Fragment {
         RecyclerView recyclerViewNewBeer2;
         RecyclerView.LayoutManager layoutManager2;
 
+        userViewModel.getFavouriteBeer(userViewModel.getLoggedUser().getUserId()).observe(
+                getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessUser()) {
+                        User user = ((Result.UserResponseSuccess) result).getData();
+                        Log.d("uao", user.toString());
+                        //Log.d("Testone",  String.valueOf(beerList.size()));
+                        //&Log.d("Testone", beerList.toString());
 
+
+                    } else {
+                        //progressIndicator.setVisibility(View.GONE);
+                        /*Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();*/
+                    }
+                });
         recyclerViewNewBeer = view.findViewById(R.id.recyclerViewNewBeer);
         layoutManager =
                 new LinearLayoutManager(requireContext(),
@@ -108,6 +135,7 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onBeerItemClick(Beer beer) {
                         Snackbar.make(recyclerViewNewBeer, beer.getName(), Snackbar.LENGTH_SHORT).show();
+                        userViewModel.addFavouriteBeer(userViewModel.getLoggedUser().getUserId(), beer);
                         Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment);
                     }
                 });

@@ -71,6 +71,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         return userMutableLiveData;
     }
 
+
     @Override
     public MutableLiveData<Result> getUserPreferences(String idToken) {
         return null;
@@ -112,6 +113,18 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         userRemoteDataSource.signInWithGoogle(token);
     }
 
+    @Override
+    public MutableLiveData<Result> addFavouriteBeer(String idToken, Beer beer) {
+        userDataRemoteDataSource.addFavouriteBeer(idToken, beer);
+        return userMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> getFavouriteBeer(String idToken) {
+        Log.d("Ciaone", "ccc");
+        userDataRemoteDataSource.getFavouriteBeer(idToken);
+        return userMutableLiveData;
+    }
 
 
     @Override
@@ -132,7 +145,11 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         Result.UserResponseSuccess result = new Result.UserResponseSuccess(user);
         userMutableLiveData.postValue(result);
     }
-
+    @Override
+    public void onSuccessFromGettingListBeer(List<Beer> beerlist) {
+        Result.BeerListSuccess result = new Result.BeerListSuccess(beerlist);
+        userMutableLiveData.postValue(result);
+    }
     @Override
     public void onSuccessDeletion() {
         Result.UserResponseSuccess result = new Result.UserResponseSuccess(null);
@@ -158,7 +175,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     @Override
     public void onSuccessLogout() {
         Result.UserResponseSuccess result = new Result.UserResponseSuccess(
-                new User("", "", "", "", ""));
+                new User("", "", "", "", "", null));
         userMutableLiveData.postValue(result);
     }
 

@@ -15,7 +15,7 @@ public class User{
     String password;
     String photoUrl;
     String photoUrlGoogle;
-    List<Beer> birrePreferite;
+    List<Beer> favourite_beers;
     HashMap<Beer, String> birreBevute;
 
     public String getPhotoUrlGoogle() {
@@ -37,10 +37,16 @@ public class User{
     public User() {
     }
 
+    public List<Beer> getFavourite_beers() {
+        return favourite_beers;
+    }
 
+    public void setFavourite_beers(List<Beer> favourite_beers) {
+        this.favourite_beers = favourite_beers;
+    }
 
     //User google
-    public User(String userId, String nome, String cognome, String email, String password, String photoUrl, String photoUrlGoogle) {
+    public User(String userId, String nome, String cognome, String email, String password, String photoUrl, String photoUrlGoogle, List<Beer> favourite_beers) {
         this.userId = userId;
         this.nome = nome;
         this.cognome = cognome;
@@ -48,16 +54,18 @@ public class User{
         this.password = password;
         this.photoUrl = photoUrl;
         this.photoUrlGoogle = photoUrlGoogle;
+        this.favourite_beers = favourite_beers;
 
     }
     //User normale
-    public User(String userId, String nome, String cognome, String email, String password) {
+    public User(String userId, String nome, String cognome, String email, String password, List<Beer> favourite_beers) {
         this.userId = userId;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
         this.password = password;
         photoUrl = "";
+        this.favourite_beers = favourite_beers;
     }
 
     //Costruttore per login
@@ -112,4 +120,5 @@ public class User{
     public String getPassword() {
         return password;
     }
+
 }

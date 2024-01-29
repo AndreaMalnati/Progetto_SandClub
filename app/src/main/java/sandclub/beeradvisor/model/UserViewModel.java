@@ -78,6 +78,23 @@ public class UserViewModel extends ViewModel {
         }
     }*/
 
+    public MutableLiveData<Result> addFavouriteBeer(String idToken, Beer beer){
+        if(userMutableLiveData == null){
+            addBeerFavourite(idToken, beer);
+        }
+        return userMutableLiveData;
+    }
+
+    public MutableLiveData<Result> getFavouriteBeer(String idToken){
+        //if(userMutableLiveData == null) {
+            Log.d("Ciaone", "aaa");
+            getBeerFavourite(idToken);
+        //}
+        return userMutableLiveData;
+    }
+
+
+
     public MutableLiveData<Result> getUserPreferences(String idToken) {
         if (idToken != null) {
             userPreferencesMutableLiveData = userRepository.getUserPreferences(idToken);
@@ -106,6 +123,16 @@ public class UserViewModel extends ViewModel {
     public void getUser(String nome, String cognome, String email, String password, boolean isUserRegistered) {
         userRepository.getUser(nome, cognome, email, password, isUserRegistered);
     }
+
+    public void addBeerFavourite(String idToken, Beer beer){
+        userRepository.addFavouriteBeer(idToken, beer);
+    }
+
+    public void getBeerFavourite(String idToken){
+        Log.d("Ciaone", "bbb");
+        userRepository.getFavouriteBeer(idToken);
+    }
+
 
     private void changePassword(String token, String newPw, String oldPw){
         userMutableLiveData = userRepository.changePassword(token, newPw, oldPw);

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import androidx.lifecycle.MutableLiveData;
 
+import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 
@@ -20,6 +21,10 @@ public interface IUserRepository {
     void signUp(String nome, String cognome, String email, String password);
     void signIn(String email, String password);
     void signInWithGoogle(String token);
+
+    MutableLiveData<Result> addFavouriteBeer(String idToken, Beer beer);
+
+    MutableLiveData<Result> getFavouriteBeer(String idToken);
     //void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);
     MutableLiveData<Result> changePassword(String token, String newPw, String oldPw);
     MutableLiveData<Result> changePhoto(String token, String imageBitmap);

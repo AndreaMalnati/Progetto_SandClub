@@ -2,6 +2,7 @@ package sandclub.beeradvisor.ui.main;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +24,16 @@ import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.util.DataEncryptionUtil;
+import sandclub.beeradvisor.util.ServiceLocator;
 
 public class FavoriteBeersFragment extends Fragment {
-
+    private UserViewModel userViewModel;
     //mettimi i metodi essenziali di un frgment
     //onCreateView
     public FavoriteBeersFragment() {
@@ -41,6 +48,13 @@ public class FavoriteBeersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(
+                        requireActivity().getApplication()
+                );
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -55,6 +69,8 @@ public class FavoriteBeersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        super.onViewCreated(view, savedInstanceState);
+
 
         RecyclerView recyclerViewNewBeer2 = view.findViewById(R.id.recyclerViewFavoriteBeers);
         RecyclerView.LayoutManager layoutManager2 =
@@ -62,7 +78,6 @@ public class FavoriteBeersFragment extends Fragment {
                         LinearLayoutManager.VERTICAL, false);
         new LoadVerticalBeerTask(recyclerViewNewBeer2, layoutManager2).execute();
 
-        super.onViewCreated(view, savedInstanceState);
 
     }
 

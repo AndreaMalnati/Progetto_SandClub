@@ -1,6 +1,7 @@
 package sandclub.beeradvisor.source.user;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.FAVOURITE_BEERS_DATABASE_REFERENCE;
 import static sandclub.beeradvisor.util.Constants.NEW_PASSWORD_ERROR;
 import static sandclub.beeradvisor.util.Constants.PASSWORD_DATABASE_REFERENCE;
 import static sandclub.beeradvisor.util.Constants.PASSWORD_ERROR_GOOGLE;
@@ -10,6 +11,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,12 +21,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sandclub.beeradvisor.R;
+import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
 //TODO: Fare i metodi che servono per prendere i dati da database
-public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
+public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource {
     private static final String TAG = UserDataRemoteDataSource.class.getSimpleName();
 
     private final DatabaseReference databaseReference;
@@ -41,9 +48,9 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
         databaseReference.child(USER_DATABASE_REFERENCE).child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     userResponseCallback.onSuccessFromRemoteDatabase(user);
-                }else{
+                } else {
                     databaseReference.child(USER_DATABASE_REFERENCE).child(user.getUserId()).setValue(user);
                     userResponseCallback.onSuccessFromRemoteDatabase(user);
                 }
@@ -57,8 +64,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     }
 
 
-
-    public User returnUSerData(User user){
+    public User returnUSerData(User user) {
         return user;
     }
 
@@ -74,18 +80,19 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             }
         });
     }
+
     @Override
-    public void changePassword(String idToken, String newPw, String oldPw){
+    public void changePassword(String idToken, String newPw, String oldPw) {
 
 
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     String passwordDb = snapshot.child(PASSWORD_DATABASE_REFERENCE).getValue(String.class);
                     //controllo se vecchia password inserita è uguale a quella dentro database
-                    if(passwordDb.equals(oldPw)){
-                        if(!passwordDb.equals(newPw)){
+                    if (passwordDb.equals(oldPw)) {
+                        if (!passwordDb.equals(newPw)) {
                             databaseReference.child(USER_DATABASE_REFERENCE).
                                     child(idToken).child(PASSWORD_DATABASE_REFERENCE).setValue(newPw);
                             FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -99,12 +106,12 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                                     userResponseCallback.onSuccessFromRemoteDatabase(user);
                                 }
                             });
-                        }else{
+                        } else {
                             userResponseCallback.onFailureFromRemoteDatabase(NEW_PASSWORD_ERROR);
                         }
-                    }else if(passwordDb.equals("")){
+                    } else if (passwordDb.equals("")) {
                         userResponseCallback.onFailureFromRemoteDatabase(PASSWORD_ERROR_GOOGLE);
-                    }else{
+                    } else {
                         userResponseCallback.onFailureFromRemoteDatabase("old_password_error");
                     }
                 }
@@ -119,7 +126,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
 
     @Override
-    public void changePhoto(String idToken, String imageBitmap){
+    public void changePhoto(String idToken, String imageBitmap) {
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child("photoUrl").setValue(imageBitmap);
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -131,4 +138,62 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             }
         });
     }
+
+    @Override
+    public void addFavouriteBeer(String idToken, Beer beer) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(FAVOURITE_BEERS_DATABASE_REFERENCE).child(String.valueOf(beer.getId())).setValue(beer);
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d(TAG, "Error getting data", task.getException());
+                userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
+            } else {
+                User user = task.getResult().getValue(User.class);
+                userResponseCallback.onSuccessFromRemoteDatabase(user);
+            }
+        });
+
+    }
+
+    @Override
+    public void getFavouriteBeer(String idToken) {
+        Log.d("Ciaone", "ddd");
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User u = new User();
+                        u.setNome(snapshot.child("nome").getValue(String.class));
+                        u.setCognome(snapshot.child("cognome").getValue(String.class));
+                        u.setEmail(snapshot.child("email").getValue(String.class));
+                        u.setUserId(snapshot.child("userId").getValue(String.class));
+                        u.setPhotoUrl(snapshot.child("photoUrl").getValue(String.class));
+                        u.setPhotoUrlGoogle(snapshot.child("photoUrlGoogle").getValue(String.class));
+                        if(snapshot.child("favouriteBeers").exists()){
+                            Log.d("Ciaone", "esiste");
+                            List<Beer> beerList = new ArrayList<>();
+                            for (DataSnapshot ds : snapshot.child("favouriteBeers").getChildren()) {
+                                Log.d("Ciaone", String.valueOf(ds.getValue(Beer.class).getId()));
+                                Beer beer = ds.getValue(Beer.class);
+                                Log.d("Ciaone", beer.toString());
+                                beerList.add(beer);
+                                Log.d("Ciaone", beerList.toString());
+                            }
+                            u.setFavourite_beers(beerList);
+                        }
+
+                        userResponseCallback.onSuccessFromRemoteDatabase(u);
+                        }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("Ciaone", "Fallito");
+                    }
+
+                });
+    }
+
+
 }
+
+
+

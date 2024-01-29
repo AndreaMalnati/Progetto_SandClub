@@ -84,6 +84,7 @@ public class Beer implements Parcelable {
         this.food_pairing = food_pairing;
     }
 
+
     public int getId() {
         return id;
     }
@@ -188,7 +189,7 @@ public class Beer implements Parcelable {
                 ", food_pairing=" + food_pairing +
                 ", brewers_tips='" + brewers_tips + '\'' +
                 ", contributed_by='" + contributed_by + '\'' +
-                '}';
+                 '}';
     }
 
     @Override

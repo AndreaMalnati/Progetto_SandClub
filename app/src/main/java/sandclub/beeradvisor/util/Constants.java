@@ -46,6 +46,8 @@ public class Constants {
 
     public static final String OLD_PASSWORD_ERROR = "old_password_error";
 
+    public static final String FAVOURITE_BEERS_DATABASE_REFERENCE = "favourite_beers";
+
 
 
 }
