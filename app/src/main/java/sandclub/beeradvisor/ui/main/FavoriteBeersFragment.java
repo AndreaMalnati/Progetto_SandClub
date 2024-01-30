@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sandclub.beeradvisor.R;
@@ -22,11 +24,16 @@ import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 
 public class FavoriteBeersFragment extends Fragment {
+    private static final String TAG = FavoriteBeersFragment.class.getSimpleName();
+    private List<Beer> beerList;
+    private BeerViewModel beerViewModel;
 
+    private NewBeerRecyclerViewAdapter newBeerRecyclerViewAdapter;
     //mettimi i metodi essenziali di un frgment
     //onCreateView
     public FavoriteBeersFragment() {
@@ -41,6 +48,9 @@ public class FavoriteBeersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        beerList = new ArrayList<>();
+        beerViewModel = new ViewModelProvider(requireActivity()).get(BeerViewModel.class);
+
     }
 
     @Override
@@ -54,50 +64,25 @@ public class FavoriteBeersFragment extends Fragment {
     //fammi onViewCreated
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-
-        RecyclerView recyclerViewNewBeer2 = view.findViewById(R.id.recyclerViewFavoriteBeers);
-        RecyclerView.LayoutManager layoutManager2 =
-                new LinearLayoutManager(requireContext(),
-                        LinearLayoutManager.VERTICAL, false);
-        new LoadVerticalBeerTask(recyclerViewNewBeer2, layoutManager2).execute();
-
         super.onViewCreated(view, savedInstanceState);
 
+
+        /*RecyclerView favouriteBeer = view.findViewById(R.id.recyclerViewFavoriteBeers);
+
+        newBeerRecyclerViewAdapter =
+                new NewBeerRecyclerViewAdapter(requireContext(), R.layout., beerList,
+                beer -> {
+                    beer.setFavorite(false);
+                    beerViewModel.removeFavoriteBeer(beer);
+                });
+        RecyclerView.LayoutManager layoutManager2 =
+                new LinearLayoutManager(requireContext(),
+                        LinearLayoutManager.VERTICAL, false);*/
+
+
     }
 
 
-    private static class LoadVerticalBeerTask extends AsyncTask<Void, Void, List<Beer>> {
 
-        private RecyclerView recyclerView;
-        private RecyclerView.LayoutManager layoutManager;
-
-        LoadVerticalBeerTask(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager) {
-            this.recyclerView = recyclerView;
-            this.layoutManager = layoutManager;
-        }
-
-        @Override
-        protected List<Beer> doInBackground(Void... voids) {
-            BeerRoomDatabase db = BeerRoomDatabase.getDatabase(recyclerView.getContext());
-            BeerDao dao = db.beerDao();
-            return dao.getAll();
-        }
-
-        @Override
-        protected void onPostExecute(List<Beer> beerList) {
-            NewBeerRecyclerViewAdapter beerRecyclerViewAdapter = new NewBeerRecyclerViewAdapter(beerList,
-                    new NewBeerRecyclerViewAdapter.OnItemClickListener() {
-                        @Override
-                        public void onBeerItemClick(Beer beer) {
-                            Snackbar.make(recyclerView, beer.getName(), Snackbar.LENGTH_SHORT).show();
-                            Navigation.findNavController(recyclerView).navigate(R.id.action_allBeersFragment_to_beerFragment);
-                        }
-                    });
-
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(beerRecyclerViewAdapter);
-        }
-    }
 
 }

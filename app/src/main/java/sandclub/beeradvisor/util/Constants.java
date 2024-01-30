@@ -36,8 +36,11 @@ public class Constants {
     public static final String INVALID_USER_ERROR = "invalid_user";
     public static final String USER_COLLISION_ERROR = "user_collision";
     public static final String USER_DATABASE_REFERENCE = "user";
-
+    public static final String FAVORITE_BEER_DATABASE_REFERENCE = "favorite_beer";
+    public static final String LAST_UPDATE = "last_update";
     public static final boolean USE_NAVIGATION_COMPONENT = true;
+    public static final String ID_TOKEN = "google_token";
+
 
     public static final String PASSWORD_DATABASE_REFERENCE = "password";
 
@@ -45,6 +48,9 @@ public class Constants {
     public static final String PASSWORD_ERROR_GOOGLE = "password_error_google";
 
     public static final String OLD_PASSWORD_ERROR = "old_password_error";
+
+    public static final String SHARED_PREFERENCES_FIRST_LOADING = "firs_loading";
+
 
 
 

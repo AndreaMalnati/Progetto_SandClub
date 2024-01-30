@@ -140,6 +140,21 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
+    public void onSuccessFromCloudReading(List<Beer> beerList) {
+
+    }
+
+    @Override
+    public void onSuccessFromCloudWriting(Beer beer) {
+
+    }
+
+    @Override
+    public void onFailureFromCloud(Exception exception) {
+
+    }
+
+    @Override
     public void onSuccessFromRemoteDatabase(List<Beer> beerList) {
 
     }
@@ -183,14 +198,16 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
-    public void onNewsFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer) {
+    public void onBeerFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer) {
 
     }
 
     @Override
-    public void onNewsFavoriteStatusChanged(List<Beer> beer) {
+    public void onBeerFavoriteStatusChanged(List<Beer> beer) {
 
     }
+
+
 
     @Override
     public void onDeleteFavoriteNewsSuccess(List<Beer> favoriteBeer) {

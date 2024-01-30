@@ -20,6 +20,8 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<NewBeerRe
 
     public interface OnItemClickListener {
         void onBeerItemClick(Beer beer);
+
+        void onFavoriteButtonPressed(int position);
     }
 
     private final List<Beer> beerList;

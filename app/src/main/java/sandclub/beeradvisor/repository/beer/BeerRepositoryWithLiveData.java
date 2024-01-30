@@ -12,23 +12,33 @@ import sandclub.beeradvisor.model.BeerResponse;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
 import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
+import sandclub.beeradvisor.source.beer.BaseFavouriteBeerDataSource;
 import sandclub.beeradvisor.source.beer.BeerCallback;
 
 public class BeerRepositoryWithLiveData implements IBeerRepositoryWithLiveData, BeerCallback {
     private static final String TAG = BeerRepositoryWithLiveData.class.getSimpleName();
 
     private final MutableLiveData<Result> allBeerMutableLiveData;
-private final BaseBeerRemoteDataSource beerRemoteDataSource;
+    private final MutableLiveData<Result> favoriteBeerMutableLiveData;
+
+    private final BaseBeerRemoteDataSource beerRemoteDataSource;
 private final BaseBeerLocalDataSource beerLocalDataSource;
+    private final BaseFavouriteBeerDataSource backupDataSource;
+
 
     public BeerRepositoryWithLiveData(BaseBeerRemoteDataSource beerRemoteDataSource,
-                                      BaseBeerLocalDataSource beerLocalDataSource) {
+                                      BaseBeerLocalDataSource beerLocalDataSource,
+                                      BaseFavouriteBeerDataSource favoriteBeerDataSource) {
 
         allBeerMutableLiveData = new MutableLiveData<>();
+        favoriteBeerMutableLiveData = new MutableLiveData<>();
         this.beerRemoteDataSource = beerRemoteDataSource;
         this.beerLocalDataSource = beerLocalDataSource;
+        this.backupDataSource = favoriteBeerDataSource;
         this.beerRemoteDataSource.setBeerCallback(this);
         this.beerLocalDataSource.setBeerCallback(this);
+        this.backupDataSource.setBeerCallback(this);
+
     }
 
     //Metodo che scarica birre
@@ -47,6 +57,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
+    public void updateBeer(Beer beer) {
+
+        beerLocalDataSource.updateBeer(beer);
+    }
+
+    @Override
     public void onSuccessFromRemote(BeerApiResponse beerApiResponse, long lastUpdate) {
         beerLocalDataSource.insertBeer(beerApiResponse.getBeerList());
 
@@ -56,6 +72,16 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     public void onFailureFromRemote(Exception exception) {
         Result.Error result = new Result.Error(exception.getMessage());
         allBeerMutableLiveData.postValue(result);
+    }
+
+    @Override
+    public MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading) {
+        if(isFirstLoading){
+            backupDataSource.getFavoriteBeer();
+        }else {
+            beerLocalDataSource.getFavoriteBeer();
+        }
+        return favoriteBeerMutableLiveData;
     }
 
     @Override
@@ -71,13 +97,22 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public void onNewsFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer) {
+    public void onBeerFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer) {
+        Result allBeerResult = allBeerMutableLiveData.getValue();
 
+        if (allBeerResult != null && allBeerResult.isSuccess()) {
+            List<Beer> oldAllBeer = ((Result.Success)allBeerResult).getData().getBeerList();
+            if (oldAllBeer.contains(beer)) {
+                oldAllBeer.set(oldAllBeer.indexOf(beer), beer);
+                allBeerMutableLiveData.postValue(allBeerResult);
+            }
+        }
+        favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(favoriteBeer)));
     }
 
     @Override
-    public void onNewsFavoriteStatusChanged(List<Beer> beer) {
-
+    public void onBeerFavoriteStatusChanged(List<Beer> beer) {
+        favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beer)));
     }
 
     @Override
@@ -87,6 +122,27 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
     @Override
     public void onSuccessDeletion(){
+
+    }
+
+    @Override
+    public void onSuccessFromCloudReading(List<Beer> beerList) {
+        if(beerList != null){
+            for(Beer beer : beerList){
+                beer.setSynchronized(true);
+            }
+            beerLocalDataSource.insertBeer(beerList);
+            favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beerList)));
+        }
+    }
+
+    @Override
+    public void onSuccessFromCloudWriting(Beer beer) {
+
+    }
+
+    @Override
+    public void onFailureFromCloud(Exception exception) {
 
     }
 

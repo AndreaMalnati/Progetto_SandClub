@@ -3,6 +3,8 @@ package sandclub.beeradvisor.source.beer;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.UNEXPECTED_ERROR;
+import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
 
 import java.util.List;
 
@@ -10,6 +12,7 @@ import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
+import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
@@ -47,11 +50,35 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
 
             // Scrive le birre nel database
             beerDao.insertBeerList(beerList);
+            sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                    LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+
             beerCallback.onSuccessFromLocal(beerList);
         });
     }
 
+    @Override
+    public void updateBeer(Beer beer) {
+        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+            int rowUpdatedCounter = beerDao.updateSingleFavoriteBeer(beer);
 
+            // It means that the update succeeded because only one row had to be updated
+            if (rowUpdatedCounter == 1) {
+                Beer updatedBeer = beerDao.getBeer(beer.getId());
+                beerCallback.onBeerFavoriteStatusChanged(updatedBeer, beerDao.getFavoriteBeer());
+            } else {
+                beerCallback.onFailureFromLocal(new Exception(UNEXPECTED_ERROR));
+            }
+        });
+    }
+
+    @Override
+    public void getFavoriteBeer() {
+        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<Beer> favoriteNews = beerDao.getFavoriteBeer();
+            beerCallback.onBeerFavoriteStatusChanged(favoriteNews);
+        });
+    }
 
 
 }

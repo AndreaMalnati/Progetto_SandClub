@@ -52,11 +52,23 @@ public class Beer implements Parcelable {
     @ColumnInfo(name = "contributed_by")
     private String contributed_by;
 
+    @ColumnInfo(name = "is_favorite")
+    private boolean isFavorite;
 
+    @ColumnInfo(name = "is_synchronized")
+    private boolean isSynchronized;
 // Aggiungi costruttori, getter e setter secondo necessità
 
 
-    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, List<String> food_pairing, String brewers_tips, String contributed_by) {
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, List<String> food_pairing, String brewers_tips, String contributed_by, boolean isFavorite, boolean isSynchronized) {
         this.id = id;
         this.name = name;
         this.tagline = tagline;
@@ -69,11 +81,21 @@ public class Beer implements Parcelable {
         this.food_pairing = food_pairing;
         this.brewers_tips = brewers_tips;
         this.contributed_by = contributed_by;
+        this.isFavorite = isFavorite;
+        this.isSynchronized = isSynchronized;
     }
 
     @Ignore
     public Beer() {
 
+    }
+
+    public boolean isSynchronized() {
+        return isSynchronized;
+    }
+
+    public void setSynchronized(boolean aSynchronized) {
+        isSynchronized = aSynchronized;
     }
 
     public List<String> getFood_pairing() {
@@ -188,6 +210,8 @@ public class Beer implements Parcelable {
                 ", food_pairing=" + food_pairing +
                 ", brewers_tips='" + brewers_tips + '\'' +
                 ", contributed_by='" + contributed_by + '\'' +
+                ", isFavorite=" + isFavorite +
+                ", isSynchronized=" + isSynchronized +
                 '}';
     }
 
@@ -223,6 +247,8 @@ public class Beer implements Parcelable {
        dest.writeStringList(this.food_pairing);
        dest.writeString(this.brewers_tips);
        dest.writeString(this.contributed_by);
+       dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
+         dest.writeByte(this.isSynchronized ? (byte) 1 : (byte) 0);
 
     }
 
@@ -239,6 +265,8 @@ public class Beer implements Parcelable {
         this.food_pairing = source.createStringArrayList();
         this.brewers_tips = source.readString();
         this.contributed_by = source.readString();
+        this.isFavorite = source.readByte() != 0;
+        this.isSynchronized = source.readByte() != 0;
     }
 
     protected Beer(Parcel in) {
@@ -254,6 +282,8 @@ public class Beer implements Parcelable {
         this.food_pairing = in.createStringArrayList();
         this.brewers_tips = in.readString();
         this.contributed_by = in.readString();
+        this.isFavorite = in.readByte() != 0;
+        this.isSynchronized = in.readByte() != 0;
     }
 
 

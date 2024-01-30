@@ -10,6 +10,8 @@ public class BeerViewModel extends ViewModel {
 
     private final IBeerRepositoryWithLiveData beerRepositoryWithLiveData;
     private MutableLiveData<Result> beerListLiveData;
+    private MutableLiveData<Result> favoriteBeerListLiveData;
+
 
 
     public BeerViewModel(IBeerRepositoryWithLiveData iBeerRepositoryWithLiveData) {
@@ -27,9 +29,21 @@ public class BeerViewModel extends ViewModel {
         }
         return beerListLiveData;
     }
-
+    public MutableLiveData<Result> getFavoriteBeerLiveData(boolean isFirstLoading) {
+        if (favoriteBeerListLiveData == null) {
+            getFavoriteBeer(isFirstLoading);
+        }
+        return favoriteBeerListLiveData;
+    }
     public void fetchBeer(long lastUpdate) {
         beerListLiveData = beerRepositoryWithLiveData.fetchAllBeer(lastUpdate);
+    }
+
+    private void getFavoriteBeer(boolean isFirstLoading){
+        favoriteBeerListLiveData = beerRepositoryWithLiveData.getFavoriteBeer(isFirstLoading);
+    }
+    public void updateBeer(Beer beer) {
+        beerRepositoryWithLiveData.updateBeer(beer);
     }
 
 }

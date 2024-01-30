@@ -11,9 +11,13 @@ public interface BeerCallback {
     void onFailureFromRemote(Exception exception); //Chiamata back-end NO
     void onSuccessFromLocal(List<Beer> beerList); //Lettura/scrittura DB OK
     void onFailureFromLocal(Exception exception); //Lettura/scrittura DB NO
-    void onNewsFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer); //Aggiornamento di una singola birra
-    void onNewsFavoriteStatusChanged(List<Beer> beer); //Aggiornamento di tutte la lista birre
+    void onBeerFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer); //Aggiornamento di una singola birra
+    void onBeerFavoriteStatusChanged(List<Beer> beer); //Aggiornamento di tutte la lista birre
     void onDeleteFavoriteNewsSuccess(List<Beer> favoriteBeer); //Listener per la cancellazione di tutte le birre preferite
     void  onSuccessDeletion(); //Listener per la cancellazione di tutte le birre
+    void onSuccessFromCloudReading(List<Beer> beerList);
+    void onSuccessFromCloudWriting(Beer beer);
+    void onFailureFromCloud(Exception exception);
+
 
 }

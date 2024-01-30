@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,12 +28,12 @@ import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
-import sandclub.beeradvisor.model.User;
-import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
+import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
+import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +46,7 @@ public class MainFragment extends Fragment {
     private BeerViewModel beerViewModel;
 
     private List<Beer> beerList;
+    private List<Beer> favouriteBeerList;
 
     TextView seeAllNewBeers;
     TextView seeAllLastDrunk;
@@ -74,6 +74,7 @@ public class MainFragment extends Fragment {
                 new BeerViewModelFactory(beerRepositoryWithLiveData)).get(BeerViewModel.class);
 
         beerList = new ArrayList<>();
+        favouriteBeerList = new ArrayList<>();
     }
 
     @Override
@@ -104,11 +105,18 @@ public class MainFragment extends Fragment {
 
 
         BeerRecyclerViewAdapter beerRecyclerViewAdapter = new BeerRecyclerViewAdapter(beerList,
+                requireActivity().getApplication(),
                 new BeerRecyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onBeerItemClick(Beer beer) {
                         Snackbar.make(recyclerViewNewBeer, beer.getName(), Snackbar.LENGTH_SHORT).show();
                         Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment);
+                    }
+                    @Override
+                    public void onFavoriteButtonPressed(int position) {
+                        Log.d("Ciaone", "dentro");
+                        beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
+                        beerViewModel.updateBeer(beerList.get(position));
                     }
                 });
 
@@ -122,15 +130,18 @@ public class MainFragment extends Fragment {
                         LinearLayoutManager.VERTICAL, false);
 
 
-
-
-        NewBeerRecyclerViewAdapter beerRecyclerViewAdapter2 = new NewBeerRecyclerViewAdapter(beerList,
+        NewBeerRecyclerViewAdapter beerRecyclerViewAdapter2 = new NewBeerRecyclerViewAdapter(favouriteBeerList,
                 new NewBeerRecyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onBeerItemClick(Beer beer) {
                         Snackbar.make(recyclerViewNewBeer2, beer.getName(), Snackbar.LENGTH_SHORT).show();
                         Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment);
 
+                    }
+                    @Override
+                    public void onFavoriteButtonPressed(int position) {
+                        beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
+                        beerViewModel.updateBeer(beerList.get(position));
                     }
                 });
 
@@ -145,7 +156,6 @@ public class MainFragment extends Fragment {
                         this.beerList.clear();
                         this.beerList.addAll(((Result.Success) result).getData().getBeerList());
                         beerRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.beerList.size());
-                        beerRecyclerViewAdapter2.notifyItemRangeInserted(initialSize, this.beerList.size());
                     } else {
                         ErrorMessagesUtil errorMessagesUtil =
                                 new ErrorMessagesUtil(requireActivity().getApplication());
@@ -154,6 +164,32 @@ public class MainFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
+        SharedPreferencesUtil sharedPreferencesUtil =
+                new SharedPreferencesUtil(requireActivity().getApplication());
+        boolean isFirstLoading = sharedPreferencesUtil.readBooleanData(Constants.SHARED_PREFERENCES_FILE_NAME,
+                Constants.SHARED_PREFERENCES_FIRST_LOADING);
+
+        beerViewModel.getFavoriteBeerLiveData(isFirstLoading).observe(getViewLifecycleOwner(), result -> {
+            if (result != null) {
+                if (result.isSuccess()) {
+                    favouriteBeerList.clear();
+                    favouriteBeerList.addAll(((Result.Success)result).getData().getBeerList());
+                    beerRecyclerViewAdapter2.notifyDataSetChanged();
+                    if(isFirstLoading){
+                        sharedPreferencesUtil.writeBooleanData(Constants.SHARED_PREFERENCES_FILE_NAME,
+                                Constants.SHARED_PREFERENCES_FIRST_LOADING, false);
+                    }
+                } else {
+                    ErrorMessagesUtil errorMessagesUtil =
+                            new ErrorMessagesUtil(requireActivity().getApplication());
+                    Snackbar.make(view, errorMessagesUtil.
+                                    getErrorMessage(((Result.Error)result).getMessage()),
+                            Snackbar.LENGTH_SHORT).show();
+                }
+                //progressBar.setVisibility(View.GONE);
+            }
+        });
 
         seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -84,7 +84,7 @@ public class AllBeersFragment extends Fragment {
             return dao.getAll();
         }
 
-        @Override
+        /*@Override
         protected void onPostExecute(List<Beer> beerList) {
             NewBeerRecyclerViewAdapter beerRecyclerViewAdapter = new NewBeerRecyclerViewAdapter(beerList,
                     new NewBeerRecyclerViewAdapter.OnItemClickListener() {
@@ -93,11 +93,16 @@ public class AllBeersFragment extends Fragment {
                             Snackbar.make(recyclerView, beer.getName(), Snackbar.LENGTH_SHORT).show();
                             Navigation.findNavController(recyclerView).navigate(R.id.action_allBeersFragment_to_beerFragment);
                         }
+                        @Override
+                        public void onFavoriteButtonPressed(int position) {
+                            beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
+                            beerViewModel.updateBeer(beerList.get(position));
+                        }
                     });
 
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(beerRecyclerViewAdapter);
-        }
+        }*/
     }
 
 }

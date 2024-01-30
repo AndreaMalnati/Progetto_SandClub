@@ -5,12 +5,39 @@ import android.content.SharedPreferences;
 
 import java.util.Set;
 public class SharedPreferencesUtil {
-    private final Context context;
+    private final Application application;
 
     public SharedPreferencesUtil(Application application) {
-        this.context = application.getApplicationContext();
+        this.application = application;
     }
 
+
+    /**
+     * Writes a boolean value using SharedPreferences API.
+     * @param sharedPreferencesFileName The name of file where to write data.
+     * @param key The key associated with the value to write.
+     * @param value The value to write associated with the key.
+     */
+    public void writeBooleanData(String sharedPreferencesFileName, String key, boolean value) {
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Returns the boolean value associated with the key passed as argument
+     * using SharedPreferences API.
+     * @param sharedPreferencesFileName The name of file where to read the data.
+     * @param key The key associated with the value to read.
+     * @return The boolean value associated with the key passed as argument.
+     */
+    public boolean readBooleanData(String sharedPreferencesFileName, String key) {
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        return sharedPref.getBoolean(key, false);
+    }
     /**
      * Writes a String value using SharedPreferences API.
      * @param sharedPreferencesFileName The name of file where to write data.
@@ -18,7 +45,7 @@ public class SharedPreferencesUtil {
      * @param value The value to write associated with the key.
      */
     public void writeStringData(String sharedPreferencesFileName, String key, String value) {
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
@@ -32,7 +59,7 @@ public class SharedPreferencesUtil {
      * @param value The value to write associated with the key.
      */
     public void writeStringSetData(String sharedPreferencesFileName, String key, Set<String> value) {
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putStringSet(key, value);
@@ -47,7 +74,7 @@ public class SharedPreferencesUtil {
      * @return The String value associated with the key passed as argument.
      */
     public String readStringData(String sharedPreferencesFileName, String key) {
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
                 Context.MODE_PRIVATE);
         return sharedPref.getString(key, null);
     }
@@ -60,13 +87,13 @@ public class SharedPreferencesUtil {
      * @return The set of String values associated with the key passed as argument.
      */
     public Set<String> readStringSetData(String sharedPreferencesFileName, String key) {
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
                 Context.MODE_PRIVATE);
         return sharedPref.getStringSet(key, null);
     }
 
     public void deleteAll(String sharedPreferencesFileName) {
-        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
