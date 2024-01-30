@@ -20,12 +20,15 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
 
     private final BeerDao beerDao;
     private final SharedPreferencesUtil sharedPreferencesUtil;
+    private final DataEncryptionUtil dataEncryptionUtil;
 
 
     public BeerLocalDataSource(BeerRoomDatabase newsRoomDatabase,
-                               SharedPreferencesUtil sharedPreferencesUtil) {
+                               SharedPreferencesUtil sharedPreferencesUtil,
+                               DataEncryptionUtil dataEncryptionUtil) {
         this.beerDao = newsRoomDatabase.beerDao();
         this.sharedPreferencesUtil = sharedPreferencesUtil;
+        this.dataEncryptionUtil = dataEncryptionUtil;
     }
 
     @Override
@@ -60,23 +63,31 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
     @Override
     public void updateBeer(Beer beer) {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-            int rowUpdatedCounter = beerDao.updateSingleFavoriteBeer(beer);
+            if(beer != null) {
+                int rowUpdatedCounter = beerDao.updateSingleFavoriteBeer(beer);
 
-            // It means that the update succeeded because only one row had to be updated
-            if (rowUpdatedCounter == 1) {
-                Beer updatedBeer = beerDao.getBeer(beer.getId());
-                beerCallback.onBeerFavoriteStatusChanged(updatedBeer, beerDao.getFavoriteBeer());
-            } else {
-                beerCallback.onFailureFromLocal(new Exception(UNEXPECTED_ERROR));
+                // It means that the update succeeded because only one row had to be updated
+                if (rowUpdatedCounter == 1) {
+                    Beer updatedBeer = beerDao.getBeer(beer.getId());
+                    beerCallback.onBeerFavoriteStatusChanged(updatedBeer, beerDao.getFavoriteBeer());
+                } else {
+                    beerCallback.onFailureFromLocal(new Exception(UNEXPECTED_ERROR));
+                }
+            }else{
+                List<Beer> allBeer = beerDao.getAll();
+                for(Beer b : allBeer){
+                    b.setSynchronized(false);
+                    beerDao.updateSingleFavoriteBeer(b);
+                }
             }
         });
     }
 
     @Override
-    public void getFavoriteBeer() {
+    public void getFavoriteBeer(String idToken) {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Beer> favoriteNews = beerDao.getFavoriteBeer();
-            beerCallback.onBeerFavoriteStatusChanged(favoriteNews);
+            beerCallback.onBeerFavoriteStatusChanged(favoriteNews, idToken);
         });
     }
 

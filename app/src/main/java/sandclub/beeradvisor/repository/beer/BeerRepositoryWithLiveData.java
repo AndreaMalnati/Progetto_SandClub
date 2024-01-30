@@ -4,6 +4,7 @@ import static sandclub.beeradvisor.util.Constants.FRESH_TIMEOUT;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sandclub.beeradvisor.model.Beer;
@@ -57,9 +58,13 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public void updateBeer(Beer beer) {
-
+    public void updateBeer(Beer beer, String idToken){
         beerLocalDataSource.updateBeer(beer);
+        if(beer.isFavorite()){
+            backupDataSource.addFavoriteBeer(beer, idToken);
+        }else{
+            backupDataSource.deleteFavoriteBeer(beer, idToken);
+        }
     }
 
     @Override
@@ -75,11 +80,11 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading) {
+    public MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading, String idToken) {
         if(isFirstLoading){
-            backupDataSource.getFavoriteBeer();
+            backupDataSource.getFavoriteBeer(idToken);
         }else {
-            beerLocalDataSource.getFavoriteBeer();
+            beerLocalDataSource.getFavoriteBeer(idToken);
         }
         return favoriteBeerMutableLiveData;
     }
@@ -110,9 +115,23 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(favoriteBeer)));
     }
 
+
+
     @Override
-    public void onBeerFavoriteStatusChanged(List<Beer> beer) {
-        favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beer)));
+    public void onBeerFavoriteStatusChanged(List<Beer> beerList, String idToken) {
+        List<Beer> notSyncronizedBeerList = new ArrayList<>();
+        for(Beer beer : beerList){
+            if(!beer.isSynchronized()){
+                notSyncronizedBeerList.add(beer);
+            }
+        }
+
+        if(!notSyncronizedBeerList.isEmpty()){
+            backupDataSource.synchronizeFavoriteBeer(notSyncronizedBeerList, idToken);
+        }
+
+
+        favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beerList)));
     }
 
     @Override
@@ -137,8 +156,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public void onSuccessFromCloudWriting(Beer beer) {
-
+    public void onSuccessFromCloudWriting(Beer beer, String idToken) {
+        if(beer != null){
+            beer.setSynchronized(false);
+        }
+        beerLocalDataSource.updateBeer(beer);
+        backupDataSource.getFavoriteBeer(idToken);
     }
 
     @Override

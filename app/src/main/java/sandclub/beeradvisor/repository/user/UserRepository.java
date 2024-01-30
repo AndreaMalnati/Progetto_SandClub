@@ -145,7 +145,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
-    public void onSuccessFromCloudWriting(Beer beer) {
+    public void onSuccessFromCloudWriting(Beer beer, String idToken) {
 
     }
 
@@ -203,7 +203,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
-    public void onBeerFavoriteStatusChanged(List<Beer> beer) {
+    public void onBeerFavoriteStatusChanged(List<Beer> beer, String idToken) {
 
     }
 

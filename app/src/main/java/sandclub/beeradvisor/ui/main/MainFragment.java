@@ -2,6 +2,9 @@ package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +31,12 @@ import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
+import sandclub.beeradvisor.model.User;
+import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
+import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
@@ -47,6 +54,9 @@ public class MainFragment extends Fragment {
 
     private List<Beer> beerList;
     private List<Beer> favouriteBeerList;
+    private UserViewModel userViewModel;
+    private SharedPreferencesUtil sharedPreferencesUtil;
+
 
     TextView seeAllNewBeers;
     TextView seeAllLastDrunk;
@@ -64,14 +74,30 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(
+                        requireActivity().getApplication()
+                );
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         IBeerRepositoryWithLiveData beerRepositoryWithLiveData =
                 ServiceLocator.getInstance().getBeerRepository(
                         requireActivity().getApplication()
                 );
         Log.d(TAG, "Birre caricate");
-        beerViewModel = new ViewModelProvider(
-                this,
-                new BeerViewModelFactory(beerRepositoryWithLiveData)).get(BeerViewModel.class);
+
+
+        if(beerRepositoryWithLiveData != null) {
+            beerViewModel = new ViewModelProvider(
+                    this,
+                    new BeerViewModelFactory(beerRepositoryWithLiveData)).get(BeerViewModel.class);
+        }else {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
+        }
 
         beerList = new ArrayList<>();
         favouriteBeerList = new ArrayList<>();
@@ -116,7 +142,7 @@ public class MainFragment extends Fragment {
                     public void onFavoriteButtonPressed(int position) {
                         Log.d("Ciaone", "dentro");
                         beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
-                        beerViewModel.updateBeer(beerList.get(position));
+                        beerViewModel.updateBeer(beerList.get(position), userViewModel.getLoggedUser().getUserId());
                     }
                 });
 
@@ -141,7 +167,7 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onFavoriteButtonPressed(int position) {
                         beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
-                        beerViewModel.updateBeer(beerList.get(position));
+                        beerViewModel.updateBeer(beerList.get(position), userViewModel.getLoggedUser().getUserId());
                     }
                 });
 
@@ -167,17 +193,17 @@ public class MainFragment extends Fragment {
 
         SharedPreferencesUtil sharedPreferencesUtil =
                 new SharedPreferencesUtil(requireActivity().getApplication());
-        boolean isFirstLoading = sharedPreferencesUtil.readBooleanData(Constants.SHARED_PREFERENCES_FILE_NAME,
+        boolean isFirstLoading = sharedPreferencesUtil.readBooleanData(SHARED_PREFERENCES_FILE_NAME,
                 Constants.SHARED_PREFERENCES_FIRST_LOADING);
 
-        beerViewModel.getFavoriteBeerLiveData(isFirstLoading).observe(getViewLifecycleOwner(), result -> {
+        beerViewModel.getFavoriteBeerLiveData(isFirstLoading, userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccess()) {
                     favouriteBeerList.clear();
                     favouriteBeerList.addAll(((Result.Success)result).getData().getBeerList());
                     beerRecyclerViewAdapter2.notifyDataSetChanged();
                     if(isFirstLoading){
-                        sharedPreferencesUtil.writeBooleanData(Constants.SHARED_PREFERENCES_FILE_NAME,
+                        sharedPreferencesUtil.writeBooleanData(SHARED_PREFERENCES_FILE_NAME,
                                 Constants.SHARED_PREFERENCES_FIRST_LOADING, false);
                     }
                 } else {
@@ -190,6 +216,13 @@ public class MainFragment extends Fragment {
                 //progressBar.setVisibility(View.GONE);
             }
         });
+
+        String lastUpdate = "0";
+        if(sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+        }
 
         seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
             @Override

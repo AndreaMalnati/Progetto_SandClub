@@ -34,7 +34,7 @@ abstract public class BeerRoomDatabase extends RoomDatabase{
             synchronized (BeerRoomDatabase.class){
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            BeerRoomDatabase.class, BEER_DATABASE_NAME).addMigrations(MIGRATION_2_3).build();
+                            BeerRoomDatabase.class, BEER_DATABASE_NAME).addMigrations(MIGRATION_1_3).build();
                 }
             }
         }
@@ -49,10 +49,11 @@ abstract public class BeerRoomDatabase extends RoomDatabase{
         }
     };*/
 
-    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+    static final Migration MIGRATION_1_3 = new Migration(1, 3) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             // Aggiungi il nuovo campo booleano "preferito" alla tabella Beer
+            database.execSQL("ALTER TABLE beer ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0 ");
             database.execSQL("ALTER TABLE beer ADD COLUMN is_synchronized INTEGER NOT NULL DEFAULT 0");
         }
     };

@@ -19,7 +19,7 @@ public abstract class BaseBeerLocalDataSource { //Classe base per la lettura in 
     //public abstract void deleteFavoriteBeer(); //Cancella birra preferita
     public abstract void insertBeer(List<Beer> beerList); //Inserisce birre dentro database
     public abstract void updateBeer(Beer beer);
-    public abstract void getFavoriteBeer();
+    public abstract void getFavoriteBeer(String idToken);
 
 
 }

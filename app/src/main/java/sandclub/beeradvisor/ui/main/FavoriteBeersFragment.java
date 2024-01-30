@@ -49,7 +49,7 @@ public class FavoriteBeersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         beerList = new ArrayList<>();
-        beerViewModel = new ViewModelProvider(requireActivity()).get(BeerViewModel.class);
+        //beerViewModel = new ViewModelProvider(requireActivity()).get(BeerViewModel.class);
 
     }
 

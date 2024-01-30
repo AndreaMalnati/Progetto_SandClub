@@ -6,6 +6,10 @@ import static sandclub.beeradvisor.util.Constants.USER_DATABASE_REFERENCE;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,7 +30,7 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
         this.idToken = idToken;
     }
     @Override
-    public void getFavoriteBeer() {
+    public void getFavoriteBeer(String idToken){
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
                 child(FAVORITE_BEER_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -47,18 +51,64 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
     }
 
     @Override
-    public void addFavoriteBeer(Beer beer) {
-
+    public void addFavoriteBeer(Beer beer, String idToken){
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
+                child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.hashCode())).setValue(beer)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        beer.setSynchronized(true);
+                        beerCallback.onSuccessFromCloudWriting(beer, idToken);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        beerCallback.onFailureFromCloud(e);
+                    }
+                });
     }
 
     @Override
-    public void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList) {
+    public void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList, String idToken) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
+                child(FAVORITE_BEER_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        List<Beer> beerList = new ArrayList<>();
+                        for(DataSnapshot ds : task.getResult().getChildren()){
+                            Beer beer = ds.getValue(Beer.class);
+                            beer.setSynchronized(true);
+                            beerList.add(beer);
+                        }
+                        beerList.addAll(notSynchronizedBeerList);
 
+                        for (Beer beer : beerList) {
+                            databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
+                                    child(FAVORITE_BEER_DATABASE_REFERENCE).
+                                    child(String.valueOf(beer.hashCode())).setValue(beer).addOnSuccessListener(
+                                            new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    beer.setSynchronized(true);
+                                                }
+                                            }
+                                    );
+                        }
+
+                    }
+                });
     }
 
     @Override
-    public void deleteFavoriteBeer(Beer beer) {
-
+    public void deleteFavoriteBeer(Beer beer, String idToken) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
+                child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.hashCode())).
+                removeValue().addOnSuccessListener(aVoid ->{
+                    beer.setSynchronized(false);
+                    beerCallback.onSuccessFromCloudWriting(beer, idToken);
+                }).addOnFailureListener(e ->{
+                    beerCallback.onFailureFromCloud(e);
+                });
     }
 
     @Override

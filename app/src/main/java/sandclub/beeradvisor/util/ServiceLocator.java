@@ -89,7 +89,7 @@ public class ServiceLocator {
                     new BeerRemoteDataSource();
         //}
 
-        beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil);
+        beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
         try {
             favoriteBeerDataSource = new FavouriteBeerDataSource(dataEncryptionUtil.
                     readSecretDataWithEncryptedSharedPreferences(
@@ -114,9 +114,10 @@ public class ServiceLocator {
 
         BaseUserDataRemoteDataSource userDataRemoteDataSource =
                 new UserDataRemoteDataSource(sharedPreferencesUtil);
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
         BaseBeerLocalDataSource beerLocalDataSource =
-                new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil);
+                new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
 
         return new UserRepository(userRemoteAuthenticationDataSource,
                 beerLocalDataSource, userDataRemoteDataSource);
