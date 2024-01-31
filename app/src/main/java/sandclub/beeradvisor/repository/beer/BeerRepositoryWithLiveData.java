@@ -54,7 +54,6 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         if (currentTime - lastUpdate > FRESH_TIMEOUT) {
             beerRemoteDataSource.getBeer();
         } else {
-
             beerLocalDataSource.getBeer();
         }
         return allBeerMutableLiveData;
