@@ -277,7 +277,7 @@ public class AuthenticationFragment extends Fragment {
 
 
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
-                    id.concat(":").concat(nome).concat(":").concat(cognome).concat(":").concat(email).concat(":").concat(password));
+                    id.concat(":").concat(email).concat(":").concat(password));
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }

@@ -20,7 +20,8 @@ import java.util.List;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Beer;
 
-public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecyclerViewAdapter.BeersViewHolder>{
+public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
 
 
     public interface OnItemClickListener {
@@ -40,21 +41,34 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
         this.application = application;
 
     }
+    @Override
+    public int getItemViewType(int position) {
+        if (beerList.get(position) == null) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
     @NonNull
     @Override
-    public BeersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.beer_card_item, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = null;
 
-        return new BeersViewHolder(view);
+            view = LayoutInflater.from(parent.getContext()).
+                    inflate(R.layout.beer_card_item, parent, false);
+            return new BeersViewHolder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BeersViewHolder holder, int position) {
-        holder.bind(beerList.get(position));
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof BeersViewHolder) {
+            ((BeersViewHolder) holder).bind(beerList.get(position));
+        }
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -64,7 +78,7 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<BeerRecycler
         return 0;
     }
 
-    public  class BeersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class BeersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView beerName;
         private final ImageView beerImage;
         private CheckBox favoriteCheckBox;

@@ -1,9 +1,12 @@
 package sandclub.beeradvisor.ui.welcome;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
+import static sandclub.beeradvisor.util.Constants.PASSWORD;
 import static sandclub.beeradvisor.util.Constants.USE_NAVIGATION_COMPONENT;
 
 import android.content.Intent;
@@ -56,6 +59,7 @@ import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
+import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -64,6 +68,7 @@ public class WelcomeActivity extends AppCompatActivity {
     UserViewModel userViewModel;
     ProgressBar progressIndicator;
     TextView textView;
+    SharedPreferencesUtil sharedPreferencesUtil;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
@@ -79,26 +84,29 @@ public class WelcomeActivity extends AppCompatActivity {
         try {
             // Leggi i dati di login dal file
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
-
             if (storedLoginData != null && !storedLoginData.isEmpty()) {
-                //Se sono presenti informazioni di login, effettua il login automatico
-                performAutoLogin(storedLoginData);
-                }
+
+                    String[] loginInfo = storedLoginData.split(":");
+                    String storedEmail = loginInfo[1];
+                    String storedPassword = loginInfo[2];
+                    if(!storedPassword.equals(".")) {
+                        //Se sono presenti informazioni di login, effettua il login automatico
+                        performAutoLogin(storedEmail, storedPassword);
+                    }else{
+                        dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
+                    }
+            }
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    private void performAutoLogin(String storedLoginData) {
-
+    private void performAutoLogin(String storedEmail, String storedPassword) {
         progressIndicator = findViewById(R.id.progressBar);
         textView = findViewById(R.id.automaticLoginText);
         textView.setVisibility(View.VISIBLE);
         progressIndicator.setVisibility(View.VISIBLE);
-        String[] loginInfo = storedLoginData.split(":");
-        String storedEmail = loginInfo[1];
-        String storedPassword = loginInfo[2];
 
         userViewModel.getUserMutableLiveData(storedEmail, storedPassword, true).observe(
                 this, result -> {

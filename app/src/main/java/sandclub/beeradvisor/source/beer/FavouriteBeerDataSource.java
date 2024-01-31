@@ -30,7 +30,7 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
         this.idToken = idToken;
     }
     @Override
-    public void getFavoriteBeer(String idToken){
+    public void getFavoriteBeer(){
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
                 child(FAVORITE_BEER_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -51,14 +51,14 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
     }
 
     @Override
-    public void addFavoriteBeer(Beer beer, String idToken){
+    public void addFavoriteBeer(Beer beer){
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
-                child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.hashCode())).setValue(beer)
+                child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.getId())).setValue(beer)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         beer.setSynchronized(true);
-                        beerCallback.onSuccessFromCloudWriting(beer, idToken);
+                        beerCallback.onSuccessFromCloudWriting(beer);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -70,7 +70,7 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
     }
 
     @Override
-    public void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList, String idToken) {
+    public void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList) {
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
                 child(FAVORITE_BEER_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
@@ -100,12 +100,12 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
     }
 
     @Override
-    public void deleteFavoriteBeer(Beer beer, String idToken) {
+    public void deleteFavoriteBeer(Beer beer) {
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
-                child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.hashCode())).
+                child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.getId())).
                 removeValue().addOnSuccessListener(aVoid ->{
                     beer.setSynchronized(false);
-                    beerCallback.onSuccessFromCloudWriting(beer, idToken);
+                    beerCallback.onSuccessFromCloudWriting(beer);
                 }).addOnFailureListener(e ->{
                     beerCallback.onFailureFromCloud(e);
                 });

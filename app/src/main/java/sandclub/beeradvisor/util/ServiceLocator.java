@@ -1,7 +1,9 @@
 package sandclub.beeradvisor.util;
 
 import static sandclub.beeradvisor.util.Constants.BEER_API_BASE_URL;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ID;
 import static sandclub.beeradvisor.util.Constants.ID_TOKEN;
 
 import android.app.Application;
@@ -93,9 +95,10 @@ public class ServiceLocator {
         try {
             favoriteBeerDataSource = new FavouriteBeerDataSource(dataEncryptionUtil.
                     readSecretDataWithEncryptedSharedPreferences(
-                            ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID_TOKEN
+                            ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID
                     )
             );
+
         } catch (GeneralSecurityException | IOException e) {
             return null;
         }

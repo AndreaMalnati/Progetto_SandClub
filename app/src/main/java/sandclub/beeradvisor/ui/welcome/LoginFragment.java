@@ -49,8 +49,10 @@ import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.ui.main.MainActivity;
+import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
+import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
 public class LoginFragment extends Fragment {
 
@@ -61,7 +63,7 @@ public class LoginFragment extends Fragment {
 
     private DataEncryptionUtil dataEncryptionUtil;
     ProgressBar progressIndicator;
-
+    private SharedPreferencesUtil sharedPreferencesUtil;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -194,7 +196,10 @@ public class LoginFragment extends Fragment {
 
     private void saveLoginData(String id,String email, String password) {
         dataEncryptionUtil = new DataEncryptionUtil(requireContext());
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
+        sharedPreferencesUtil.writeBooleanData(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME,
+                Constants.SHARED_PREFERENCES_FIRST_LOADING, true);
         try {
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);

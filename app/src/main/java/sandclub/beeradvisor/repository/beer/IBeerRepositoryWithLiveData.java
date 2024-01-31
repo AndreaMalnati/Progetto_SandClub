@@ -10,9 +10,9 @@ import sandclub.beeradvisor.model.Result;
 public interface IBeerRepositoryWithLiveData {
 
     MutableLiveData<Result> fetchAllBeer(long lastUpdate);
-    void updateBeer(Beer beer, String idToken);
+    void updateBeer(Beer beer);
 
-    MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading, String idToken);
+    MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading);
 
 
 }

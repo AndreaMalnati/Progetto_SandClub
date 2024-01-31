@@ -11,12 +11,12 @@ public abstract class BaseFavouriteBeerDataSource {
         this.beerCallback = beerCallback;
     }
 
-    public abstract void getFavoriteBeer(String idToken);
+    public abstract void getFavoriteBeer();
 
-    public abstract void addFavoriteBeer(Beer beer, String idToken);
+    public abstract void addFavoriteBeer(Beer beer);
 
-    public abstract void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList, String idToken);
-    public abstract void deleteFavoriteBeer(Beer beer, String idToken);
+    public abstract void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList);
+    public abstract void deleteFavoriteBeer(Beer beer);
     public abstract void deleteAllFavoriteBeer();
 
 

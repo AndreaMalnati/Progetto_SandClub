@@ -58,12 +58,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public void updateBeer(Beer beer, String idToken){
+    public void updateBeer(Beer beer){
         beerLocalDataSource.updateBeer(beer);
         if(beer.isFavorite()){
-            backupDataSource.addFavoriteBeer(beer, idToken);
+            backupDataSource.addFavoriteBeer(beer);
         }else{
-            backupDataSource.deleteFavoriteBeer(beer, idToken);
+            backupDataSource.deleteFavoriteBeer(beer);
         }
     }
 
@@ -80,11 +80,11 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading, String idToken) {
+    public MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading) {
         if(isFirstLoading){
-            backupDataSource.getFavoriteBeer(idToken);
+            backupDataSource.getFavoriteBeer();
         }else {
-            beerLocalDataSource.getFavoriteBeer(idToken);
+            beerLocalDataSource.getFavoriteBeer();
         }
         return favoriteBeerMutableLiveData;
     }
@@ -118,7 +118,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
 
     @Override
-    public void onBeerFavoriteStatusChanged(List<Beer> beerList, String idToken) {
+    public void onBeerFavoriteStatusChanged(List<Beer> beerList) {
         List<Beer> notSyncronizedBeerList = new ArrayList<>();
         for(Beer beer : beerList){
             if(!beer.isSynchronized()){
@@ -127,7 +127,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         }
 
         if(!notSyncronizedBeerList.isEmpty()){
-            backupDataSource.synchronizeFavoriteBeer(notSyncronizedBeerList, idToken);
+            backupDataSource.synchronizeFavoriteBeer(notSyncronizedBeerList);
         }
 
 
@@ -156,12 +156,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public void onSuccessFromCloudWriting(Beer beer, String idToken) {
+    public void onSuccessFromCloudWriting(Beer beer) {
         if(beer != null){
             beer.setSynchronized(false);
         }
         beerLocalDataSource.updateBeer(beer);
-        backupDataSource.getFavoriteBeer(idToken);
+        backupDataSource.getFavoriteBeer();
     }
 
     @Override

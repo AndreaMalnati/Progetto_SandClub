@@ -84,10 +84,10 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
     }
 
     @Override
-    public void getFavoriteBeer(String idToken) {
+    public void getFavoriteBeer() {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Beer> favoriteNews = beerDao.getFavoriteBeer();
-            beerCallback.onBeerFavoriteStatusChanged(favoriteNews, idToken);
+            List<Beer> favoriteBeer = beerDao.getFavoriteBeer();
+            beerCallback.onBeerFavoriteStatusChanged(favoriteBeer);
         });
     }
 

@@ -2,10 +2,16 @@ package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ID;
+import static sandclub.beeradvisor.util.Constants.ID_TOKEN;
 import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
+import static sandclub.beeradvisor.util.Constants.PASSWORD;
 import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +46,7 @@ import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.util.Constants;
+import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
@@ -76,6 +85,7 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+
         IUserRepository userRepository =
                 ServiceLocator.getInstance().getUserRepository(
                         requireActivity().getApplication()
@@ -83,6 +93,7 @@ public class MainFragment extends Fragment {
         userViewModel = new ViewModelProvider(
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
         IBeerRepositoryWithLiveData beerRepositoryWithLiveData =
                 ServiceLocator.getInstance().getBeerRepository(
                         requireActivity().getApplication()
@@ -123,6 +134,22 @@ public class MainFragment extends Fragment {
         RecyclerView recyclerViewNewBeer2;
         RecyclerView.LayoutManager layoutManager2;
 
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireActivity().getApplication());
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+        boolean first = sharedPreferencesUtil.readBooleanData(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, Constants.SHARED_PREFERENCES_FIRST_LOADING);
+        String id = null;
+        String pw = null;
+        try {
+            id = dataEncryptionUtil.readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID);
+            pw = dataEncryptionUtil.readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Log.d("Pezzone", "id: " + id + " first: " + first + " pw: " + pw);
 
         recyclerViewNewBeer = view.findViewById(R.id.recyclerViewNewBeer);
         layoutManager =
@@ -142,7 +169,7 @@ public class MainFragment extends Fragment {
                     public void onFavoriteButtonPressed(int position) {
                         Log.d("Ciaone", "dentro");
                         beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
-                        beerViewModel.updateBeer(beerList.get(position), userViewModel.getLoggedUser().getUserId());
+                        beerViewModel.updateBeer(beerList.get(position));
                     }
                 });
 
@@ -156,7 +183,7 @@ public class MainFragment extends Fragment {
                         LinearLayoutManager.VERTICAL, false);
 
 
-        NewBeerRecyclerViewAdapter beerRecyclerViewAdapter2 = new NewBeerRecyclerViewAdapter(favouriteBeerList,
+        NewBeerRecyclerViewAdapter beerRecyclerViewAdapter2 = new NewBeerRecyclerViewAdapter(favouriteBeerList,requireActivity().getApplication(),
                 new NewBeerRecyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onBeerItemClick(Beer beer) {
@@ -166,8 +193,8 @@ public class MainFragment extends Fragment {
                     }
                     @Override
                     public void onFavoriteButtonPressed(int position) {
-                        beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
-                        beerViewModel.updateBeer(beerList.get(position), userViewModel.getLoggedUser().getUserId());
+                        favouriteBeerList.get(position).setFavorite(!favouriteBeerList.get(position).isFavorite());
+                        beerViewModel.updateBeer(favouriteBeerList.get(position));
                     }
                 });
 
@@ -191,7 +218,7 @@ public class MainFragment extends Fragment {
                     }
                 });
 
-        SharedPreferencesUtil sharedPreferencesUtil =
+        /*SharedPreferencesUtil sharedPreferencesUtil =
                 new SharedPreferencesUtil(requireActivity().getApplication());
         boolean isFirstLoading = sharedPreferencesUtil.readBooleanData(SHARED_PREFERENCES_FILE_NAME,
                 Constants.SHARED_PREFERENCES_FIRST_LOADING);
@@ -199,9 +226,10 @@ public class MainFragment extends Fragment {
         beerViewModel.getFavoriteBeerLiveData(isFirstLoading, userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccess()) {
-                    favouriteBeerList.clear();
-                    favouriteBeerList.addAll(((Result.Success)result).getData().getBeerList());
-                    beerRecyclerViewAdapter2.notifyDataSetChanged();
+                    int initialSize = this.favouriteBeerList.size();
+                    this.favouriteBeerList.clear();
+                    this.favouriteBeerList.addAll(((Result.Success)result).getData().getBeerList());
+                    beerRecyclerViewAdapter2.notifyItemRangeInserted(initialSize, this.favouriteBeerList.size());
                     if(isFirstLoading){
                         sharedPreferencesUtil.writeBooleanData(SHARED_PREFERENCES_FILE_NAME,
                                 Constants.SHARED_PREFERENCES_FIRST_LOADING, false);
@@ -222,7 +250,7 @@ public class MainFragment extends Fragment {
                 SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
             lastUpdate = sharedPreferencesUtil.readStringData(
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
-        }
+        }*/
 
         seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
             @Override

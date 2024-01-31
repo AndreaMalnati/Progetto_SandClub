@@ -29,9 +29,9 @@ public class BeerViewModel extends ViewModel {
         }
         return beerListLiveData;
     }
-    public MutableLiveData<Result> getFavoriteBeerLiveData(boolean isFirstLoading, String idToken) {
+    public MutableLiveData<Result> getFavoriteBeerLiveData(boolean isFirstLoading) {
         if (favoriteBeerListLiveData == null) {
-            getFavoriteBeer(isFirstLoading, idToken);
+            getFavoriteBeer(isFirstLoading);
         }
         return favoriteBeerListLiveData;
     }
@@ -39,11 +39,11 @@ public class BeerViewModel extends ViewModel {
         beerListLiveData = beerRepositoryWithLiveData.fetchAllBeer(lastUpdate);
     }
 
-    private void getFavoriteBeer(boolean isFirstLoading, String idToken){
-        favoriteBeerListLiveData = beerRepositoryWithLiveData.getFavoriteBeer(isFirstLoading, idToken);
+    private void getFavoriteBeer(boolean isFirstLoading){
+        favoriteBeerListLiveData = beerRepositoryWithLiveData.getFavoriteBeer(isFirstLoading);
     }
-    public void updateBeer(Beer beer, String idToken) {
-        beerRepositoryWithLiveData.updateBeer(beer, idToken);
+    public void updateBeer(Beer beer) {
+        beerRepositoryWithLiveData.updateBeer(beer);
     }
 
 }
