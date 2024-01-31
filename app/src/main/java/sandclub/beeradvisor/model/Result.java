@@ -1,6 +1,6 @@
 package sandclub.beeradvisor.model;
 
-public class Result {
+public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
@@ -17,8 +17,8 @@ public class Result {
      */
     public static final class Success extends Result {
         private final BeerResponse beerResponse;
-        public Success(BeerResponse newsResponse) {
-            this.beerResponse = newsResponse;
+        public Success(BeerResponse beerResponse) {
+            this.beerResponse = beerResponse;
         }
         public BeerResponse getData() {
             return beerResponse;

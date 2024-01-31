@@ -2,6 +2,8 @@ package sandclub.beeradvisor.repository.beer;
 
 import static sandclub.beeradvisor.util.Constants.FRESH_TIMEOUT;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         if (currentTime - lastUpdate > FRESH_TIMEOUT) {
             beerRemoteDataSource.getBeer();
         } else {
+
             beerLocalDataSource.getBeer();
         }
         return allBeerMutableLiveData;
@@ -69,7 +72,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
     @Override
     public void onSuccessFromRemote(BeerApiResponse beerApiResponse, long lastUpdate) {
-        beerLocalDataSource.insertBeer(beerApiResponse.getBeerList());
+        beerLocalDataSource.insertBeer(beerApiResponse);
 
     }
 
@@ -90,9 +93,17 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
-    public void onSuccessFromLocal(List<Beer> beerList) {
-        Result.Success result = new Result.Success(new BeerResponse(beerList));
-        allBeerMutableLiveData.postValue(result);
+    public void onSuccessFromLocal(BeerApiResponse beerApiResponse) {
+        if (allBeerMutableLiveData.getValue() != null && allBeerMutableLiveData.getValue().isSuccess()) {
+            List<Beer> beerList = ((Result.Success)allBeerMutableLiveData.getValue()).getData().getBeerList();
+            beerList.addAll(beerApiResponse.getBeerList());
+            beerApiResponse.setBeerList(beerList);
+            Result.Success result = new Result.Success(beerApiResponse);
+            allBeerMutableLiveData.postValue(result);
+        } else {
+            Result.Success result = new Result.Success(beerApiResponse);
+            allBeerMutableLiveData.postValue(result);
+        }
     }
 
     @Override
@@ -166,6 +177,11 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
     @Override
     public void onFailureFromCloud(Exception exception) {
+
+    }
+    @Override
+    public void onSuccessSynchronization(){
+        Log.d(TAG, "Beer synchronized from remote");
 
     }
 

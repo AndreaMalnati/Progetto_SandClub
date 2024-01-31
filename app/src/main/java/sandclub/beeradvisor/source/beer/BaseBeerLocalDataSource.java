@@ -3,6 +3,7 @@ package sandclub.beeradvisor.source.beer;
 import java.util.List;
 
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.BeerApiResponse;
 
 public abstract class BaseBeerLocalDataSource { //Classe base per la lettura in locale
 
@@ -17,7 +18,9 @@ public abstract class BaseBeerLocalDataSource { //Classe base per la lettura in 
     //public abstract void updateBeer(Beer beer); //Aggiorna stato birra da preferito o no
 
     //public abstract void deleteFavoriteBeer(); //Cancella birra preferita
+    public abstract void insertBeer(BeerApiResponse beerApiResponse); //Inserisce birre dentro database
     public abstract void insertBeer(List<Beer> beerList); //Inserisce birre dentro database
+
     public abstract void updateBeer(Beer beer);
     public abstract void getFavoriteBeer();
 

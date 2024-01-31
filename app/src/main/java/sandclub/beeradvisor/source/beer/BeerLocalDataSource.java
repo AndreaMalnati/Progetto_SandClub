@@ -11,6 +11,7 @@ import java.util.List;
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.BeerApiResponse;
 import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
 import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
@@ -34,32 +35,62 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
     @Override
     public void getBeer() {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-            beerCallback.onSuccessFromLocal(beerDao.getAll());
+            BeerApiResponse beerApiResponse = new BeerApiResponse();
+            beerApiResponse.setBeerList(beerDao.getAll());
+            beerCallback.onSuccessFromLocal(beerApiResponse);
         });
     }
 
     @Override
-    public void insertBeer(List<Beer> beerList) {
+    public void insertBeer(BeerApiResponse beerApiResponse) {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
 
 
-            //Legge birre già presenti da database
-            List<Beer> allBeer = beerDao.getAll();
-            for (Beer beer : allBeer) {
-                if (beerList.contains(beer)) {
-                    beerList.set(beerList.indexOf(beer), beer);
+                    //Legge birre già presenti da database
+                    List<Beer> allBeer = beerDao.getAll();
+                    List<Beer> beerList = beerApiResponse.getBeerList();
+
+                    if (beerList != null) {
+
+                        for (Beer beer : allBeer) {
+                            if (beerList.contains(beer)) {
+                                beerList.set(beerList.indexOf(beer), beer);
+                            }
+                        }
                 }
-            }
 
             // Scrive le birre nel database
             beerDao.insertBeerList(beerList);
             sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
                     LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
 
-            beerCallback.onSuccessFromLocal(beerList);
+            beerCallback.onSuccessFromLocal(beerApiResponse);
         });
     }
 
+
+    @Override
+    public void insertBeer(List<Beer> beerList) {
+        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+
+            if (beerList != null) {
+                List<Beer> allBeer = beerDao.getAll();
+
+                for (Beer beer : allBeer) {
+                    if (beerList.contains(beer)) {
+                        beer.setSynchronized(true);
+                        beerList.set(beerList.indexOf(beer), beer);
+                    }
+                }
+            }
+
+            // Scrive le birre nel database
+            beerDao.insertBeerList(beerList);
+            BeerApiResponse beerApiResponse = new BeerApiResponse();
+            beerApiResponse.setBeerList(beerList);
+            beerCallback.onSuccessSynchronization();
+        });
+    }
     @Override
     public void updateBeer(Beer beer) {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {

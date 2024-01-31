@@ -155,6 +155,11 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
+    public void onSuccessSynchronization() {
+
+    }
+
+    @Override
     public void onSuccessFromRemoteDatabase(List<Beer> beerList) {
 
     }
@@ -188,7 +193,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
-    public void onSuccessFromLocal(List<Beer> beerList) {
+    public void onSuccessFromLocal(BeerApiResponse beerApiResponse) {
 
     }
 
