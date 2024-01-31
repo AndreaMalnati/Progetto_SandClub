@@ -15,11 +15,35 @@
       },
       "oauth_client": [
         {
+          "client_id": "403704541151-m78f20mjls5fsnoitjdkhq188heo0pn3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sandclub.beeradvisor",
+            "certificate_hash": "11b442256531bcb1c0505b180d4fb8b12612c231"
+          }
+        },
+        {
           "client_id": "403704541151-ovvub3vmmfjtvs7ot95ccpe55mqrpp66.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "sandclub.beeradvisor",
             "certificate_hash": "5df4af8aade989ab96d5c35c1609d4c99dfb7273"
+          }
+        },
+        {
+          "client_id": "403704541151-p1fnt7hnlv7hbjn7onjadgf23lt4fuiu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sandclub.beeradvisor",
+            "certificate_hash": "930ea8163f3fc395185eba2d083e0a3c7acc6f3f"
+          }
+        },
+        {
+          "client_id": "403704541151-v509moqocckhfgjb3veik68i91eku4ms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sandclub.beeradvisor",
+            "certificate_hash": "4b5b3199f07afd72e2b2f9c05220a479c889faf3"
           }
         },
         {
