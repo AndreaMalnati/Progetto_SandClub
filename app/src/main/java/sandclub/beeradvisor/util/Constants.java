@@ -28,7 +28,7 @@ public class Constants {
     public static final String API_KEY_ERROR = "api_key_error";
     public static final String RETROFIT_ERROR = "retrofit_error";
     public static final String UNEXPECTED_ERROR = "unexpected_error";
-    public static final int FRESH_TIMEOUT = 0;
+    public static final int FRESH_TIMEOUT = 100 * 60;
 
     public static final String WEAK_PASSWORD_ERROR = "weak_password";
     public static final String INVALID_CREDENTIALS_ERROR = "invalid_credentials";

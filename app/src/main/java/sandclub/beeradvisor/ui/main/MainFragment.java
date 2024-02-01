@@ -1,17 +1,11 @@
 package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ID;
-import static sandclub.beeradvisor.util.Constants.ID_TOKEN;
-import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
 import static sandclub.beeradvisor.util.Constants.PASSWORD;
-import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +33,6 @@ import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
-import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.user.IUserRepository;
@@ -205,6 +198,7 @@ public class MainFragment extends Fragment {
         beerViewModel.getBeer(System.currentTimeMillis()).observe(getViewLifecycleOwner(),
                 result -> {
                     if (result.isSuccess()) {
+                        Log.d("mainFragment", "getBeer: success");
                         int initialSize = this.beerList.size();
                         this.beerList.clear();
                         this.beerList.addAll(((Result.Success) result).getData().getBeerList());

@@ -13,8 +13,8 @@ public class BeerApiResponse extends BeerResponse{
         super();
     }
 
-    public BeerApiResponse(String status, int totalResults, List<Beer> birre) {
-        super(birre);
+    public BeerApiResponse(String status, int totalResults, List<Beer> beers) {
+        super(beers);
         this.status = status;
         this.totalResults = totalResults;
     }

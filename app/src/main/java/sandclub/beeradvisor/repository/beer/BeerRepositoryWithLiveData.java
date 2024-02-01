@@ -48,6 +48,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     @Override
     public MutableLiveData<Result> fetchAllBeer(long lastUpdate) {
         long currentTime = System.currentTimeMillis();
+        Log.d(TAG, "fetch all beer"+ currentTime + " " + lastUpdate);
 
         // It gets the news from the Web Service if the last download
         // of the news has been performed more than FRESH_TIMEOUT value ago
