@@ -59,6 +59,8 @@ public class BeerFragment extends Fragment {
                         LinearLayoutManager.HORIZONTAL, false);
 
         new BeerFragment.LoadBeerTask(recyclerViewComment, layoutManager).execute();
+
+        //Beer beer = BeerFragment.fromBundle(getArguments()).getBeer();
     }
 
     private static class LoadBeerTask extends AsyncTask<Void, Void, List<Beer>> {

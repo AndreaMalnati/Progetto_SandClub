@@ -61,7 +61,11 @@
         <fragment
         android:id="@+id/beerFragment"
         android:name="sandclub.beeradvisor.ui.main.BeerFragment"
-        android:label="BeerFragment" />
+        android:label="BeerFragment" >
+            <argument
+                android:name="beer"
+                app:argType="sandclub.beeradvisor.model.Beer" />
+        </fragment>
     <activity
         android:id="@+id/welcomeActivity"
         android:name="sandclub.beeradvisor.ui.welcome.WelcomeActivity"

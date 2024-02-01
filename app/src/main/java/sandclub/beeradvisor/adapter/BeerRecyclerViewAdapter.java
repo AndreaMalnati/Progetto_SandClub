@@ -98,14 +98,14 @@ public class BeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerView
             String imageUrl = beer.getImage_url();
             favoriteCheckBox.setChecked(beer.isFavorite());
 
-            if (imageUrl != null && !imageUrl.equalsIgnoreCase("https://images.punkapi.com/v2/keg.png")) {
-                Glide.with(itemView.getContext())
-                        .load(imageUrl)
-                        .into(beerImage);
-            }else
-                Glide.with(itemView.getContext())
-                        .load(R.drawable.ic_logo)
-                        .into(beerImage);
+                if (imageUrl != null && !imageUrl.equalsIgnoreCase("https://images.punkapi.com/v2/keg.png")) {
+                    Glide.with(itemView.getContext())
+                            .load(imageUrl)
+                            .into(beerImage);
+                }else
+                    Glide.with(itemView.getContext())
+                            .load(R.drawable.ic_logo)
+                            .into(beerImage);
         }
 
         @Override

@@ -125,7 +125,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.iconFavorite) {
+            if(v.getId() == R.id.iconFavorite2) {
                 onItemClickListener.onFavoriteButtonPressed(getAdapterPosition());
 
             }else {

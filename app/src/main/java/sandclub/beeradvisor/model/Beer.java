@@ -68,6 +68,7 @@ public class Beer implements Parcelable {
         isFavorite = favorite;
     }
 
+    @Ignore
     public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, List<String> food_pairing, String brewers_tips, String contributed_by, boolean isFavorite, boolean isSynchronized) {
         this.id = id;
         this.name = name;
@@ -83,6 +84,10 @@ public class Beer implements Parcelable {
         this.contributed_by = contributed_by;
         this.isFavorite = isFavorite;
         this.isSynchronized = isSynchronized;
+    }
+
+    public Beer(int id, String name, String tagline, String description, String image_url, double abv, double ibu, double ebc, double srm, List<String> food_pairing, String brewers_tips, String contributed_by) {
+       this(id, name, tagline, description, image_url, abv, ibu, ebc, srm, food_pairing, brewers_tips, contributed_by, false, false);
     }
 
     @Ignore

@@ -3,6 +3,8 @@ package sandclub.beeradvisor.source.beer;
 import static sandclub.beeradvisor.util.Constants.API_KEY_ERROR;
 import static sandclub.beeradvisor.util.Constants.RETROFIT_ERROR;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import retrofit2.Call;
@@ -25,7 +27,7 @@ public class BeerRemoteDataSource extends BaseBeerRemoteDataSource {
     @Override
     public void getBeer() {
         Call<BeerApiResponse> beerResponseCall = beerApiService.getAllBeer(String.valueOf(page), "80");
-
+        Log.d("Ciaone", "ciao, " + beerResponseCall);
         beerResponseCall.enqueue(new Callback<BeerApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<BeerApiResponse> call,
