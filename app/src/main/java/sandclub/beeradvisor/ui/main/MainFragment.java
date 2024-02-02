@@ -131,6 +131,7 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         seeAllNewBeers = view.findViewById(R.id.seeAllNewBeers);
         seeAllLastDrunk = view.findViewById(R.id.seeAllLastDrunk);
 

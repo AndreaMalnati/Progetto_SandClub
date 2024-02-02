@@ -13,7 +13,7 @@ import java.util.List;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerResponse;
 
-public class JSONParserUtil {
+public class    JSONParserUtil {
     private static final String TAG = JSONParserUtil.class.getSimpleName();
 
 
