@@ -88,7 +88,8 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
-
+        beerList = new ArrayList<>();
+        limitBeerList = new ArrayList<>();
         IUserRepository userRepository =
                 ServiceLocator.getInstance().getUserRepository(
                         requireActivity().getApplication()
@@ -113,8 +114,7 @@ public class MainFragment extends Fragment {
                     getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
         }
 
-        beerList = new ArrayList<>();
-        limitBeerList = new ArrayList<>();
+
     }
 
     @Override
@@ -203,7 +203,9 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onBeerItemClick(Beer beer) {
                         Snackbar.make(recyclerViewNewBeer, beer.getName(), Snackbar.LENGTH_SHORT).show();
-                        Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("beer", beer);
+                        Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment, bundle);
                     }
                     @Override
                     public void onFavoriteButtonPressed(int position) {

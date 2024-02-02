@@ -9,6 +9,7 @@ import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
 import static sandclub.beeradvisor.util.Constants.REQUEST_CAMERA_PERMISSION;
 import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_CAPTURE;
 import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_PICK;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.Manifest;
 import android.app.Activity;
@@ -144,7 +145,8 @@ public class SettingsFragment extends Fragment {
                 getViewLifecycleOwner(), result -> {
                     if (result.isSuccessUser()) {
                         User user = ((Result.UserResponseSuccess) result).getData();
-                        nameSurname.setText(user.getNome() + " " + user.getCognome());
+                        Log.d("Testata", user.getBirreBevute().toString());
+                        Log.d("Testina", String.valueOf(user.getBirreBevute().size()));
                         //updatePhotoImageView();
                         profilePhoto = requireView().findViewById(R.id.profilePhoto);
 
@@ -248,5 +250,7 @@ public class SettingsFragment extends Fragment {
                     Snackbar.make(requireView(), getResources().getString(R.string.camera_permission_denied), Snackbar.LENGTH_SHORT).show();
                 }
             });
+
+
 }
 

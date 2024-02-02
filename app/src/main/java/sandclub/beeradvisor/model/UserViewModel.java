@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.HashMap;
+
 import sandclub.beeradvisor.repository.user.IUserRepository;
 
 public class UserViewModel extends ViewModel {
@@ -16,6 +18,8 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Result> userMutableLiveData;
     private MutableLiveData<Result> userFavoriteNewsMutableLiveData;
     private MutableLiveData<Result> userPreferencesMutableLiveData;
+    private MutableLiveData<Result> userLastBeerDrunkMutableLiveData;
+
     private boolean authenticationError;
 
     public UserViewModel(IUserRepository userRepository) {
@@ -63,6 +67,15 @@ public class UserViewModel extends ViewModel {
             changePhoto(token, imageBitmap);
 
         return userMutableLiveData;
+    }
+
+    public MutableLiveData<Result> addPhotoBeerDrunkMutableLiveData(String token, int id_Beer, String image){
+            addBeerPhotoDrunk(token, id_Beer, image);
+        return userMutableLiveData;
+    }
+
+    public void addBeerPhotoDrunk(String token, int id_Beer, String image){
+        userMutableLiveData = userRepository.addBeerPhotoDrunk(token, id_Beer, image);
     }
 
     /*public MutableLiveData<Result> getUserFavoriteNewsMutableLiveData(String idToken) {

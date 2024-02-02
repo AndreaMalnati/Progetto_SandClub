@@ -1,19 +1,17 @@
 package sandclub.beeradvisor.source.beer;
 
-import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
-import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.UNEXPECTED_ERROR;
 import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import sandclub.beeradvisor.database.BeerDao;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerApiResponse;
-import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
-import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
@@ -79,6 +77,7 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
                 for (Beer beer : allBeer) {
                     if (beerList.contains(beer)) {
                         beer.setSynchronized(true);
+                        beer.setFavorite(true);
                         beerList.set(beerList.indexOf(beer), beer);
                     }
                 }
@@ -120,6 +119,20 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
             List<Beer> favoriteBeer = beerDao.getFavoriteBeer();
             beerCallback.onBeerFavoriteStatusChanged(favoriteBeer);
         });
+    }
+
+    @Override
+    public Beer getBeerId(Set<Integer> ids) {
+        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<Beer> beerList = new ArrayList<>();
+            for(Integer id : ids) {
+                Beer beer = beerDao.getBeer(id);
+                beerList.add(beer);
+            }
+
+            beerCallback.onSuccessGettingBeer(beerList);
+        });
+        return null;
     }
 
 

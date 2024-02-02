@@ -1,10 +1,8 @@
 package sandclub.beeradvisor.util;
 
 import static sandclub.beeradvisor.util.Constants.BEER_API_BASE_URL;
-import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ID;
-import static sandclub.beeradvisor.util.Constants.ID_TOKEN;
 
 import android.app.Application;
 
@@ -121,6 +119,7 @@ public class ServiceLocator {
 
         BaseBeerLocalDataSource beerLocalDataSource =
                 new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
+
 
         return new UserRepository(userRemoteAuthenticationDataSource,
                 beerLocalDataSource, userDataRemoteDataSource);

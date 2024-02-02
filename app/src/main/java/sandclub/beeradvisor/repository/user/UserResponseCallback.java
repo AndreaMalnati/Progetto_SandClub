@@ -1,5 +1,6 @@
 package sandclub.beeradvisor.repository.user;
 
+import java.util.HashMap;
 import java.util.List;
 
 import sandclub.beeradvisor.model.Beer;
@@ -14,4 +15,6 @@ public interface UserResponseCallback {
     void onSuccessFromGettingUserPreferences();
     void onFailureFromRemoteDatabase(String message);
     void onSuccessLogout();
+    void onSuccessFromloudWriting(HashMap<Integer, String> image);
+    void onFailureFromCloud(Exception exception);
 }

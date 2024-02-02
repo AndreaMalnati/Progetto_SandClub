@@ -1,6 +1,7 @@
 package sandclub.beeradvisor.source.beer;
 
 import java.util.List;
+import java.util.Set;
 
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerApiResponse;
@@ -23,6 +24,8 @@ public abstract class BaseBeerLocalDataSource { //Classe base per la lettura in 
 
     public abstract void updateBeer(Beer beer);
     public abstract void getFavoriteBeer();
+
+    public abstract Beer getBeerId(Set<Integer> ids);
 
 
 }

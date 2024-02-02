@@ -1,7 +1,10 @@
 package sandclub.beeradvisor.ui.main;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +31,10 @@ import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.beer.BeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.util.Constants;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
@@ -41,6 +47,7 @@ public class FavoriteBeersFragment extends Fragment {
     private BeerViewModel beerViewModel;
     private RecyclerView.LayoutManager layoutManager;
     private UserViewModel userViewModel;
+    private RecyclerView favoriteBeersRecyclerView;
     private NewBeerRecyclerViewAdapter favoriteBeerRecyclerViewAdapter;
     //mettimi i metodi essenziali di un frgment
     //onCreateView
@@ -56,15 +63,23 @@ public class FavoriteBeersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        beerList = new ArrayList<>();
-        beerViewModel = new ViewModelProvider(requireActivity()).get(BeerViewModel.class);
-        IUserRepository userRepository =
-                ServiceLocator.getInstance().getUserRepository(
+        IBeerRepositoryWithLiveData beerRepositoryWithLiveData =
+                ServiceLocator.getInstance().getBeerRepository(
                         requireActivity().getApplication()
                 );
-        userViewModel = new ViewModelProvider(
-                this,
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        Log.d(TAG, "Birre caricate");
+
+
+        if(beerRepositoryWithLiveData != null) {
+            beerViewModel = new ViewModelProvider(
+                    this,
+                    new BeerViewModelFactory(beerRepositoryWithLiveData)).get(BeerViewModel.class);
+        }else {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
+        }
+        beerList = new ArrayList<>();
+
     }
 
     @Override
@@ -79,35 +94,31 @@ public class FavoriteBeersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        String idToken = userViewModel.getLoggedUser().getUserId();
-
-        RecyclerView favoriteBeer = view.findViewById(R.id.recyclerViewFavoriteBeers);
+        favoriteBeersRecyclerView = view.findViewById(R.id.recyclerViewFavoriteBeers);
         layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
-        favoriteBeerRecyclerViewAdapter = new NewBeerRecyclerViewAdapter(beerList, getActivity().getApplication(), new NewBeerRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onBeerItemClick(Beer beer) {
-                Navigation.findNavController(favoriteBeer).navigate(R.id.action_mainFragment_to_beerFragment);
-                Navigation.findNavController(view).navigate(R.id.action_favoriteBeersFragment_to_beerFragment);
-            }
 
-            @Override
-            public void onFavoriteButtonPressed(int position) {
-                Beer beer = beerList.get(position);
-                beer.setFavorite(false);
-                beerViewModel.updateBeer(beer);
-                beerList.remove(position);
-                favoriteBeerRecyclerViewAdapter.notifyItemRemoved(position);
-                Snackbar.make(view, "Beer removed from favorites", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        favoriteBeerRecyclerViewAdapter = new NewBeerRecyclerViewAdapter(beerList,
+                requireActivity().getApplication(),
+                new NewBeerRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onBeerItemClick(Beer beer) {
+                        Snackbar.make(favoriteBeersRecyclerView, beer.getName(), Snackbar.LENGTH_SHORT).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("beer", beer);
+                        Navigation.findNavController(favoriteBeersRecyclerView).navigate(R.id.action_mainFragment_to_beerFragment, bundle);
+                    }
+                    @Override
+                    public void onFavoriteButtonPressed(int position) {
+                        Log.d("Ciaone", "dentro");
+                        beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
+                        beerViewModel.updateBeer(beerList.get(position));
+                    }
+                });
 
-        favoriteBeer.setLayoutManager(layoutManager);
-        favoriteBeer.setAdapter(favoriteBeerRecyclerViewAdapter);
-
+        favoriteBeersRecyclerView.setLayoutManager(layoutManager);
+        favoriteBeersRecyclerView.setAdapter(favoriteBeerRecyclerViewAdapter);
         SharedPreferencesUtil sharedPreferencesUtil =
                 new SharedPreferencesUtil(requireActivity().getApplication());
 
@@ -115,26 +126,35 @@ public class FavoriteBeersFragment extends Fragment {
                 Constants.SHARED_PREFERENCES_FIRST_LOADING);
 
 
-        beerViewModel.getFavoriteBeerLiveData(isFirstLoading).observe(getViewLifecycleOwner(), result -> {
-            if (result != null){
-                beerList.clear();
-                beerList.addAll(((Result.Success)result).getData().getBeerList());
-                favoriteBeerRecyclerViewAdapter.notifyDataSetChanged();
-                if(isFirstLoading){
-                    /*sharedPreferencesUtil.writeBooleanData(Constants.SHARED_PREFERENCES_FILE_NAME,
-                            Constants.SHARED_PREFERENCES_FIRST_LOADING, false);*/
-                }
-            }else{
-                ErrorMessagesUtil errorMessagesUtil =
-                        new ErrorMessagesUtil(requireActivity().getApplication());
-                Snackbar.make(view, errorMessagesUtil.
-                                getErrorMessage(((Result.Error)result).getMessage()),
-                        Snackbar.LENGTH_SHORT).show();
-            }
-        });
+
+        Log.d("Ciaone", "size fuori: " + beerList.size());
+        Log.d("Ciaone", "isFirstLoading: " + isFirstLoading);
+        beerViewModel.getFavoriteBeerLiveData(isFirstLoading).observe(getViewLifecycleOwner(),
+                result -> {
+                    if(result != null) {
+                        if (result.isSuccess()) {
+                            int initialSize = this.beerList.size();
+                            Log.d("Ciaone", "size: " + initialSize);
+                            this.beerList.clear();
+                            Log.d("Ciaone", "size: " + this.beerList.size());
+                            this.beerList.addAll(((Result.Success) result).getData().getBeerList());
+                            favoriteBeerRecyclerViewAdapter.notifyDataSetChanged();
+
+                            if (isFirstLoading) {
+                                sharedPreferencesUtil.writeBooleanData(Constants.SHARED_PREFERENCES_FILE_NAME,
+                                        Constants.SHARED_PREFERENCES_FIRST_LOADING, false);
+                            }
+                            favoriteBeerRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.beerList.size());
+                        } else {
+                            ErrorMessagesUtil errorMessagesUtil =
+                                    new ErrorMessagesUtil(requireActivity().getApplication());
+                            Snackbar.make(view, errorMessagesUtil.
+                                            getErrorMessage(((Result.Error) result).getMessage()),
+                                    Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
-
-
 
 
 }

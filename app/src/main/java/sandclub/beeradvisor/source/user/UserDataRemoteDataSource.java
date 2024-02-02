@@ -5,6 +5,7 @@ import static sandclub.beeradvisor.util.Constants.NEW_PASSWORD_ERROR;
 import static sandclub.beeradvisor.util.Constants.PASSWORD_DATABASE_REFERENCE;
 import static sandclub.beeradvisor.util.Constants.PASSWORD_ERROR_GOOGLE;
 import static sandclub.beeradvisor.util.Constants.USER_DATABASE_REFERENCE;
+import static sandclub.beeradvisor.util.Constants.USER_LAST_DRUNK_DATABASE_REFERENCE;
 
 import android.util.Log;
 
@@ -17,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
@@ -69,7 +72,24 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 Log.d(TAG, "Error getting data", task.getException());
                 userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
             } else {
-                User user = task.getResult().getValue(User.class);
+                DataSnapshot userSnapshot = task.getResult();
+                User user = userSnapshot.getValue(User.class);
+
+                // Verifica se il ramo last_drunk_beer esiste
+                if (userSnapshot.hasChild("last_drunk_beer")) {
+                    DataSnapshot lastDrunkBeerSnapshot = userSnapshot.child("last_drunk_beer");
+                    HashMap<Integer, String> lastDrunkBeerMap = new HashMap<>();
+
+                    // Itera sui sotto-nodi di last_drunk_beer per creare la HashMap
+                    for (DataSnapshot childSnapshot : lastDrunkBeerSnapshot.getChildren()) {
+                        int beerId = Integer.parseInt(childSnapshot.getKey());
+                        String beerValue = childSnapshot.getValue(String.class);
+                        lastDrunkBeerMap.put(beerId, beerValue);
+                    }
+
+                    // Imposta la HashMap lastDrunkBeerMap nell'oggetto User
+                    user.setBirreBevute(lastDrunkBeerMap);
+                }
                 userResponseCallback.onSuccessFromRemoteDatabase(user);
             }
         });
@@ -131,4 +151,28 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             }
         });
     }
+
+
+    public void addPhotoLastDrunkBeer(String token, int id_Beer, String image){
+        Log.d("Testata", "Dentro");
+        databaseReference.child(USER_DATABASE_REFERENCE).child(token).child(USER_LAST_DRUNK_DATABASE_REFERENCE).child(String.valueOf(id_Beer))
+                .setValue(image).addOnSuccessListener(aVoid -> {
+            Log.d("Testata", "Dentro successo");
+            databaseReference.child(USER_DATABASE_REFERENCE).child(token).get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Log.d(TAG, "Error getting data", task.getException());
+                    userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
+                } else {
+                    Log.d("Testata", "dentro successo");
+                    User user = task.getResult().getValue(User.class);
+                    userResponseCallback.onSuccessFromRemoteDatabase(user);
+                }
+            });
+        }).addOnFailureListener(e -> {
+            Log.d("Testata", "Dentro failure");
+            userResponseCallback.onFailureFromRemoteDatabase(e.getLocalizedMessage());
+        });
+
+    }
+
 }

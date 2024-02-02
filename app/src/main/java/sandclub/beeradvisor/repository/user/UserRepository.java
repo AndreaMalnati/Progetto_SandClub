@@ -1,12 +1,8 @@
 package sandclub.beeradvisor.repository.user;
 
-import android.graphics.Bitmap;
-import android.util.Base64;
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
-import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import sandclub.beeradvisor.model.Beer;
@@ -27,9 +23,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     private final MutableLiveData<Result> userMutableLiveData;
     //private final MutableLiveData<Result> userFavoriteBeerMutableLiveData;
     private final MutableLiveData<Result> userPreferencesMutableLiveData;
+    private final MutableLiveData<Result> userLastBeerDrunkImageDataSourceLiveData;
+
 
     public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource,
-                          BaseBeerLocalDataSource beerLocalDataSource, BaseUserDataRemoteDataSource userDataRemoteDataSource) {
+                          BaseBeerLocalDataSource beerLocalDataSource, BaseUserDataRemoteDataSource userDataRemoteDataSource
+                          ) {
         this.userRemoteDataSource = userRemoteDataSource;
         this.userDataRemoteDataSource = userDataRemoteDataSource;
         this.beerLocalDataSource = beerLocalDataSource;
@@ -39,6 +38,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);
         this.beerLocalDataSource.setBeerCallback(this);
+        this.userLastBeerDrunkImageDataSourceLiveData = new MutableLiveData<>();
     }
 
     @Override
@@ -93,6 +93,13 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         userDataRemoteDataSource.changePhoto(token, imageBitmap);
         return userMutableLiveData;
     }
+
+    @Override
+    public MutableLiveData<Result> addBeerPhotoDrunk(String token, int id_Beer, String image) {
+        userDataRemoteDataSource.addPhotoLastDrunkBeer(token, id_Beer, image);
+        return userMutableLiveData;
+    }
+
     @Override
     public User getLoggedUser() {
         return userRemoteDataSource.getLoggedUser();    }
@@ -160,6 +167,11 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
+    public void onSuccessGettingBeer(List<Beer> beerList) {
+
+    }
+
+    @Override
     public void onSuccessFromRemoteDatabase(List<Beer> beerList) {
 
     }
@@ -180,6 +192,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         Result.UserResponseSuccess result = new Result.UserResponseSuccess(
                 new User("", "", "", "", ""));
         userMutableLiveData.postValue(result);
+    }
+
+    @Override
+    public void onSuccessFromloudWriting(HashMap<Integer, String> image) {
+        userLastBeerDrunkImageDataSourceLiveData.postValue(new Result.UserResponseSuccess(
+                new User("", "", "", "", "", "", "", null)));
     }
 
     @Override

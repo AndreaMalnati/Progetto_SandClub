@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/beer_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:background="@null"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/beer_image"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/testo"
             android:text="Nome birra"
             android:textColor="@color/md_theme_light_inversePrimary"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/beer_image"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:fontFamily="@font/testo"
             android:text="@string/gradiaton"
             android:textColor="@color/md_theme_light_inversePrimary"
@@ -49,24 +49,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="23dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_toRightOf="@id/beer_grade"
             android:fontFamily="@font/testo"
             android:text="ibu"
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/beer_tagLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/beer_image"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="70dp"
-            android:fontFamily="@font/testo"
-            android:text="TagLine"
-            android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/beer_description"
@@ -80,23 +69,27 @@
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
+        <ScrollView
+            android:layout_below="@id/beer_description"
+            android:id="@+id/beer_description_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
         <TextView
             android:id="@+id/beer_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/beer_description"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/testo"
             android:text="Descrizione da cambiare"
             android:textColor="@color/md_theme_light_scrim"
-            android:textSize="20dp" />
-
+            android:textSize="15dp" />
+        </ScrollView>
         <TextView
             android:id="@+id/beer_foodPairings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/beer_description_text"
+            android:layout_below="@id/beer_description_scroll"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/testo"
@@ -104,6 +97,12 @@
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
+
+        <ScrollView
+            android:layout_below="@id/beer_foodPairings"
+            android:id="@+id/beer_foodPairing_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
         <TextView
             android:id="@+id/beer_foodPairings_text"
             android:layout_width="wrap_content"
@@ -114,8 +113,8 @@
             android:fontFamily="@font/testo"
             android:text="Food pairings da cambiare"
             android:textColor="@color/md_theme_light_scrim"
-            android:textSize="20dp" />
-
+            android:textSize="15dp" />
+        </ScrollView>
         <RatingBar
             android:id="@+id/ratingBar"
             style="?android:attr/ratingBarStyleSmall"
@@ -128,7 +127,28 @@
             android:rating="0"
             android:stepSize="1.0"
             android:isIndicator="true"/>
+        <ImageView
+            android:id="@+id/sign_as_drunk_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/ratingBar"
+            android:layout_toEndOf="@+id/beer_image"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
 
+            android:background="@drawable/ic_app_beertappo"
+            android:text="@string/sign_as_drunk"/>
+
+        <CheckBox
+            android:id="@+id/favorite_checkbox"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_toEndOf="@+id/sign_as_drunk_button"
+            android:layout_below="@id/ratingBar"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:button="@drawable/sl_favourite_24dp"
+        />
         <TextView
             android:id="@+id/ratingBar_text"
             android:layout_width="wrap_content"
@@ -145,13 +165,26 @@
             android:id="@+id/beer_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/beer_foodPairings_text"
+            android:layout_below="@id/beer_foodPairing_scroll"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/testo"
             android:text="@string/comments"
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/mapimg"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.ImageView.Rounded"
+            />
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
@@ -164,6 +197,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/ic_google_maps_shape"
             android:contentDescription="@string/map_description" />
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewComments"

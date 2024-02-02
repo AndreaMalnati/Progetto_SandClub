@@ -11,6 +11,8 @@ import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
 import static sandclub.beeradvisor.util.Constants.NOME;
 import static sandclub.beeradvisor.util.Constants.PASSWORD;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FIRST_LOADING;
 import static sandclub.beeradvisor.util.Constants.USE_NAVIGATION_COMPONENT;
 
 import android.content.Intent;
@@ -199,7 +201,7 @@ public class LoginFragment extends Fragment {
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
         sharedPreferencesUtil.writeBooleanData(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME,
-                Constants.SHARED_PREFERENCES_FIRST_LOADING, true);
+                SHARED_PREFERENCES_FIRST_LOADING, true);
         try {
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
@@ -208,7 +210,8 @@ public class LoginFragment extends Fragment {
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
 
-
+            sharedPreferencesUtil.writeBooleanData(SHARED_PREFERENCES_FILE_NAME,
+                    SHARED_PREFERENCES_FIRST_LOADING, true);
 
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
                     id.concat(":").concat(email).concat(":").concat(password));

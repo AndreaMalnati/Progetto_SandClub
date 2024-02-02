@@ -10,6 +10,8 @@ import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
 import static sandclub.beeradvisor.util.Constants.NOME;
 import static sandclub.beeradvisor.util.Constants.PASSWORD;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FIRST_LOADING;
 import static sandclub.beeradvisor.util.Constants.USE_NAVIGATION_COMPONENT;
 
 import android.app.Activity;
@@ -76,6 +78,7 @@ import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.util.ServiceLocator;
+import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
 public class AuthenticationFragment extends Fragment {
 
@@ -97,6 +100,7 @@ public class AuthenticationFragment extends Fragment {
     private ActivityResultLauncher<IntentSenderRequest> activityResultLauncher;
 
     private ActivityResultContracts.StartIntentSenderForResult startIntentSenderForResult;
+    private SharedPreferencesUtil sharedPreferencesUtil;
 
 
 
@@ -259,9 +263,12 @@ public class AuthenticationFragment extends Fragment {
 
     private void saveLoginData(String id,String nome, String cognome, String email, String password) {
         dataEncryptionUtil = new DataEncryptionUtil(requireContext());
-         if(password.equals(""))
-            password = ".";
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
+        if(password.equals(""))
+            password = ".";
+        sharedPreferencesUtil.writeBooleanData(SHARED_PREFERENCES_FILE_NAME,
+                SHARED_PREFERENCES_FIRST_LOADING, true);
         try {
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
@@ -273,7 +280,6 @@ public class AuthenticationFragment extends Fragment {
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
-
 
 
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,

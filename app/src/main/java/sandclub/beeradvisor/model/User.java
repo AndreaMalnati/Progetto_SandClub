@@ -15,8 +15,7 @@ public class User{
     String password;
     String photoUrl;
     String photoUrlGoogle;
-    List<Beer> birrePreferite;
-    HashMap<Beer, String> birreBevute;
+    HashMap<Integer, String> birreBevute;
 
     public String getPhotoUrlGoogle() {
         return photoUrlGoogle;
@@ -40,7 +39,7 @@ public class User{
 
 
     //User google
-    public User(String userId, String nome, String cognome, String email, String password, String photoUrl, String photoUrlGoogle) {
+    public User(String userId, String nome, String cognome, String email, String password, String photoUrl, String photoUrlGoogle,HashMap<Integer, String> birreBevute) {
         this.userId = userId;
         this.nome = nome;
         this.cognome = cognome;
@@ -48,6 +47,7 @@ public class User{
         this.password = password;
         this.photoUrl = photoUrl;
         this.photoUrlGoogle = photoUrlGoogle;
+        this.birreBevute = birreBevute;
 
     }
     //User normale
@@ -71,6 +71,14 @@ public class User{
     public User(String userId, String email){
         this.userId = userId;
         this.email = email;
+    }
+
+    public HashMap<Integer, String> getBirreBevute() {
+        return birreBevute;
+    }
+
+    public void setBirreBevute(HashMap<Integer, String> birreBevute) {
+        this.birreBevute = birreBevute;
     }
 
     public void setUserId(String userId) {

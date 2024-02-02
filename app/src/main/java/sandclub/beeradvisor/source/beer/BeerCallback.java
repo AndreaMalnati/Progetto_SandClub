@@ -19,5 +19,6 @@ public interface BeerCallback {
     void onSuccessFromCloudWriting(Beer beer);
     void onFailureFromCloud(Exception exception);
     void onSuccessSynchronization();
+    void onSuccessGettingBeer(List<Beer> beerList);
 
 }

@@ -1,6 +1,9 @@
 
 package sandclub.beeradvisor.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +75,7 @@ public class CapsAdapter extends RecyclerView.Adapter<CapsAdapter.CapsViewHolder
 
         public void bind(Beer beer, String image_url) {
             beerName.setText(beer.getName());
-            if(image_url == null || image_url.equals(".") ) {
+            if(image_url.equals(".") ) {
                 Glide.with(itemView.getContext())
                         .load(R.drawable.ic_app_beertappo)
                         .circleCrop()
@@ -80,10 +83,14 @@ public class CapsAdapter extends RecyclerView.Adapter<CapsAdapter.CapsViewHolder
             }
             else {
                 Glide.with(itemView.getContext())
-                        .load(image_url)
+                        .load(stringToBitmap(image_url))
                         .circleCrop()
                         .into(beerImage);
             }
         }
+    }
+    public static Bitmap stringToBitmap(String encodedString) {
+        byte[] decodedBytes = Base64.decode(encodedString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 }

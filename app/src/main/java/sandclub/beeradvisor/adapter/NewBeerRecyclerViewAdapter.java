@@ -109,7 +109,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
         public void bind(Beer beer) {
             beerName.setText(beer.getName());
             beerTagline.setText(beer.getTagline());
-            beerAlcohol.setText(String.format("%.1f", beer.getAbv())+ "%");
+            beerAlcohol.setText(String.format("%.1f", beer.getAbv()) + "%");
             favoriteCheckBox.setChecked(beer.isFavorite());
 
             String imageUrl = beer.getImage_url();
@@ -117,10 +117,14 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
                 Glide.with(itemView.getContext())
                         .load(imageUrl)
                         .into(beerImage);
-            }else
+            } else
                 Glide.with(itemView.getContext())
                         .load(R.drawable.ic_logo)
                         .into(beerImage);
+            if (beer.isFavorite()) {
+                favoriteCheckBox.setChecked(true);
+
+            }
         }
 
         @Override

@@ -33,6 +33,8 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         NavController navController;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
@@ -65,9 +67,14 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
                     // Nascondi la freccia indietro quando sei nel fragment delle impostazioni
                     actionBar.setDisplayHomeAsUpEnabled(false);
+                }else{
+                    navController.popBackStack();
                 }
             }
         });
+
+
+
     }
 
     @Override

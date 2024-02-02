@@ -51,6 +51,8 @@ public class Constants {
 
     public static final String SHARED_PREFERENCES_FIRST_LOADING = "firs_loading";
 
+    public static final String USER_LAST_DRUNK_DATABASE_REFERENCE = "last_drunk_beer";
+
 
 
 

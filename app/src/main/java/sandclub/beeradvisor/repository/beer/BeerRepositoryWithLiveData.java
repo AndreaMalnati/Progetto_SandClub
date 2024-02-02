@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerApiResponse;
@@ -23,6 +24,7 @@ public class BeerRepositoryWithLiveData implements IBeerRepositoryWithLiveData, 
 
     private final MutableLiveData<Result> allBeerMutableLiveData;
     private final MutableLiveData<Result> favoriteBeerMutableLiveData;
+    private final MutableLiveData<Result> singleBeerMutableLiveData;
 
     private final BaseBeerRemoteDataSource beerRemoteDataSource;
 private final BaseBeerLocalDataSource beerLocalDataSource;
@@ -35,6 +37,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
         allBeerMutableLiveData = new MutableLiveData<>();
         favoriteBeerMutableLiveData = new MutableLiveData<>();
+        singleBeerMutableLiveData = new MutableLiveData<>();
         this.beerRemoteDataSource = beerRemoteDataSource;
         this.beerLocalDataSource = beerLocalDataSource;
         this.backupDataSource = favoriteBeerDataSource;
@@ -89,6 +92,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
             beerLocalDataSource.getFavoriteBeer();
         }
         return favoriteBeerMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> getBeerId(Set<Integer> id) {
+        beerLocalDataSource.getBeerId(id);
+        return singleBeerMutableLiveData;
     }
 
     @Override
@@ -159,6 +168,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         if(beerList != null){
             for(Beer beer : beerList){
                 beer.setSynchronized(true);
+                beer.setFavorite(true);
             }
             beerLocalDataSource.insertBeer(beerList);
             favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beerList)));
@@ -182,6 +192,11 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     public void onSuccessSynchronization(){
         Log.d(TAG, "Beer synchronized from remote");
 
+    }
+
+    @Override
+    public void onSuccessGettingBeer(List<Beer> beerList) {
+        singleBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beerList)));
     }
 
 }

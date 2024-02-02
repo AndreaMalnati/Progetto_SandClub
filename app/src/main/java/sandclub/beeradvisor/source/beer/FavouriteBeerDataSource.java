@@ -58,6 +58,7 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
                     @Override
                     public void onSuccess(Void unused) {
                         beer.setSynchronized(true);
+                        beer.setFavorite(true);
                         beerCallback.onSuccessFromCloudWriting(beer);
                     }
                 })
@@ -85,7 +86,7 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
                         for (Beer beer : beerList) {
                             databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).
                                     child(FAVORITE_BEER_DATABASE_REFERENCE).
-                                    child(String.valueOf(beer.hashCode())).setValue(beer).addOnSuccessListener(
+                                    child(String.valueOf(beer.getId())).setValue(beer).addOnSuccessListener(
                                             new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
@@ -105,6 +106,7 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
                 child(FAVORITE_BEER_DATABASE_REFERENCE).child(String.valueOf(beer.getId())).
                 removeValue().addOnSuccessListener(aVoid ->{
                     beer.setSynchronized(false);
+                    beer.setFavorite(false);
                     beerCallback.onSuccessFromCloudWriting(beer);
                 }).addOnFailureListener(e ->{
                     beerCallback.onFailureFromCloud(e);

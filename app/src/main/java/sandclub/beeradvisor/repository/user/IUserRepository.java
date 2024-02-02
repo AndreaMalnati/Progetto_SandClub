@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.HashMap;
+
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 
@@ -24,4 +26,5 @@ public interface IUserRepository {
     MutableLiveData<Result> changePassword(String token, String newPw, String oldPw);
     MutableLiveData<Result> changePhoto(String token, String imageBitmap);
 
+    MutableLiveData<Result> addBeerPhotoDrunk(String token, int id_Beer, String image);
 }
