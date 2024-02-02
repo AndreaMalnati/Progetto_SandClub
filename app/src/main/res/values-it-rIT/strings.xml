@@ -76,4 +76,11 @@
 
     <string name="favorite_beers">Birre preferite</string>
     <string name="sign_as_drunk">Segna come bevuta</string>
+
+    <string name="filters">Filtri</string>
+
+    <string name="from_the_darkest">Dalla più chiara</string>
+    <string name="from_the_lightest">Dalla più scura</string>
+
+
 </resources>

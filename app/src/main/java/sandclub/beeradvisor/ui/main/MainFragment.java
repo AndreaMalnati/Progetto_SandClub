@@ -146,9 +146,7 @@ public class MainFragment extends Fragment {
         try {
             id = dataEncryptionUtil.readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID);
             pw = dataEncryptionUtil.readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -167,7 +165,9 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onBeerItemClick(Beer beer) {
                         Snackbar.make(recyclerViewNewBeer, beer.getName(), Snackbar.LENGTH_SHORT).show();
-                        Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("beer", beer);
+                        Navigation.findNavController(recyclerViewNewBeer).navigate(R.id.action_mainFragment_to_beerFragment, bundle);
                     }
                     @Override
                     public void onFavoriteButtonPressed(int position) {
@@ -180,22 +180,8 @@ public class MainFragment extends Fragment {
         recyclerViewNewBeer.setLayoutManager(layoutManager);
         recyclerViewNewBeer.setAdapter(beerRecyclerViewAdapter);
 
-
-        /*ListView newBeer = view.findViewById(R.id.listViewNewBeer);
-
-        beerListAdapter =
-                new BeerListAdapter(requireContext(), R.layout.beer_card2_item, beerList,
-                        beer -> {
-                            beer.setFavorite(false);
-                            beerViewModel.updateBeer(beer);
-                            //beerViewModel.removeFromFavorite(beer);
-                        });
-
-        newBeer.setAdapter(beerListAdapter);*/
-
         recyclerViewNewBeer2 = view.findViewById(R.id.recyclerViewNewBeer2);
-        layoutManager2 =
-                new LinearLayoutManager(requireContext(),
+        layoutManager2 = new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
 
@@ -240,15 +226,6 @@ public class MainFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
-
-        /*
-
-        String lastUpdate = "0";
-        if(sharedPreferencesUtil.readStringData(
-                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
-            lastUpdate = sharedPreferencesUtil.readStringData(
-                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
-        }*/
 
         seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
             @Override

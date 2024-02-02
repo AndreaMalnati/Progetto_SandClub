@@ -90,5 +90,10 @@
 
     <string name="favorite_beers">Favorite beers</string>
     <string name="sign_as_drunk">Sign as drunk</string>
+    <string name="filters">Filters</string>
+
+    <string name="color_grade_beer" translatable="false">EBC/SRM</string>
+    <string name="from_the_darkest">From the darkest</string>
+    <string name="from_the_lightest">From the lightest</string>
 
 </resources>

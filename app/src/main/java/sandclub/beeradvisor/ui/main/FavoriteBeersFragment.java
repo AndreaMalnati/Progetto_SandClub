@@ -49,8 +49,7 @@ public class FavoriteBeersFragment extends Fragment {
     private UserViewModel userViewModel;
     private RecyclerView favoriteBeersRecyclerView;
     private NewBeerRecyclerViewAdapter favoriteBeerRecyclerViewAdapter;
-    //mettimi i metodi essenziali di un frgment
-    //onCreateView
+
     public FavoriteBeersFragment() {
         // Required empty public constructor
     }
@@ -134,9 +133,7 @@ public class FavoriteBeersFragment extends Fragment {
                     if(result != null) {
                         if (result.isSuccess()) {
                             int initialSize = this.beerList.size();
-                            Log.d("Ciaone", "size: " + initialSize);
                             this.beerList.clear();
-                            Log.d("Ciaone", "size: " + this.beerList.size());
                             this.beerList.addAll(((Result.Success) result).getData().getBeerList());
                             favoriteBeerRecyclerViewAdapter.notifyDataSetChanged();
 

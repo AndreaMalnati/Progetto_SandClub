@@ -173,6 +173,18 @@
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
+
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:contentDescription="@string/map_description" />
         <com.google.android.material.imageview.ShapeableImageView
 
             android:layout_width="match_parent"
@@ -184,19 +196,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/mapimg"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.ImageView.Rounded"
-            />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/ic_google_maps_shape"
-            android:contentDescription="@string/map_description" />
+            app:strokeColor="@android:color/black"
+            app:strokeWidth="3dp"/>
 
 
 
