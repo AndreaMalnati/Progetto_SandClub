@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.CommentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:hint="@string/add_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:lines="4"
+            android:maxLines="4">
+
+        </EditText>
+        <RatingBar
+            android:numStars="5"
+            android:stepSize="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ></RatingBar>
+        <Button
+            android:id="@+id/Confirm_comment"
+            android:layout_width="290dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/testo"
+            android:text="@string/add_comment"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="18dp"
+
+            />
+
+
+    </LinearLayout>
+
+</FrameLayout>

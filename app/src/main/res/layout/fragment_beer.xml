@@ -98,6 +98,8 @@
             android:textSize="20dp" />
 
 
+
+
         <ScrollView
             android:layout_below="@id/beer_foodPairings"
             android:id="@+id/beer_foodPairing_scroll"
@@ -172,6 +174,20 @@
             android:text="@string/comments"
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/add_comment_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/beer_comments"
+            android:layout_below="@id/beer_foodPairing_scroll"
+
+            android:fontFamily="@font/testo"
+            android:text="@string/addComment"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20sp" />
 
         <com.google.android.material.imageview.ShapeableImageView
 

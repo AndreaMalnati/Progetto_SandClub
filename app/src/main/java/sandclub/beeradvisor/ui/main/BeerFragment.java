@@ -31,6 +31,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,7 @@ public class BeerFragment extends Fragment {
     TextView description;
     TextView foodPairing;
     MapView mapView;
+    TextView addComment;
     private UserViewModel userViewModel;
     ImageView drunkButton;
 
@@ -106,7 +108,7 @@ public class BeerFragment extends Fragment {
         foodPairing = view.findViewById(R.id.beer_foodPairings_text);
         scrollViewDescription = view.findViewById(R.id.beer_description_scroll);
         mapView = view.findViewById(R.id.mapView);
-
+        addComment = view.findViewById(R.id.add_comment_button);
 
         Beer beer = getArguments().getParcelable("beer");
         Log.d("BeerFragment", "Beer: " + beer.getName());
@@ -122,6 +124,19 @@ public class BeerFragment extends Fragment {
         foodPairing.setText(beer.getFood_pairing().toString());
 
         drunkButton = view.findViewById(R.id.sign_as_drunk_button);
+
+
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Stampa", "Cliccato su add comment");
+                Navigation.findNavController(v).navigate(R.id.action_beerFragment_to_commentFragment2);
+
+            }
+        });
+
+
+
         drunkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

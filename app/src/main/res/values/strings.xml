@@ -10,7 +10,6 @@
     <string name="login">login</string>
 
 
-
     <string name="unexpected_error" translatable="false">Hello blank fragment</string>
 
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -48,18 +47,13 @@
     <string name="RegisterFailed">Registration failed</string>
 
 
-
-
-
-
-
     <string name="find_beer">Find beer</string>
 
     <string name="map_description" translatable="false">Google Maps</string>
-    <string name="description" >Description</string>
-    <string name="gradiaton" >Gradiation %</string>
-    <string name="food_pairings" >Food Pairings</string>
-    <string name="comments" >Comments</string>
+    <string name="description">Description</string>
+    <string name="gradiaton">Gradiation %</string>
+    <string name="food_pairings">Food Pairings</string>
+    <string name="comments">Comments</string>
 
     <string name="lastDrunk">Last drunk</string>
     <string name="discoverNewBeers">Discover new beers</string>
@@ -90,5 +84,7 @@
 
     <string name="favorite_beers">Favorite beers</string>
     <string name="sign_as_drunk">Sign as drunk</string>
+    <string name="addComment">Add</string>
+    <string name="add_comment">Add Comment</string>
 
 </resources>
