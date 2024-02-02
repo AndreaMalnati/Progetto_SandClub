@@ -6,11 +6,17 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -35,13 +41,9 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
 
 
-
-
-
         NavController navController;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-
 
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
@@ -49,13 +51,19 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
+
+
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.mainFragment,
                 R.id.capsFragment,
                 R.id.favoriteBeersFragment,
                 R.id.settingsFragment).build();
 
+        
+
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
 
         NavigationUI.setupWithNavController(bottomNav, navController);
 
@@ -70,9 +78,15 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
                     // Nascondi la freccia indietro quando sei nel fragment delle impostazioni
                     actionBar.setDisplayHomeAsUpEnabled(false);
+                }else{
+                    navController.popBackStack();
                 }
             }
         });
+
+
+
+
     }
 
     @Override

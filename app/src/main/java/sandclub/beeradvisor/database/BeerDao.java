@@ -35,6 +35,10 @@ public interface BeerDao {
     @Update
     int updateSingleFavoriteBeer(Beer beer);
 
+    @Query("SELECT * FROM beer WHERE is_favorite = 1 ")
+    List<Beer> getFavoriteBeer();
     @Query("DELETE FROM beer")
     int deleteAll();
+
+
 }

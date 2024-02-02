@@ -1,22 +1,33 @@
 package sandclub.beeradvisor.util;
 
 import static sandclub.beeradvisor.util.Constants.BEER_API_BASE_URL;
+import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.ID;
 
 import android.app.Application;
 
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.repository.beer.BeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.comment.CommentRepository;
+import sandclub.beeradvisor.repository.comment.ICommentRepository;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.repository.user.UserRepository;
 import sandclub.beeradvisor.service.BeerApiService;
 import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
 import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
+import sandclub.beeradvisor.source.beer.BaseFavouriteBeerDataSource;
 import sandclub.beeradvisor.source.beer.BeerLocalDataSource;
 import sandclub.beeradvisor.source.beer.BeerRemoteDataSource;
+import sandclub.beeradvisor.source.beer.FavouriteBeerDataSource;
+import sandclub.beeradvisor.source.comment.BaseCommentRemoteDataSource;
+import sandclub.beeradvisor.source.comment.CommentRemoteDataSource;
 import sandclub.beeradvisor.source.user.BaseUserAuthenticationRemoteDataSource;
 import sandclub.beeradvisor.source.user.BaseUserDataRemoteDataSource;
 import sandclub.beeradvisor.source.user.UserAuthenticationRemoteDataSource;
@@ -70,8 +81,9 @@ public class ServiceLocator {
     public IBeerRepositoryWithLiveData getBeerRepository(Application application/*, boolean debugMode*/) {
         BaseBeerRemoteDataSource beerRemoteDataSource;
         BaseBeerLocalDataSource beerLocalDataSource;
+        BaseFavouriteBeerDataSource favoriteBeerDataSource;
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
-
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
         /*if (debugMode) {
             JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
             beerRemoteDataSource =
@@ -81,9 +93,18 @@ public class ServiceLocator {
                     new BeerRemoteDataSource();
         //}
 
-        beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil);
+        beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
+        try {
+            favoriteBeerDataSource = new FavouriteBeerDataSource(dataEncryptionUtil.
+                    readSecretDataWithEncryptedSharedPreferences(
+                            ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID
+                    )
+            );
 
-        return new BeerRepositoryWithLiveData(beerRemoteDataSource, beerLocalDataSource);
+        } catch (GeneralSecurityException | IOException e) {
+            return null;
+        }
+        return new BeerRepositoryWithLiveData(beerRemoteDataSource, beerLocalDataSource, favoriteBeerDataSource);
     }
 
     /**
@@ -98,12 +119,19 @@ public class ServiceLocator {
 
         BaseUserDataRemoteDataSource userDataRemoteDataSource =
                 new UserDataRemoteDataSource(sharedPreferencesUtil);
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
         BaseBeerLocalDataSource beerLocalDataSource =
-                new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil);
+                new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
+
 
         return new UserRepository(userRemoteAuthenticationDataSource,
                 beerLocalDataSource, userDataRemoteDataSource);
+    }
+
+    public ICommentRepository getCommentRepository(Application application) {
+        BaseCommentRemoteDataSource commentRemoteDataSource = new CommentRemoteDataSource();
+        return new CommentRepository(commentRemoteDataSource);
     }
 
 }
