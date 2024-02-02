@@ -43,6 +43,7 @@ import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.beer.IBeerRepository;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
@@ -102,6 +103,7 @@ public class MainFragment extends Fragment {
                 ServiceLocator.getInstance().getBeerRepository(
                         requireActivity().getApplication()
                 );
+
         Log.d(TAG, "Birre caricate");
 
 

@@ -3,6 +3,7 @@ package sandclub.beeradvisor.repository.beer;
 import static sandclub.beeradvisor.util.Constants.BEER_API_TEST_JSON;
 
 import android.app.Application;
+import android.util.Log;
 
 
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class BeerMockRepository implements IBeerRepository {
 
             try {
                 beerResponse = jsonParserUtil.parseJSONFileWithGSon(BEER_API_TEST_JSON);
+                Log.d("caneeeeee", "ciao" + beerResponse.getBeerList().size());
             } catch (IOException e) {
                 e.printStackTrace();
             }

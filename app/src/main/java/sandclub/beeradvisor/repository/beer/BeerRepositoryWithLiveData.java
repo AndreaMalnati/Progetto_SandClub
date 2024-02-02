@@ -54,9 +54,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
         // It gets the news from the Web Service if the last download
         // of the news has been performed more than FRESH_TIMEOUT value ago
-        if (currentTime - lastUpdate > FRESH_TIMEOUT) {
+        if (true /*currentTime - lastUpdate > FRESH_TIMEOUT*/) {
+            Log.d("fetchAllBeer-RepositoryWithLiveData", "dentro if -> beerRemoteDataSource.getBeer()");
             beerRemoteDataSource.getBeer();
         } else {
+            Log.d("fetchAllBeer-RepositoryWithLiveData", "dentro else -> beerLocalDataSource.getBeer()");
+
             beerLocalDataSource.getBeer();
         }
         return allBeerMutableLiveData;
@@ -74,10 +77,16 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
     @Override
     public void onSuccessFromRemote(BeerApiResponse beerApiResponse, long lastUpdate) {
+        Log.d("BeerRepositoryWithLiveData", "onSuccessFromRemote: " + beerApiResponse);
         beerLocalDataSource.insertBeer(beerApiResponse);
 
     }
+    @Override
+    public void onSuccessFromRemote(BeerResponse beerResponse, long lastUpdate) {
 
+        beerLocalDataSource.insertBeer(beerResponse);
+
+    }
     @Override
     public void onFailureFromRemote(Exception exception) {
         Result.Error result = new Result.Error(exception.getMessage());
@@ -114,6 +123,19 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         }
     }
 
+    @Override
+    public void onSuccessFromLocal(BeerResponse beerApiResponse) {
+        if (allBeerMutableLiveData.getValue() != null && allBeerMutableLiveData.getValue().isSuccess()) {
+            List<Beer> beerList = ((Result.Success)allBeerMutableLiveData.getValue()).getData().getBeerList();
+            beerList.addAll(beerApiResponse.getBeerList());
+            beerApiResponse.setBeerList(beerList);
+            Result.Success result = new Result.Success(beerApiResponse);
+            allBeerMutableLiveData.postValue(result);
+        } else {
+            Result.Success result = new Result.Success(beerApiResponse);
+            allBeerMutableLiveData.postValue(result);
+        }
+    }
     @Override
     public void onFailureFromLocal(Exception exception) {
         Result.Error resultError = new Result.Error(exception.getMessage());

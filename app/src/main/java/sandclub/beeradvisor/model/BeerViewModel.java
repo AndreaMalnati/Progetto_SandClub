@@ -1,5 +1,7 @@
 package sandclub.beeradvisor.model;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -55,6 +57,8 @@ public class BeerViewModel extends ViewModel {
     }
 
     public void fetchBeer(long lastUpdate) {
+        Log.d("fetchBeer-BeerViewModel", "dentro fetchBeer");
+
         beerListLiveData = beerRepositoryWithLiveData.fetchAllBeer(lastUpdate);
     }
 

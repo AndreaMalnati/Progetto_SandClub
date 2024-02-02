@@ -8,8 +8,12 @@ import sandclub.beeradvisor.model.BeerResponse;
 
 public interface BeerCallback {
     void onSuccessFromRemote(BeerApiResponse beerApiResponse, long lastUpdate); //Chiamata back-end OK
+    void onSuccessFromRemote(BeerResponse beerResponse, long lastUpdate); //Chiamata back-end OK
+
     void onFailureFromRemote(Exception exception); //Chiamata back-end NO
     void onSuccessFromLocal(BeerApiResponse apiResponse); //Lettura/scrittura DB OK
+    void onSuccessFromLocal(BeerResponse apiResponse); //Lettura/scrittura DB OK
+
     void onFailureFromLocal(Exception exception); //Lettura/scrittura DB NO
     void onBeerFavoriteStatusChanged(Beer beer, List<Beer> favoriteBeer); //Aggiornamento di una singola birra
     void onBeerFavoriteStatusChanged(List<Beer> beer); //Aggiornamento di tutte la lista birre

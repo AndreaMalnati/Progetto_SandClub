@@ -30,6 +30,7 @@ public class JSONParserUtil {
         BeerResponse response = new BeerResponse();
         InputStream inputStream = application.getAssets().open(fileName);
 
+
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         Type listType = new TypeToken<List<Beer>>() {}.getType();

@@ -13,7 +13,9 @@ import java.security.GeneralSecurityException;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
+import sandclub.beeradvisor.repository.beer.BeerMockRepository;
 import sandclub.beeradvisor.repository.beer.BeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.beer.IBeerRepository;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.repository.user.UserRepository;
@@ -22,6 +24,7 @@ import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
 import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
 import sandclub.beeradvisor.source.beer.BaseFavouriteBeerDataSource;
 import sandclub.beeradvisor.source.beer.BeerLocalDataSource;
+import sandclub.beeradvisor.source.beer.BeerMockRemoteDataSource;
 import sandclub.beeradvisor.source.beer.BeerRemoteDataSource;
 import sandclub.beeradvisor.source.beer.FavouriteBeerDataSource;
 import sandclub.beeradvisor.source.user.BaseUserAuthenticationRemoteDataSource;
@@ -80,14 +83,14 @@ public class ServiceLocator {
         BaseFavouriteBeerDataSource favoriteBeerDataSource;
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
-        /*if (debugMode) {
+        if (true) {
             JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
             beerRemoteDataSource =
-                    new BeerMockRemoteDataSource(jsonParserUtil, JSONParserUtil.JsonParserType.GSON);
-        } else {*/
+                    new BeerMockRemoteDataSource(jsonParserUtil);
+        } else {
             beerRemoteDataSource =
                     new BeerRemoteDataSource();
-        //}
+        }
 
         beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
         try {
@@ -100,6 +103,7 @@ public class ServiceLocator {
         } catch (GeneralSecurityException | IOException e) {
             return null;
         }
+
         return new BeerRepositoryWithLiveData(beerRemoteDataSource, beerLocalDataSource, favoriteBeerDataSource);
     }
 
