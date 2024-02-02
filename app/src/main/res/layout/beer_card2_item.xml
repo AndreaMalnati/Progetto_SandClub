@@ -44,7 +44,8 @@
                 android:layout_toStartOf="@+id/iconFavorite2"
                 android:layout_toEndOf="@+id/beer_card_image"
                 android:ellipsize="end"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:fontFamily="@font/testo"/>
 
             <TextView
                 android:id="@+id/beer_card_tagline"
@@ -76,17 +77,27 @@
                 android:layout_marginBottom="25dp"
                 android:button="@drawable/sl_favourite_24dp" />
 
-            <RatingBar
-                android:id="@+id/comment_card_rating"
-                style="?android:attr/ratingBarStyleSmall"
+            <TextView
+                android:id="@+id/ibu_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/beer_card_tagline"
                 android:layout_marginTop="7dp"
                 android:layout_toEndOf="@+id/beer_card_image"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:stepSize="1.0" />
+                android:text="@string/ibu"
+                android:fontFamily="@font/testo"
+                 />
+            <TextView
+                android:id="@+id/beer_card_ibu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/beer_card_tagline"
+                android:layout_marginTop="7dp"
+                android:layout_toEndOf="@+id/ibu_text"
+                android:layout_marginLeft="5dp"
+                android:text="@string/ibu"
+                android:fontFamily="@font/testo" />
+
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>

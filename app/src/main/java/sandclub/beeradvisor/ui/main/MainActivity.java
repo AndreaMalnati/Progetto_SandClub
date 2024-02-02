@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -49,13 +51,19 @@ public class MainActivity  extends  AppCompatActivity implements ResponseCallbac
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
+
+
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.mainFragment,
                 R.id.capsFragment,
                 R.id.favoriteBeersFragment,
                 R.id.settingsFragment).build();
 
+        
+
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
 
         NavigationUI.setupWithNavController(bottomNav, navController);
 

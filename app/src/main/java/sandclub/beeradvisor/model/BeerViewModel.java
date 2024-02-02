@@ -14,6 +14,7 @@ public class BeerViewModel extends ViewModel {
     private MutableLiveData<Result> beerListLiveData;
     private MutableLiveData<Result> favoriteBeerListLiveData;
     private MutableLiveData<Result> singleBeerLiveData;
+    private MutableLiveData<Result> lastDrunkBeerLiveData;
     private boolean isFirstLoading;
 
 
@@ -45,10 +46,13 @@ public class BeerViewModel extends ViewModel {
         return favoriteBeerListLiveData;
     }
 
+
+
     public MutableLiveData<Result> getBeerById(Set<Integer> ids) {
             getBeerId(ids);
         return singleBeerLiveData;
     }
+
 
     public void getBeerId(Set<Integer> ids) {
         singleBeerLiveData = beerRepositoryWithLiveData.getBeerId(ids);

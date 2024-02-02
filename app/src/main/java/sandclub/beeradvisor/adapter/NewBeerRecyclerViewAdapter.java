@@ -92,6 +92,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
         private final TextView beerAlcohol;
         private final ImageView beerImage;
         private CheckBox favoriteCheckBox;
+        private final TextView beerIbu;
 
 
         public BeersViewHolder(@NonNull View itemView) {
@@ -103,6 +104,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
             itemView.setOnClickListener(this);
             favoriteCheckBox = itemView.findViewById(R.id.iconFavorite2);
             favoriteCheckBox.setOnClickListener(this);// Inizializza la CheckBox
+            beerIbu = itemView.findViewById(R.id.beer_card_ibu);
 
         }
 
@@ -111,7 +113,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
             beerTagline.setText(beer.getTagline());
             beerAlcohol.setText(String.format("%.1f", beer.getAbv()) + "%");
             favoriteCheckBox.setChecked(beer.isFavorite());
-
+            beerIbu.setText(String.format("%.1f", beer.getIbu()));
             String imageUrl = beer.getImage_url();
             if (imageUrl != null && !imageUrl.equalsIgnoreCase("https://images.punkapi.com/v2/keg.png")) {
                 Glide.with(itemView.getContext())

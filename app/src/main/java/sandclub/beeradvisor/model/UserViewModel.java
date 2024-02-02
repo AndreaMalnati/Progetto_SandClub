@@ -98,6 +98,7 @@ public class UserViewModel extends ViewModel {
         return userPreferencesMutableLiveData;
     }
 
+
     public User getLoggedUser() {
         return userRepository.getLoggedUser();
     }

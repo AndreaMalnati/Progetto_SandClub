@@ -57,4 +57,8 @@ abstract public class BeerRoomDatabase extends RoomDatabase{
             database.execSQL("ALTER TABLE beer ADD COLUMN is_synchronized INTEGER NOT NULL DEFAULT 0");
         }
     };
+
+
+
+
 }

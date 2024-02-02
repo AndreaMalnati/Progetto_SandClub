@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -49,6 +50,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.MapView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -85,11 +87,14 @@ public class BeerFragment extends Fragment {
     TextView foodPairing;
     MapView mapView;
     TextView addComment;
+    TextView ratingBarText;
     private UserViewModel userViewModel;
     ImageView drunkButton;
     private CommentViewModel commentViewModel;
     private List<Comment> commentList;
-
+    RatingBar ratingBar;
+    ImageView imageBeer;
+    CheckBox favorite;
 
 
     ScrollView scrollViewDescription;
@@ -146,11 +151,14 @@ public class BeerFragment extends Fragment {
         scrollViewDescription = view.findViewById(R.id.beer_description_scroll);
         mapView = view.findViewById(R.id.mapView);
         addComment = view.findViewById(R.id.add_comment_button);
-
+        ratingBar = view.findViewById(R.id.ratingBar);
+        ratingBarText = view.findViewById(R.id.ratingBar_text);
+        imageBeer = view.findViewById(R.id.beer_image);
+        favorite = view.findViewById(R.id.favorite_checkbox);
         Beer beer = getArguments().getParcelable("beer");
-        Log.d("BeerFragment", "Beer: " + beer.getName());
 
 
+        favorite.setChecked(beer.isFavorite());
         nameBeer.setText(beer.getName());
         alchool.setText(String.valueOf(beer.getAbv()) + "%");
         ibu.setText("ibu: " + String.valueOf(beer.getIbu()));
@@ -161,6 +169,15 @@ public class BeerFragment extends Fragment {
         foodPairing.setText(beer.getFood_pairing().toString());
 
         drunkButton = view.findViewById(R.id.sign_as_drunk_button);
+
+        if (beer.getImage_url() != null && !beer.getImage_url().equalsIgnoreCase("https://images.punkapi.com/v2/keg.png")) {
+            Glide.with(view.getContext())
+                    .load(beer.getImage_url())
+                    .into(imageBeer);
+        }else
+            Glide.with(view.getContext())
+                    .load(R.drawable.ic_logo)
+                    .into(imageBeer);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewComments);
         addComment.setOnClickListener(new View.OnClickListener() {
@@ -270,6 +287,13 @@ public class BeerFragment extends Fragment {
                 if (result.isSuccessComment()) {
                     commentList.clear();
                     commentList.addAll(((Result.CommentResponseSuccess)result).getData().getCommentList());
+                    float ratingTot = 0;
+                    for(int i = 0; i < commentList.size(); i++){
+                        ratingTot += commentList.get(i).getRating();
+                    }
+                    ratingTot = ratingTot/commentList.size();
+                    ratingBar.setRating(ratingTot);
+                    ratingBarText.setText(String.valueOf(ratingTot));
                     commentRecyclerViewAdapter.notifyDataSetChanged();
 
                 } else {

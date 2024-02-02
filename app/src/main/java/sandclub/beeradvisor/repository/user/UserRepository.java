@@ -100,6 +100,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
         return userMutableLiveData;
     }
 
+
     @Override
     public User getLoggedUser() {
         return userRemoteDataSource.getLoggedUser();    }

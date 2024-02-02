@@ -127,8 +127,9 @@
             android:layout_toRightOf="@id/beer_image"
             android:numStars="5"
             android:rating="0"
-            android:stepSize="1.0"
-            android:isIndicator="true"/>
+            android:stepSize="0.5"
+            android:isIndicator="true"
+            />
         <ImageView
             android:id="@+id/sign_as_drunk_button"
             android:layout_width="50dp"

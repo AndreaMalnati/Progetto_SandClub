@@ -25,7 +25,7 @@ public class BeerRepositoryWithLiveData implements IBeerRepositoryWithLiveData, 
     private final MutableLiveData<Result> allBeerMutableLiveData;
     private final MutableLiveData<Result> favoriteBeerMutableLiveData;
     private final MutableLiveData<Result> singleBeerMutableLiveData;
-
+    private final MutableLiveData<Result> lastDrunkBeerMutableLiveData;
     private final BaseBeerRemoteDataSource beerRemoteDataSource;
 private final BaseBeerLocalDataSource beerLocalDataSource;
     private final BaseFavouriteBeerDataSource backupDataSource;
@@ -34,7 +34,7 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     public BeerRepositoryWithLiveData(BaseBeerRemoteDataSource beerRemoteDataSource,
                                       BaseBeerLocalDataSource beerLocalDataSource,
                                       BaseFavouriteBeerDataSource favoriteBeerDataSource) {
-
+        lastDrunkBeerMutableLiveData = new MutableLiveData<>();
         allBeerMutableLiveData = new MutableLiveData<>();
         favoriteBeerMutableLiveData = new MutableLiveData<>();
         singleBeerMutableLiveData = new MutableLiveData<>();
@@ -93,6 +93,8 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         }
         return favoriteBeerMutableLiveData;
     }
+
+
 
     @Override
     public MutableLiveData<Result> getBeerId(Set<Integer> id) {
