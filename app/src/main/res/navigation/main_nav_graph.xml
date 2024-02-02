@@ -62,9 +62,7 @@
         android:id="@+id/beerFragment"
         android:name="sandclub.beeradvisor.ui.main.BeerFragment"
         android:label="BeerFragment" >
-            <action
-                android:id="@+id/action_beerFragment_to_commentFragment2"
-                app:destination="@id/commentFragment" />
+
             <argument
                 android:name="beer"
                 app:argType="sandclub.beeradvisor.model.Beer" />
@@ -93,10 +91,6 @@
             android:id="@+id/action_favoriteBeersFragment_to_beerFragment"
             app:destination="@id/beerFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/commentFragment"
-        android:name="sandclub.beeradvisor.ui.main.CommentFragment"
-        android:label="fragment_comment"
-        tools:layout="@layout/fragment_comment2" />
+
 
 </navigation>

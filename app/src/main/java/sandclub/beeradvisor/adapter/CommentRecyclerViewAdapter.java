@@ -1,9 +1,12 @@
 package sandclub.beeradvisor.adapter;
 
+import static sandclub.beeradvisor.adapter.CapsAdapter.stringToBitmap;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,19 +19,17 @@ import java.util.List;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.Comment;
 
 public class CommentRecyclerViewAdapter  extends  RecyclerView.Adapter<CommentRecyclerViewAdapter.CommentViewHolder>{
 
-    public interface OnItemClickListener {
-        void onBeerItemClick(Beer beer);
-    }
 
-    private final List<Beer> beerList;
-    private final OnItemClickListener onItemClickListener;
+    private final List<Comment> commenList;
 
-    public CommentRecyclerViewAdapter(List<Beer> beerList, OnItemClickListener onItemClickListener) {
-        this.beerList = beerList;
-        this.onItemClickListener = onItemClickListener;
+
+    public CommentRecyclerViewAdapter(List<Comment> commentList) {
+        this.commenList = commentList;
+
     }
 
     @NonNull
@@ -42,44 +43,51 @@ public class CommentRecyclerViewAdapter  extends  RecyclerView.Adapter<CommentRe
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        holder.bind(beerList.get(position));
+        holder.bind(commenList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (beerList != null) {
-            return beerList.size();
+        if (commenList != null) {
+            return commenList.size();
         }
         return 0;
     }
 
-    public  class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private final TextView beerName;
-        private final ImageView beerImage;
+    public  class CommentViewHolder extends RecyclerView.ViewHolder {
+        private final TextView userName;
+        private final TextView userSurname;
+        private final TextView userComment;
+        private final ImageView userImage;
+        private final RatingBar ratingBar;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-            beerName = itemView.findViewById(R.id.comment_card_name);
-            beerImage = itemView.findViewById(R.id.comment_card_image);
-            itemView.setOnClickListener(this);
+            userName = itemView.findViewById(R.id.comment_card_name);
+            userSurname = itemView.findViewById(R.id.comment_card_surname);
+            userImage = itemView.findViewById(R.id.comment_card_image);
+            userComment = itemView.findViewById(R.id.comment_card_text);
+            ratingBar = itemView.findViewById(R.id.comment_card_rating);
         }
 
-        public void bind(Beer beer) {
-            beerName.setText(beer.getName());
-            String imageUrl = beer.getImage_url();
-            if (imageUrl != null && !imageUrl.equalsIgnoreCase("https://images.punkapi.com/v2/keg.png")) {
+        public void bind(Comment comment) {
+            String[] nameSurname = comment.getNameUser().split(" ");
+            userName.setText(nameSurname[0]);
+            userSurname.setText(nameSurname[1]);
+            userComment.setText(comment.getComment());
+            ratingBar.setRating(comment.getRating());
+
+            String imageUrl = comment.getUserPhoto();
+            if (imageUrl != null && !imageUrl.equals(".")) {
                 Glide.with(itemView.getContext())
-                        .load(imageUrl)
-                        .into(beerImage);
+                        .load(stringToBitmap(imageUrl))
+                        .into(userImage);
             }else
                 Glide.with(itemView.getContext())
-                        .load(R.drawable.ic_logo)
-                        .into(beerImage);
+                        .load(R.drawable.ic_app_user)
+                        .into(userImage);
         }
 
-        @Override
-        public void onClick(View v) {
-            onItemClickListener.onBeerItemClick(beerList.get(getAdapterPosition()));
-        }
+
     }
 }

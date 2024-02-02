@@ -11,6 +11,11 @@ public abstract class Result {
         return this instanceof UserResponseSuccess;
     }
 
+    public boolean isSuccessComment() {
+        return this instanceof CommentResponseSuccess;
+    }
+
+
     /**
      * Class that represents a successful action during the interaction
      * with a Web Service or a local database.
@@ -33,6 +38,16 @@ public abstract class Result {
         }
         public User getData() {
             return user;
+        }
+    }
+
+    public static final class CommentResponseSuccess extends Result {
+        private final CommentResponse commentResponse;
+        public CommentResponseSuccess(CommentResponse commentResponse) {
+            this.commentResponse = commentResponse;
+        }
+        public CommentResponse getData() {
+            return commentResponse;
         }
     }
     /**

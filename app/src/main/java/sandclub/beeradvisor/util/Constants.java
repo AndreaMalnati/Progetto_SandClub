@@ -53,6 +53,8 @@ public class Constants {
 
     public static final String USER_LAST_DRUNK_DATABASE_REFERENCE = "last_drunk_beer";
 
+    public static final String COMMENT_DATABASE_REFERENCE = "comment";
+
 
 
 

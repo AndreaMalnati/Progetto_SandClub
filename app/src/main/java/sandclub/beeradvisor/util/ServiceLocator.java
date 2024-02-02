@@ -15,6 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import sandclub.beeradvisor.database.BeerRoomDatabase;
 import sandclub.beeradvisor.repository.beer.BeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.repository.comment.CommentRepository;
+import sandclub.beeradvisor.repository.comment.ICommentRepository;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.repository.user.UserRepository;
 import sandclub.beeradvisor.service.BeerApiService;
@@ -24,6 +26,8 @@ import sandclub.beeradvisor.source.beer.BaseFavouriteBeerDataSource;
 import sandclub.beeradvisor.source.beer.BeerLocalDataSource;
 import sandclub.beeradvisor.source.beer.BeerRemoteDataSource;
 import sandclub.beeradvisor.source.beer.FavouriteBeerDataSource;
+import sandclub.beeradvisor.source.comment.BaseCommentRemoteDataSource;
+import sandclub.beeradvisor.source.comment.CommentRemoteDataSource;
 import sandclub.beeradvisor.source.user.BaseUserAuthenticationRemoteDataSource;
 import sandclub.beeradvisor.source.user.BaseUserDataRemoteDataSource;
 import sandclub.beeradvisor.source.user.UserAuthenticationRemoteDataSource;
@@ -123,6 +127,11 @@ public class ServiceLocator {
 
         return new UserRepository(userRemoteAuthenticationDataSource,
                 beerLocalDataSource, userDataRemoteDataSource);
+    }
+
+    public ICommentRepository getCommentRepository(Application application) {
+        BaseCommentRemoteDataSource commentRemoteDataSource = new CommentRemoteDataSource();
+        return new CommentRepository(commentRemoteDataSource);
     }
 
 }
