@@ -281,11 +281,7 @@ public class AllBeersFragment extends Fragment {
                     filteredList.add(beer);
                 }
             }
-
                 allBeersRecyclerViewAdapter.filterList(filteredList);
-
-
-
     }
 
 
