@@ -12,11 +12,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/search_view_bg"
+            android:backgroundTint="?attr/colorSurface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryHint="Cerca Birra"
+            app:iconifiedByDefault="false"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="80dp"
             android:fontFamily="@font/testo"
             android:text="@string/all_beers"
             android:textColor="@color/md_theme_light_inversePrimary"
@@ -28,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="80dp"
             android:fontFamily="@font/testo"
             android:text="@string/filters"
             android:textColor="@color/md_theme_light_inversePrimary"
@@ -42,7 +59,7 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical"
             app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="110dp">
 
         </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>

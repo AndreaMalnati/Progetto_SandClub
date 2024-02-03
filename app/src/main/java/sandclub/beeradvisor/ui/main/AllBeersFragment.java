@@ -11,6 +11,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
+import androidx.appcompat.widget.SearchView;
 
 public class AllBeersFragment extends Fragment {
 
@@ -56,8 +58,9 @@ public class AllBeersFragment extends Fragment {
     private BeerViewModel beerViewModel;
     private RecyclerView.LayoutManager layoutManager;
     private UserViewModel userViewModel;
-
-
+    private SearchView searchView;
+    private  String previousText;
+    private List<Beer> beerListBackUp;
     public AllBeersFragment() {
 
     }
@@ -106,6 +109,31 @@ public class AllBeersFragment extends Fragment {
         recyclerViewAllBeers = view.findViewById(R.id.recyclerViewAllBeers);
         layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
+
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
+         previousText = "";
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                // Aggiorna la stringa precedente con quella corrente
+                // Esegui il filtro delle birre con il nuovo testo
+                filterBeer(newText);
+                previousText = newText;
+
+                return true;
+            }
+        });
 
 
         allBeersRecyclerViewAdapter = new NewBeerRecyclerViewAdapter(beerList,
@@ -185,7 +213,7 @@ public class AllBeersFragment extends Fragment {
                 Button lessAlcholicButton = popupView.findViewById(R.id.lessAlcholicButton); //LA
                 Button lightestButton = popupView.findViewById(R.id.lightestButton); //LE
                 Button darkestButton = popupView.findViewById(R.id.darkestButton); //ME
-
+                int count = 0;
                 View.OnClickListener buttonClickListener = new View.OnClickListener() {
                     String filter = "";
 
@@ -238,6 +266,27 @@ public class AllBeersFragment extends Fragment {
             }
         });
 }
+
+    public void filterBeer(String newText){
+        if(beerListBackUp == null) {
+             beerListBackUp = new ArrayList<>();
+             beerListBackUp.addAll(beerList);
+        }
+        Log.d("Stampa", "Size: " + beerListBackUp.size());
+        List<Beer> filteredList = new ArrayList<>();
+
+            // Altrimenti, filtra la lista in base al testo
+            for(Beer beer : beerListBackUp){
+                if(beer.getName().toLowerCase().contains(newText.toLowerCase())){
+                    filteredList.add(beer);
+                }
+            }
+
+                allBeersRecyclerViewAdapter.filterList(filteredList);
+
+
+
+    }
 
 
     private Bitmap getBitmapFromView(View view) {

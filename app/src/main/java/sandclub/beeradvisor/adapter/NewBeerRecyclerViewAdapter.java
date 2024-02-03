@@ -85,6 +85,12 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
         return 0;
     }
 
+    public void filterList(List<Beer> filteredList) {
+        beerList.clear();
+        beerList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
+
     public  class BeersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView beerName;
         private final TextView beerTagline;
@@ -138,5 +144,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
                 onItemClickListener.onBeerItemClick(beerList.get(getAdapterPosition()));
             }
         }
+
+
     }
 }
