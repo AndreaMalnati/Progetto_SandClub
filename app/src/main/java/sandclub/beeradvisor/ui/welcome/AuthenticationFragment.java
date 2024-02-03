@@ -56,9 +56,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import sandclub.beeradvisor.model.Result;
-import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.repository.user.IUserRepository;
-import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.data.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;

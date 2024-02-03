@@ -12,26 +12,26 @@ import java.security.GeneralSecurityException;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import sandclub.beeradvisor.database.BeerRoomDatabase;
-import sandclub.beeradvisor.repository.beer.BeerRepositoryWithLiveData;
-import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
-import sandclub.beeradvisor.repository.comment.CommentRepository;
-import sandclub.beeradvisor.repository.comment.ICommentRepository;
-import sandclub.beeradvisor.repository.user.IUserRepository;
-import sandclub.beeradvisor.repository.user.UserRepository;
-import sandclub.beeradvisor.service.BeerApiService;
-import sandclub.beeradvisor.source.beer.BaseBeerLocalDataSource;
-import sandclub.beeradvisor.source.beer.BaseBeerRemoteDataSource;
-import sandclub.beeradvisor.source.beer.BaseFavouriteBeerDataSource;
-import sandclub.beeradvisor.source.beer.BeerLocalDataSource;
-import sandclub.beeradvisor.source.beer.BeerRemoteDataSource;
-import sandclub.beeradvisor.source.beer.FavouriteBeerDataSource;
-import sandclub.beeradvisor.source.comment.BaseCommentRemoteDataSource;
-import sandclub.beeradvisor.source.comment.CommentRemoteDataSource;
-import sandclub.beeradvisor.source.user.BaseUserAuthenticationRemoteDataSource;
-import sandclub.beeradvisor.source.user.BaseUserDataRemoteDataSource;
-import sandclub.beeradvisor.source.user.UserAuthenticationRemoteDataSource;
-import sandclub.beeradvisor.source.user.UserDataRemoteDataSource;
+import sandclub.beeradvisor.data.database.BeerRoomDatabase;
+import sandclub.beeradvisor.data.repository.beer.BeerRepositoryWithLiveData;
+import sandclub.beeradvisor.data.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.data.repository.comment.CommentRepository;
+import sandclub.beeradvisor.data.repository.comment.ICommentRepository;
+import sandclub.beeradvisor.data.repository.user.IUserRepository;
+import sandclub.beeradvisor.data.repository.user.UserRepository;
+import sandclub.beeradvisor.data.service.BeerApiService;
+import sandclub.beeradvisor.data.source.beer.BaseBeerLocalDataSource;
+import sandclub.beeradvisor.data.source.beer.BaseBeerRemoteDataSource;
+import sandclub.beeradvisor.data.source.beer.BaseFavouriteBeerDataSource;
+import sandclub.beeradvisor.data.source.beer.BeerLocalDataSource;
+import sandclub.beeradvisor.data.source.beer.BeerRemoteDataSource;
+import sandclub.beeradvisor.data.source.beer.FavouriteBeerDataSource;
+import sandclub.beeradvisor.data.source.comment.BaseCommentRemoteDataSource;
+import sandclub.beeradvisor.data.source.comment.CommentRemoteDataSource;
+import sandclub.beeradvisor.data.source.user.BaseUserAuthenticationRemoteDataSource;
+import sandclub.beeradvisor.data.source.user.BaseUserDataRemoteDataSource;
+import sandclub.beeradvisor.data.source.user.UserAuthenticationRemoteDataSource;
+import sandclub.beeradvisor.data.source.user.UserDataRemoteDataSource;
 
 /**
  *  Registry to provide the dependencies for the classes
@@ -58,10 +58,7 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    /**
-     * Returns an instance of NewsApiService class using Retrofit.
-     * @return an instance of NewsApiService.
-     */
+
     //creo il mio oggetto retrofit passandogli l'url delle api
     public BeerApiService getBeerApiService() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BEER_API_BASE_URL).
@@ -69,11 +66,7 @@ public class ServiceLocator {
         return retrofit.create(BeerApiService.class);
     }
 
-    /**
-     * Returns an instance of NewsRoomDatabase class to manage Room database.
-     * @param application Param for accessing the global application state.
-     * @return An instance of NewsRoomDatabase.
-     */
+
     public BeerRoomDatabase getBeerDao(Application application) {
         return BeerRoomDatabase.getDatabase(application);
     }

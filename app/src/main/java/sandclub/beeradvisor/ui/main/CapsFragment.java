@@ -24,14 +24,12 @@ import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.adapter.CapsAdapter;
 
 import sandclub.beeradvisor.model.Beer;
-import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
-import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
-import sandclub.beeradvisor.repository.user.IUserRepository;
-import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
-import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.ui.welcome.UserViewModel;
+import sandclub.beeradvisor.data.repository.beer.IBeerRepositoryWithLiveData;
+import sandclub.beeradvisor.data.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.welcome.UserViewModelFactory;
 
 import sandclub.beeradvisor.util.ServiceLocator;
 

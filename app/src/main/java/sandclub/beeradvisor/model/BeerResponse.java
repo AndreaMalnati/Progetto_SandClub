@@ -28,8 +28,8 @@ public class BeerResponse implements Parcelable {
 
     @Override
     public String toString() {
-        return "NewsResponse{" +
-                "newsList=" + beerList +
+        return "BeerResponse{" +
+                "beerList=" + beerList +
                 '}';
     }
 

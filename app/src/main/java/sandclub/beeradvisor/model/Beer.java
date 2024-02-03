@@ -3,7 +3,6 @@ package sandclub.beeradvisor.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -13,7 +12,7 @@ import androidx.room.TypeConverters;
 import java.util.List;
 import java.util.Objects;
 
-import sandclub.beeradvisor.database.Converters;
+import sandclub.beeradvisor.data.database.Converters;
 
 @Entity
 @TypeConverters(Converters.class)

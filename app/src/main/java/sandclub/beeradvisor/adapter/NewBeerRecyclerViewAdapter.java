@@ -58,11 +58,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
             view = LayoutInflater.from(parent.getContext()).
                     inflate(R.layout.beer_card2_item, parent, false);
             return new BeersViewHolder(view);
-        } /*else {
-        view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.news_loading_item, parent, false);
-        return new LoadingNewsViewHolder(view);
-    }*/
+        }
         return null;
     }
 
@@ -70,9 +66,7 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof BeersViewHolder) {
             ((BeersViewHolder) holder).bind(beerList.get(position));
-        } /*else if (holder instanceof LoadingNewsViewHolder) {
-            ((LoadingNewsViewHolder) holder).activate();
-        }*/
+        }
     }
 
 

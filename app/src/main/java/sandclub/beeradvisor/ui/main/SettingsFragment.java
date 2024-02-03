@@ -3,8 +3,7 @@ package sandclub.beeradvisor.ui.main;
 
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
-import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
-import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,9 +35,9 @@ import java.io.ByteArrayOutputStream;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
-import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.repository.user.IUserRepository;
-import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
+import sandclub.beeradvisor.ui.welcome.UserViewModel;
+import sandclub.beeradvisor.data.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.welcome.UserViewModelFactory;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 
@@ -94,7 +93,6 @@ public class SettingsFragment extends Fragment {
         nameSurname = view.findViewById(R.id.nameSurname);
         nameSurname.setMaxLines(1);  // Imposta il numero massimo di linee a 1
         nameSurname.setEllipsize(TextUtils.TruncateAt.END);
-
         //Listener bottone logout
         logout.setOnClickListener(v -> {
             userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
@@ -116,7 +114,7 @@ public class SettingsFragment extends Fragment {
                         User user = ((Result.UserResponseSuccess) result).getData();
 
                         profilePhoto = requireView().findViewById(R.id.profilePhoto);
-
+                        nameSurname.setText(user.getNome() + " " + user.getCognome());
                         if(user.getPhotoUrl().equals("")){
                             Glide.with(requireContext())
                                     .load(user.getPhotoUrlGoogle())
@@ -127,7 +125,7 @@ public class SettingsFragment extends Fragment {
                         }else{
                             Glide.with(requireContext())
                                     .load(stringToBitmap(user.getPhotoUrl()))
-                                    .error(R.drawable.ic_app_user) // Immagine di fallback in caso di errore nel caricamento
+                                    .error(R.drawable.ic_app_user)
                                     .circleCrop()
                                     .into(profilePhoto);
                         }
@@ -186,7 +184,6 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
-    // Dichiarazione del launcher per la richiesta di autorizzazione CAMERA
     private final ActivityResultLauncher<String> requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (isGranted) {

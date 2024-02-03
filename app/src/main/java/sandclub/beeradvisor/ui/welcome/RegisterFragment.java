@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +31,6 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Result;
-
-import sandclub.beeradvisor.model.UserViewModel;
 
 public class RegisterFragment extends Fragment {
 
