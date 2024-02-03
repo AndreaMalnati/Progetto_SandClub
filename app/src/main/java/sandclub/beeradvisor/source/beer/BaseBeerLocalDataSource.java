@@ -27,5 +27,7 @@ public abstract class BaseBeerLocalDataSource { //Classe base per la lettura in 
 
     public abstract Beer getBeerId(Set<Integer> ids);
 
+    public abstract  void getFilteredBeer(String filter);
+
 
 }

@@ -2,6 +2,7 @@ package sandclub.beeradvisor.source.user;
 
 import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
 import static sandclub.beeradvisor.util.Constants.NEW_PASSWORD_ERROR;
+import static sandclub.beeradvisor.util.Constants.OLD_PASSWORD_ERROR;
 import static sandclub.beeradvisor.util.Constants.PASSWORD_DATABASE_REFERENCE;
 import static sandclub.beeradvisor.util.Constants.PASSWORD_ERROR_GOOGLE;
 import static sandclub.beeradvisor.util.Constants.USER_DATABASE_REFERENCE;
@@ -69,7 +70,6 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     public void getUserData(String idToken) {
         databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
-                Log.d(TAG, "Error getting data", task.getException());
                 userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
             } else {
                 DataSnapshot userSnapshot = task.getResult();
@@ -125,7 +125,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                     }else if(passwordDb.equals("")){
                         userResponseCallback.onFailureFromRemoteDatabase(PASSWORD_ERROR_GOOGLE);
                     }else{
-                        userResponseCallback.onFailureFromRemoteDatabase("old_password_error");
+                        userResponseCallback.onFailureFromRemoteDatabase(OLD_PASSWORD_ERROR);
                     }
                 }
             }

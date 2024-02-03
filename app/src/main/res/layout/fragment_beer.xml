@@ -56,6 +56,18 @@
             android:textColor="@color/md_theme_light_inversePrimary"
             android:textSize="20dp" />
 
+        <TextView
+            android:id="@+id/beer_ebc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/beer_ibu"
+            android:fontFamily="@font/testo"
+            android:text="ebc"
+            android:textColor="@color/md_theme_light_inversePrimary"
+            android:textSize="20dp" />
+
 
         <TextView
             android:id="@+id/beer_description"
@@ -201,6 +213,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/mapimg"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.ImageView.Rounded"
+            app:strokeColor="@android:color/black"
+            app:strokeWidth="1dp"
             />
 
         <com.google.android.gms.maps.MapView
@@ -212,7 +226,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/ic_google_maps_shape"
             android:contentDescription="@string/map_description" />
 
 
@@ -224,7 +237,6 @@
             android:layout_above="@+id/mapView"
             android:layout_below="@id/beer_comments"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"

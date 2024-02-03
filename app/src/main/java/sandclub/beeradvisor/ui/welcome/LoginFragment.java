@@ -1,15 +1,15 @@
 package sandclub.beeradvisor.ui.welcome;
 
-import static android.content.ContentValues.TAG;
 
-import static sandclub.beeradvisor.util.Constants.COGNOME;
+
+
 import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ID;
 import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
-import static sandclub.beeradvisor.util.Constants.NOME;
+
 import static sandclub.beeradvisor.util.Constants.PASSWORD;
 import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FIRST_LOADING;
@@ -51,7 +51,7 @@ import sandclub.beeradvisor.model.UserViewModel;
 import sandclub.beeradvisor.repository.user.IUserRepository;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.ui.main.MainActivity;
-import sandclub.beeradvisor.util.Constants;
+
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment {
     private SharedPreferencesUtil sharedPreferencesUtil;
 
     public LoginFragment() {
-        // Required empty public constructor
+
     }
 
     public static LoginFragment newInstance() {
@@ -90,7 +90,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -152,11 +152,11 @@ public class LoginFragment extends Fragment {
     }
 
     private void retrieveUserInformationAndStartActivity(User user, int destination) {
-        //progressIndicator.setVisibility(View.VISIBLE);
+
 
         userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
                 getViewLifecycleOwner(), userDataRetrivalResul -> {
-                    //progressIndicator.setVisibility(View.GONE);
+
                     startActivityBasedOnCondition(MainActivity.class, destination);
                 }
         );

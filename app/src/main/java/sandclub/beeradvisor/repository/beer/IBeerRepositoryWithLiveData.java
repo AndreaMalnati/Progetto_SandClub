@@ -15,6 +15,7 @@ public interface IBeerRepositoryWithLiveData {
     MutableLiveData<Result> getFavoriteBeer(boolean isFirstLoading);
 
     MutableLiveData<Result> getBeerId(Set<Integer> ids);
+    MutableLiveData<Result> getFilteredBeer(String filter);
 
 
 }

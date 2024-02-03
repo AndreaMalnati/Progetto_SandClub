@@ -63,6 +63,12 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     }
 
     @Override
+    public MutableLiveData<Result> getFilteredBeer(String filter) {
+        beerLocalDataSource.getFilteredBeer(filter);
+        return allBeerMutableLiveData;
+    }
+
+    @Override
     public void updateBeer(Beer beer){
         beerLocalDataSource.updateBeer(beer);
         if(beer.isFavorite()){

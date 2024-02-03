@@ -2,23 +2,16 @@ package sandclub.beeradvisor.ui.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
-import static sandclub.beeradvisor.util.Constants.ID;
-import static sandclub.beeradvisor.util.Constants.ID_TOKEN;
+
 import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
-import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
-import static sandclub.beeradvisor.util.Constants.PASSWORD;
-import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,8 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +32,7 @@ import java.util.Set;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.adapter.BeerListAdapter;
 import sandclub.beeradvisor.adapter.BeerRecyclerViewAdapter;
-import sandclub.beeradvisor.adapter.CapsAdapter;
+
 import sandclub.beeradvisor.adapter.NewBeerRecyclerViewAdapter;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerViewModel;
@@ -79,13 +70,12 @@ public class MainFragment extends Fragment {
     TextView seeAllNewBeers;
     TextView seeAllLastDrunk;
     public MainFragment() {
-        // Required empty public constructor
+
     }
 
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
-
         return fragment;
     }
 
@@ -108,7 +98,6 @@ public class MainFragment extends Fragment {
                 ServiceLocator.getInstance().getBeerRepository(
                         requireActivity().getApplication()
                 );
-        Log.d(TAG, "Birre caricate");
 
 
         if(beerRepositoryWithLiveData != null) {
@@ -121,14 +110,12 @@ public class MainFragment extends Fragment {
         }
 
         lastDrunkBeerList = new ArrayList<>();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -165,7 +152,6 @@ public class MainFragment extends Fragment {
                     }
                     @Override
                     public void onFavoriteButtonPressed(int position) {
-                        Log.d("Ciaone", "dentro");
                         beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
                         beerViewModel.updateBeer(beerList.get(position));
                     }
@@ -173,9 +159,6 @@ public class MainFragment extends Fragment {
 
         recyclerLastDrunk.setLayoutManager(layoutManager);
         recyclerLastDrunk.setAdapter(beerRecyclerViewAdapter);
-
-
-
 
         recyclerViewNewBeer2 = view.findViewById(R.id.recyclerViewNewBeer2);
         layoutManager2 =
@@ -195,7 +178,6 @@ public class MainFragment extends Fragment {
                     }
                     @Override
                     public void onFavoriteButtonPressed(int position) {
-                        Log.d("Ciaone", "dentro");
                         beerList.get(position).setFavorite(!beerList.get(position).isFavorite());
                         beerViewModel.updateBeer(beerList.get(position));
                     }
@@ -203,8 +185,6 @@ public class MainFragment extends Fragment {
 
         recyclerViewNewBeer2.setLayoutManager(layoutManager2);
         recyclerViewNewBeer2.setAdapter(beerRecyclerViewAdapter2);
-
-
 
         beerViewModel.getBeer(System.currentTimeMillis()).observe(getViewLifecycleOwner(),
                 result -> {
@@ -233,8 +213,6 @@ public class MainFragment extends Fragment {
                             HashMap<Integer, String> birreBevute = user.getBirreBevute();
                             Set<Integer> keys = birreBevute.keySet();
 
-                            Log.d("capsino", keys.toString());
-
                             beerViewModel.getBeerById(keys).observe(getViewLifecycleOwner(), resultBeer -> {
                                 if(resultBeer.isSuccess()){
                                     lastDrunkBeerList.clear();
@@ -245,11 +223,9 @@ public class MainFragment extends Fragment {
                                             getErrorMessage(((Result.Error) resultBeer).getMessage()),
                                             Snackbar.LENGTH_SHORT).show();
                                 }
-
                             });
                         }//TODO::Fare else con textview che compare dicendo che non ci sono birre bevute
                     } else {
-                        //progressIndicator.setVisibility(View.GONE);
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 getErrorMessage(((Result.Error) result).getMessage()),
                                 Snackbar.LENGTH_SHORT).show();
@@ -277,18 +253,12 @@ public class MainFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_capsFragment);
             }
         });
-
     }
 
     private String getErrorMessage(String errorType) {
         switch (errorType) {
-            case INVALID_CREDENTIALS_ERROR:
-                return requireActivity().getString(R.string.error_login_password_message);
-            case INVALID_USER_ERROR:
-                return requireActivity().getString(R.string.error_login_user_message);
             default:
                 return requireActivity().getString(R.string.unexpected_error);
         }
     }
-
 }

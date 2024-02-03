@@ -19,13 +19,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,7 +32,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Result;
-import sandclub.beeradvisor.model.User;
+
 import sandclub.beeradvisor.model.UserViewModel;
 
 public class RegisterFragment extends Fragment {
@@ -47,7 +46,7 @@ public class RegisterFragment extends Fragment {
     private DatabaseReference mDatabase;
 
     public RegisterFragment() {
-        // Required empty public constructor
+
     }
 
     public static RegisterFragment newInstance(String param1, String param2) {
@@ -65,7 +64,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 

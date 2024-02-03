@@ -79,4 +79,8 @@
     <string name="addComment">Aggiungi</string>
     <string name="add_comment">Aggiungi Commmento</string>
     <string name="ibu">ibu:</string>
+    <string name="filters">filtri</string>
+    <string name="from_the_lightest">dalla più chiara</string>
+    <string name="from_the_darkest">dalla più scura</string>
+    <string name="color_grade_beer">colorazione birra</string>
 </resources>

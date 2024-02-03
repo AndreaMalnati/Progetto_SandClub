@@ -1,54 +1,35 @@
 package sandclub.beeradvisor.ui.welcome;
 
-import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
-import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
+
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
-import static sandclub.beeradvisor.util.Constants.PASSWORD;
+
 import static sandclub.beeradvisor.util.Constants.USE_NAVIGATION_COMPONENT;
 
 import android.content.Intent;
-import android.media.Image;
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.material.snackbar.Snackbar;
+
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
+
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.Result;
@@ -136,11 +117,9 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
     private void retrieveUserInformationAndStartActivity(User user, int destination) {
-        //progressIndicator.setVisibility(View.VISIBLE);
 
         userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
                 this, userDataRetrivalResul -> {
-                    //progressIndicator.setVisibility(View.GONE);
                     startActivityBasedOnCondition(MainActivity.class, destination);
                 }
         );

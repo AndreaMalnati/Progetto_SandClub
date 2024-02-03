@@ -1,7 +1,7 @@
 package sandclub.beeradvisor.ui.welcome;
 
 import static sandclub.beeradvisor.util.Constants.COGNOME;
-import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+
 import static sandclub.beeradvisor.util.Constants.EMAIL_ADDRESS;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
@@ -33,36 +33,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -75,8 +63,7 @@ import sandclub.beeradvisor.ui.main.MainActivity;
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
-import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.ui.main.MainActivity;
+
 import sandclub.beeradvisor.util.ServiceLocator;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
@@ -90,7 +77,6 @@ public class AuthenticationFragment extends Fragment {
     FirebaseAuth auth;
     FirebaseDatabase database;
 
-    int RC_SIGN_IN = 20;
     private UserViewModel userViewModel;
 
     private SignInClient oneTapClient;
@@ -105,7 +91,7 @@ public class AuthenticationFragment extends Fragment {
 
 
     public AuthenticationFragment() {
-        // Required empty public constructor
+
     }
 
     public static AuthenticationFragment newInstance() {
@@ -131,15 +117,13 @@ public class AuthenticationFragment extends Fragment {
                         .build())
                 .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                         .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
+
                         .setServerClientId(getString(R.string.default_web_client_id))
-                        // Only show accounts previously used to sign in.
+
                         .setFilterByAuthorizedAccounts(false)
                         .build())
-                // Automatically sign in when exactly one credential is retrieved.
                 .setAutoSelectEnabled(true)
                 .build();
-
 
         startIntentSenderForResult = new ActivityResultContracts.StartIntentSenderForResult();
 
@@ -155,17 +139,13 @@ public class AuthenticationFragment extends Fragment {
 
                             if (authenticationResult.isSuccessUser()) {
                                 User user = ((Result.UserResponseSuccess) authenticationResult).getData();
-
-                                Log.d("Testina", user.getUserId());
-
                                 saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
                                 userViewModel.setAuthenticationError(false);
-
                                 retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
 
                             } else {
                                 userViewModel.setAuthenticationError(true);
-                                //progressIndicator.setVisibility(View.GONE);
+
                                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                         getErrorMessage(((Result.Error) authenticationResult).getMessage()),
                                         Snackbar.LENGTH_SHORT).show();
@@ -182,11 +162,10 @@ public class AuthenticationFragment extends Fragment {
     }
 
     private void retrieveUserInformationAndStartActivity(User user, int destination) {
-        //progressIndicator.setVisibility(View.VISIBLE);
-        Log.d("Testinaina", user.getUserId());
+
         userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
                 getViewLifecycleOwner(), userDataRetrivalResul -> {
-                    //progressIndicator.setVisibility(View.GONE);
+
                     startActivityBasedOnCondition(MainActivity.class, destination);
                 }
         );
@@ -204,7 +183,6 @@ public class AuthenticationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_authentication, container, false);
     }
@@ -217,7 +195,6 @@ public class AuthenticationFragment extends Fragment {
         google = view.findViewById(R.id.registerGoogleBtn);
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,8 +235,6 @@ public class AuthenticationFragment extends Fragment {
                     }
                 }));
     }
-
-
 
     private void saveLoginData(String id,String nome, String cognome, String email, String password) {
         dataEncryptionUtil = new DataEncryptionUtil(requireContext());

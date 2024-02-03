@@ -27,7 +27,7 @@ public class BeerRemoteDataSource extends BaseBeerRemoteDataSource {
     @Override
     public void getBeer() {
         Call<BeerApiResponse> beerResponseCall = beerApiService.getAllBeer(String.valueOf(page), "80");
-        Log.d("Ciaone", "ciao, " + beerResponseCall);
+
         beerResponseCall.enqueue(new Callback<BeerApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<BeerApiResponse> call,

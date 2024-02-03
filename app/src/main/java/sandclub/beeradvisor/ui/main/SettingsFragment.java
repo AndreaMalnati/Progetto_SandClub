@@ -1,70 +1,43 @@
 package sandclub.beeradvisor.ui.main;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static sandclub.beeradvisor.util.Constants.DATABASE_URL;
+
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static sandclub.beeradvisor.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static sandclub.beeradvisor.util.Constants.INVALID_USER_ERROR;
-import static sandclub.beeradvisor.util.Constants.REQUEST_CAMERA_PERMISSION;
-import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_CAPTURE;
-import static sandclub.beeradvisor.util.Constants.REQUEST_IMAGE_PICK;
-import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
-
 import android.Manifest;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import sandclub.beeradvisor.R;
-import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
-import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.user.IUserRepository;
-import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
@@ -79,9 +52,7 @@ public class SettingsFragment extends Fragment {
     private UserViewModel userViewModel;
     TextView nameSurname;
     public SettingsFragment() {
-        // Required empty public constructor
     }
-
 
     // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance() {
@@ -110,7 +81,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
@@ -133,8 +103,7 @@ public class SettingsFragment extends Fragment {
                     Navigation.findNavController(view).navigate(
                             R.id.action_settingsFragment_to_welcomeActivity);
                 } else {
-                    Snackbar.make(view,
-                            requireActivity().getString(R.string.unexpected_error),
+                    Snackbar.make(view,requireActivity().getString(R.string.unexpected_error),
                             Snackbar.LENGTH_SHORT).show();
                 }
             });
@@ -145,9 +114,7 @@ public class SettingsFragment extends Fragment {
                 getViewLifecycleOwner(), result -> {
                     if (result.isSuccessUser()) {
                         User user = ((Result.UserResponseSuccess) result).getData();
-                        Log.d("Testata", user.getBirreBevute().toString());
-                        Log.d("Testina", String.valueOf(user.getBirreBevute().size()));
-                        //updatePhotoImageView();
+
                         profilePhoto = requireView().findViewById(R.id.profilePhoto);
 
                         if(user.getPhotoUrl().equals("")){
@@ -165,7 +132,6 @@ public class SettingsFragment extends Fragment {
                                     .into(profilePhoto);
                         }
                     } else {
-                        //progressIndicator.setVisibility(View.GONE);
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 getErrorMessage(((Result.Error) result).getMessage()),
                                 Snackbar.LENGTH_SHORT).show();
@@ -177,13 +143,9 @@ public class SettingsFragment extends Fragment {
         changePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Navigation.findNavController(requireView()).navigate(R.id.action_settingsFragment_to_settings_Password);
-                //navController.navigate(R.id.action_settingsFragment_to_settings_Password);
             }
         });
-
-
 
         photoUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,18 +162,6 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    private String getErrorMessage(String errorType) {
-        switch (errorType) {
-            case INVALID_CREDENTIALS_ERROR:
-                return requireActivity().getString(R.string.error_login_password_message);
-            case INVALID_USER_ERROR:
-                return requireActivity().getString(R.string.error_login_user_message);
-            default:
-                return requireActivity().getString(R.string.unexpected_error);
-        }
-    }
-
-
 
     //conversione immagine BitMap a string per salvarla su realtime
     public static String bitmapToString(Bitmap bitmap) {
@@ -227,8 +177,6 @@ public class SettingsFragment extends Fragment {
     }
 
 
-
-
     ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -237,7 +185,6 @@ public class SettingsFragment extends Fragment {
                     userViewModel.changePhotoMutableLiveData(userViewModel.getLoggedUser().getUserId(), bitmapToString((Bitmap) result.getData().getExtras().get("data")));
                 }
             });
-
 
     // Dichiarazione del launcher per la richiesta di autorizzazione CAMERA
     private final ActivityResultLauncher<String> requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
@@ -251,6 +198,12 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
+    }
 
 }
 

@@ -39,6 +39,12 @@ public class BeerViewModel extends ViewModel {
         }
         return beerListLiveData;
     }
+
+    public MutableLiveData<Result> getBeerFilteredMutableLiveData(String filter) {
+        getFilteredBeer(filter);
+        return beerListLiveData;
+    }
+
     public MutableLiveData<Result> getFavoriteBeerLiveData(boolean isFirstLoading) {
         if (favoriteBeerListLiveData == null) {
             getFavoriteBeer(isFirstLoading);
@@ -54,6 +60,9 @@ public class BeerViewModel extends ViewModel {
     }
 
 
+    public void getFilteredBeer(String filter) {
+        beerListLiveData = beerRepositoryWithLiveData.getFilteredBeer(filter);
+    }
     public void getBeerId(Set<Integer> ids) {
         singleBeerLiveData = beerRepositoryWithLiveData.getBeerId(ids);
     }

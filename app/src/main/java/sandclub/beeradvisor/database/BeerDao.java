@@ -39,5 +39,30 @@ public interface BeerDao {
     @Query("DELETE FROM beer")
     int deleteAll();
 
+    //From less Bitter
+    @Query("SELECT * FROM beer ORDER BY ibu ASC")
+    List<Beer> getBeersOrderedByIbuASC();
+
+    //From more Bitter
+    @Query("SELECT * FROM beer ORDER BY ibu DESC")
+    List<Beer> getBeersOrderedByIbuDESC();
+
+    //From less Alcoholic
+    @Query("SELECT * FROM beer ORDER BY abv ASC")
+    List<Beer> getBeersOrderedByAbvASC();
+
+    //From more Alcoholic
+    @Query("SELECT * FROM beer ORDER BY abv DESC")
+    List<Beer> getBeersOrderedByAbvDESC();
+
+    //Lightest
+    @Query("SELECT * FROM beer ORDER BY ebc ASC")
+    List<Beer> getBeersOrderedByEbcASC();
+
+    //Darkest
+    @Query("SELECT * FROM beer ORDER BY ebc DESC")
+    List<Beer> getBeersOrderedByEbcDESC();
+
+
 
 }

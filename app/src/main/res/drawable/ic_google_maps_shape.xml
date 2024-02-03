@@ -4,5 +4,5 @@
 
     <corners android:radius="20dp" /> <!-- raggio degli angoli arrotondati -->
     <stroke android:width="3dp" android:color="#000000" /> <!-- larghezza e colore del bordo -->
-
+    <solid android:color="@color/md_theme_light_primaryContainer" /> <!-- colore di riempimento del rettangolo -->
 </shape>

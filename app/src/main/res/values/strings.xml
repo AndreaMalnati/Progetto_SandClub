@@ -10,7 +10,7 @@
     <string name="login">login</string>
 
 
-    <string name="unexpected_error" translatable="false">Hello blank fragment</string>
+    <string name="unexpected_error" translatable="false">unexpected_error</string>
 
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="login_with_google" translatable="false">Login with Google</string>
@@ -87,5 +87,9 @@
     <string name="addComment">Add</string>
     <string name="add_comment">Add Comment</string>
     <string name="ibu">ibu:</string>
+    <string name="filters">filter</string>
+    <string name="from_the_lightest">from the lightest</string>
+    <string name="from_the_darkest">from the darkest</string>
+    <string name="color_grade_beer">color grade beer</string>
 
 </resources>

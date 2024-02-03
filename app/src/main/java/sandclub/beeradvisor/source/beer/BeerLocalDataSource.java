@@ -40,6 +40,48 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
     }
 
     @Override
+    public void getFilteredBeer(String filter){
+        if(filter.equals("LB")) {
+            BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+                BeerApiResponse beerApiResponse = new BeerApiResponse();
+                beerApiResponse.setBeerList(beerDao.getBeersOrderedByIbuASC());
+                beerCallback.onSuccessFromLocal(beerApiResponse);
+            });
+        }else if(filter.equals("MB")){
+            BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+                BeerApiResponse beerApiResponse = new BeerApiResponse();
+                beerApiResponse.setBeerList(beerDao.getBeersOrderedByIbuDESC());
+                beerCallback.onSuccessFromLocal(beerApiResponse);
+            });
+        }else if(filter.equals("LA")){
+            BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+                BeerApiResponse beerApiResponse = new BeerApiResponse();
+                beerApiResponse.setBeerList(beerDao.getBeersOrderedByAbvASC());
+                beerCallback.onSuccessFromLocal(beerApiResponse);
+            });
+        }else if(filter.equals("MA")){
+            BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+                BeerApiResponse beerApiResponse = new BeerApiResponse();
+                beerApiResponse.setBeerList(beerDao.getBeersOrderedByAbvDESC());
+                beerCallback.onSuccessFromLocal(beerApiResponse);
+            });
+        }else if(filter.equals("LE")){
+            BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+                BeerApiResponse beerApiResponse = new BeerApiResponse();
+                beerApiResponse.setBeerList(beerDao.getBeersOrderedByEbcASC());
+                beerCallback.onSuccessFromLocal(beerApiResponse);
+            });
+        }else if(filter.equals("ME")) {
+            BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+                BeerApiResponse beerApiResponse = new BeerApiResponse();
+                beerApiResponse.setBeerList(beerDao.getBeersOrderedByEbcDESC());
+                beerCallback.onSuccessFromLocal(beerApiResponse);
+            });
+        }
+        beerCallback.onFailureFromLocal(new Exception(UNEXPECTED_ERROR));
+    }
+
+    @Override
     public void insertBeer(BeerApiResponse beerApiResponse) {
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
 

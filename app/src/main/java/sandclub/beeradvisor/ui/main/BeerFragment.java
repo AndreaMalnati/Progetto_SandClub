@@ -1,7 +1,6 @@
 package sandclub.beeradvisor.ui.main;
 
 import static sandclub.beeradvisor.ui.main.SettingsFragment.bitmapToString;
-import static sandclub.beeradvisor.util.Constants.REQUEST_CAMERA_PERMISSION;
 
 import android.Manifest;
 import android.content.Context;
@@ -11,7 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.renderscript.Allocation;
@@ -19,7 +18,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +44,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,21 +53,23 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 
 import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.adapter.CommentRecyclerViewAdapter;
-import sandclub.beeradvisor.database.BeerDao;
-import sandclub.beeradvisor.database.BeerRoomDatabase;
+
 import sandclub.beeradvisor.model.Beer;
+import sandclub.beeradvisor.model.BeerViewModel;
 import sandclub.beeradvisor.model.Comment;
 import sandclub.beeradvisor.model.CommentViewModel;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.model.UserViewModel;
+import sandclub.beeradvisor.repository.beer.IBeerRepositoryWithLiveData;
 import sandclub.beeradvisor.repository.comment.ICommentRepository;
 import sandclub.beeradvisor.repository.user.IUserRepository;
+import sandclub.beeradvisor.ui.factory.BeerViewModelFactory;
 import sandclub.beeradvisor.ui.factory.CommentViewModelFactory;
 import sandclub.beeradvisor.ui.factory.UserViewModelFactory;
 import sandclub.beeradvisor.util.ErrorMessagesUtil;
@@ -85,6 +85,7 @@ public class BeerFragment extends Fragment {
     TextView rating;
     TextView description;
     TextView foodPairing;
+    TextView ebc;
     MapView mapView;
     TextView addComment;
     TextView ratingBarText;
@@ -95,12 +96,12 @@ public class BeerFragment extends Fragment {
     RatingBar ratingBar;
     ImageView imageBeer;
     CheckBox favorite;
-
+    private BeerViewModel beerViewModel;
 
     ScrollView scrollViewDescription;
 
     public BeerFragment() {
-        // Required empty public constructor
+
     }
 
     public static BeerFragment newInstance() {
@@ -128,6 +129,22 @@ public class BeerFragment extends Fragment {
         commentViewModel = new ViewModelProvider(this,
                 new CommentViewModelFactory(commentRepository)).get(CommentViewModel.class);
 
+        IBeerRepositoryWithLiveData beerRepositoryWithLiveData =
+                ServiceLocator.getInstance().getBeerRepository(
+                        requireActivity().getApplication()
+                );
+
+
+
+        if(beerRepositoryWithLiveData != null) {
+            beerViewModel = new ViewModelProvider(
+                    this,
+                    new BeerViewModelFactory(beerRepositoryWithLiveData)).get(BeerViewModel.class);
+        }else {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.unexpected_error), Snackbar.LENGTH_SHORT).show();
+        }
+
         commentList = new ArrayList<>();
 
     }
@@ -135,7 +152,7 @@ public class BeerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_beer, container, false);
     }
 
@@ -145,6 +162,7 @@ public class BeerFragment extends Fragment {
         nameBeer = view.findViewById(R.id.beer_name);
         alchool = view.findViewById(R.id.beer_grade);
         ibu = view.findViewById(R.id.beer_ibu);
+        ebc = view.findViewById(R.id.beer_ebc);
         rating = view.findViewById(R.id.ratingBar_text);
         description = view.findViewById(R.id.beer_description_text);
         foodPairing = view.findViewById(R.id.beer_foodPairings_text);
@@ -162,6 +180,7 @@ public class BeerFragment extends Fragment {
         nameBeer.setText(beer.getName());
         alchool.setText(String.valueOf(beer.getAbv()) + "%");
         ibu.setText("ibu: " + String.valueOf(beer.getIbu()));
+        ebc.setText("ebc: " + String.valueOf(beer.getEbc()));
         description.setText(beer.getDescription());
         nameBeer.setMaxLines(1);
         nameBeer.setEllipsize(TextUtils.TruncateAt.END);
@@ -180,12 +199,17 @@ public class BeerFragment extends Fragment {
                     .into(imageBeer);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewComments);
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                beer.setFavorite(favorite.isChecked());
+                beerViewModel.updateBeer(beer);
+            }
+        });
         addComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Stampa", "Cliccato su add comment");
-                //NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                //navController.navigate(R.id.action_beerFragment_to_commentFragment2);
+
                 View rootView = requireActivity().getWindow().getDecorView().findViewById(android.R.id.content);
                 Bitmap backgroundBitmap = getBitmapFromView(rootView);
 
@@ -193,27 +217,27 @@ public class BeerFragment extends Fragment {
                 Bitmap blurredBitmap = blurBitmap(backgroundBitmap, requireContext());
 
                 View popupView = getLayoutInflater().inflate(R.layout.fragment_comment2, null);
-                //int width = 1000; // Larghezza in pixel
-                //int height = 2000; // Altezza in pixel
+
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int height2 = displayMetrics.heightPixels;
                 int width2 = displayMetrics.widthPixels;
                 PopupWindow popupWindow = new PopupWindow(popupView, width2, height2, true);
+
 // Crea un'istanza di PopupWindow
                 Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
                 popupView.startAnimation(animation);
-                Log.d("Ciaone", "PopupWindow dimensions: " + popupWindow.getWidth() + ", " + popupWindow.getHeight());
+
 
 // Imposta il comportamento del popup
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.setFocusable(true);
-                //popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), blurredBitmap));
+
 
                 Bitmap scaledBlurredBitmap = Bitmap.createScaledBitmap(blurredBitmap, width2, height2, false);
                 popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), scaledBlurredBitmap));
 
-                //popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
                 popupWindow.showAtLocation(rootView, Gravity.CENTER, 0,0);
 
                 //Gestione schermata commenti
@@ -229,13 +253,13 @@ public class BeerFragment extends Fragment {
                 Confirmcomment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Log.d("puzza" , userViewModel.getLoggedUser().getNome());
 
                         userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
                             if (result.isSuccessUser()) {
                                 User loggedUser = ((Result.UserResponseSuccess) result).getData();
                                 String fullname = loggedUser.getNome() + " " + loggedUser.getCognome();
                                 String photoUSer;
+
                                 //se ha foto personalizzata
                                 if(!loggedUser.getPhotoUrl().equals("")){
                                     photoUSer = loggedUser.getPhotoUrl();
@@ -261,18 +285,9 @@ public class BeerFragment extends Fragment {
                                         });
                             }
                         });
-
-
-
                     }
                 });
-
-
-
-
-
             }
-
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.HORIZONTAL, false);
@@ -337,9 +352,7 @@ public class BeerFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     String image = bitmapToString((Bitmap) result.getData().getExtras().get("data"));
                     Beer beer = getArguments().getParcelable("beer");
-                    Log.d("Testone", "beer: " + beer.getId() + " image: " + image);
 
-                    //Log.d("Testone", "newPhoto: " + newPhoto.toString());
                     userViewModel.addPhotoBeerDrunkMutableLiveData(userViewModel.getLoggedUser().getUserId(), beer.getId(), image);
                 }
             });
@@ -368,7 +381,7 @@ public class BeerFragment extends Fragment {
                     // L'utente non vuole la foto
                     Beer beer = getArguments().getParcelable("beer");
 
-                    //Log.d("Testone", "newPhoto: " + newPhoto.toString());
+
                     userViewModel.addPhotoBeerDrunkMutableLiveData(userViewModel.getLoggedUser().getUserId(), beer.getId(), ".");
 
                 }            }
