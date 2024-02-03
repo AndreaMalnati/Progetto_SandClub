@@ -12,6 +12,7 @@ import sandclub.beeradvisor.data.database.BeerDao;
 import sandclub.beeradvisor.data.database.BeerRoomDatabase;
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerApiResponse;
+import sandclub.beeradvisor.model.BeerResponse;
 import sandclub.beeradvisor.util.DataEncryptionUtil;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
@@ -108,6 +109,32 @@ public class BeerLocalDataSource extends BaseBeerLocalDataSource {
         });
     }
 
+    @Override
+    public void insertBeer(BeerResponse beerApiResponse) {
+        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+
+
+            //Legge birre già presenti da database
+            List<Beer> allBeer = beerDao.getAll();
+            List<Beer> beerList = beerApiResponse.getBeerList();
+
+            if (beerList != null) {
+
+                for (Beer beer : allBeer) {
+                    if (beerList.contains(beer)) {
+                        beerList.set(beerList.indexOf(beer), beer);
+                    }
+                }
+            }
+
+            // Scrive le birre nel database
+            beerDao.insertBeerList(beerList);
+            sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                    LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+
+            beerCallback.onSuccessFromLocal(beerApiResponse);
+        });
+    }
 
     @Override
     public void insertBeer(List<Beer> beerList) {

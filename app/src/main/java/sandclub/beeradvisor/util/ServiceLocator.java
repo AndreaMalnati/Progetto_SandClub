@@ -12,6 +12,7 @@ import java.security.GeneralSecurityException;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import sandclub.beeradvisor.R;
 import sandclub.beeradvisor.data.database.BeerRoomDatabase;
 import sandclub.beeradvisor.data.repository.beer.BeerRepositoryWithLiveData;
 import sandclub.beeradvisor.data.repository.beer.IBeerRepositoryWithLiveData;
@@ -71,20 +72,17 @@ public class ServiceLocator {
         return BeerRoomDatabase.getDatabase(application);
     }
 
-    public IBeerRepositoryWithLiveData getBeerRepository(Application application/*, boolean debugMode*/) {
+    public IBeerRepositoryWithLiveData getBeerRepository(Application application) {
         BaseBeerRemoteDataSource beerRemoteDataSource;
         BaseBeerLocalDataSource beerLocalDataSource;
         BaseFavouriteBeerDataSource favoriteBeerDataSource;
+
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
-        /*if (debugMode) {
-            JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
-            beerRemoteDataSource =
-                    new BeerMockRemoteDataSource(jsonParserUtil, JSONParserUtil.JsonParserType.GSON);
-        } else {*/
+
             beerRemoteDataSource =
                     new BeerRemoteDataSource();
-        //}
+
 
         beerLocalDataSource = new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
         try {

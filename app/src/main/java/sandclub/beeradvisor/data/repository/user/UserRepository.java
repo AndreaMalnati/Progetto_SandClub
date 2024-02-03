@@ -7,6 +7,7 @@ import java.util.List;
 
 import sandclub.beeradvisor.model.Beer;
 import sandclub.beeradvisor.model.BeerApiResponse;
+import sandclub.beeradvisor.model.BeerResponse;
 import sandclub.beeradvisor.model.Result;
 import sandclub.beeradvisor.model.User;
 import sandclub.beeradvisor.data.source.beer.BaseBeerLocalDataSource;
@@ -205,12 +206,22 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
     }
 
     @Override
+    public void onSuccessFromRemote(BeerResponse beerResponse, long lastUpdate) {
+
+    }
+
+    @Override
     public void onFailureFromRemote(Exception exception) {
 
     }
 
     @Override
     public void onSuccessFromLocal(BeerApiResponse beerApiResponse) {
+
+    }
+
+    @Override
+    public void onSuccessFromLocal(BeerResponse Response) {
 
     }
 

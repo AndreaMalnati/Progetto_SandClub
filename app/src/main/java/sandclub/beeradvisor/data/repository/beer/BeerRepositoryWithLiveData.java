@@ -52,7 +52,6 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
     public MutableLiveData<Result> fetchAllBeer(long lastUpdate) {
         long currentTime = System.currentTimeMillis();
 
-
         if (currentTime - lastUpdate > FRESH_TIMEOUT) {
             beerRemoteDataSource.getBeer();
         } else {
@@ -83,6 +82,11 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
 
     }
 
+    @Override
+    public void onSuccessFromRemote(BeerResponse beerResponse, long lastUpdate) {
+        beerLocalDataSource.insertBeer(beerResponse);
+
+    }
     @Override
     public void onFailureFromRemote(Exception exception) {
         Result.Error result = new Result.Error(exception.getMessage());
@@ -121,6 +125,19 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         }
     }
 
+    @Override
+    public void onSuccessFromLocal(BeerResponse beerResponse) {
+        if (allBeerMutableLiveData.getValue() != null && allBeerMutableLiveData.getValue().isSuccess()) {
+            List<Beer> beerList = ((Result.Success)allBeerMutableLiveData.getValue()).getData().getBeerList();
+            beerList.addAll(beerResponse.getBeerList());
+            beerResponse.setBeerList(beerList);
+            Result.Success result = new Result.Success(beerResponse);
+            allBeerMutableLiveData.postValue(result);
+        } else {
+            Result.Success result = new Result.Success(beerResponse);
+            allBeerMutableLiveData.postValue(result);
+        }
+    }
     @Override
     public void onFailureFromLocal(Exception exception) {
         Result.Error resultError = new Result.Error(exception.getMessage());

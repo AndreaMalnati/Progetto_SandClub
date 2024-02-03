@@ -1,6 +1,8 @@
 package sandclub.beeradvisor.ui.main;
 
 import static sandclub.beeradvisor.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static sandclub.beeradvisor.util.Constants.LAST_UPDATE;
+import static sandclub.beeradvisor.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -178,6 +180,10 @@ public class MainFragment extends Fragment {
         recyclerViewNewBeer2.setLayoutManager(layoutManager2);
         recyclerViewNewBeer2.setAdapter(beerRecyclerViewAdapter2);
 
+
+
+
+
         beerViewModel.getBeer(System.currentTimeMillis()).observe(getViewLifecycleOwner(),
                 result -> {
                     if (result.isSuccess()) {
@@ -223,14 +229,6 @@ public class MainFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
-        /*
-
-        String lastUpdate = "0";
-        if(sharedPreferencesUtil.readStringData(
-                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
-            lastUpdate = sharedPreferencesUtil.readStringData(
-                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
-        }*/
 
         seeAllNewBeers.setOnClickListener(new View.OnClickListener() {
             @Override
