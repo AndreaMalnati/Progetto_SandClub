@@ -91,5 +91,6 @@
     <string name="from_the_lightest">from the lightest</string>
     <string name="from_the_darkest">from the darkest</string>
     <string name="color_grade_beer">color grade beer</string>
+    <string name="catch_phrase" translatable="false">find the perfect beer for the perfect moment!</string>
 
 </resources>
