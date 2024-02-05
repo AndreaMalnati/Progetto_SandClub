@@ -16,10 +16,7 @@ public abstract class BaseBeerLocalDataSource { //Classe base per la lettura in 
     }
 
     public abstract void getBeer(); //Restituisce tutte le birre
-    //public abstract void getFavoriteBeers(); //Restituisce le birre preferite
-    //public abstract void updateBeer(Beer beer); //Aggiorna stato birra da preferito o no
 
-    //public abstract void deleteFavoriteBeer(); //Cancella birra preferita
     public abstract void insertBeer(BeerApiResponse beerApiResponse); //Inserisce birre dentro database
     public abstract void insertBeer(BeerResponse beerResponse); //Inserisce birre dentro database
 

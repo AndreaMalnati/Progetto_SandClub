@@ -43,11 +43,7 @@ import sandclub.beeradvisor.util.ErrorMessagesUtil;
 import sandclub.beeradvisor.util.ServiceLocator;
 import sandclub.beeradvisor.util.SharedPreferencesUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MainFragment extends Fragment {
 
     private List<Beer> randomBeerList;
@@ -191,7 +187,6 @@ public class MainFragment extends Fragment {
                         this.beerList.clear();
                         this.beerList.addAll(((Result.Success) result).getData().getBeerList());
 
-                        //beerListAdapter.notifyDataSetChanged();
                         beerRecyclerViewAdapter2.notifyItemRangeInserted(initialSize, this.beerList.size());
                     } else {
                         ErrorMessagesUtil errorMessagesUtil =
@@ -222,7 +217,7 @@ public class MainFragment extends Fragment {
                                             Snackbar.LENGTH_SHORT).show();
                                 }
                             });
-                        }//TODO::Fare else con textview che compare dicendo che non ci sono birre bevute
+                        }
                     } else {
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 getErrorMessage(((Result.Error) result).getMessage()),

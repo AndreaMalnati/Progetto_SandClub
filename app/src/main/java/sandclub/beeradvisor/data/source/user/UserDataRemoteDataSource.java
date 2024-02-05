@@ -153,22 +153,17 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
 
     public void addPhotoLastDrunkBeer(String token, int id_Beer, String image){
-        Log.d("Testata", "Dentro");
         databaseReference.child(USER_DATABASE_REFERENCE).child(token).child(USER_LAST_DRUNK_DATABASE_REFERENCE).child(String.valueOf(id_Beer))
                 .setValue(image).addOnSuccessListener(aVoid -> {
-            Log.d("Testata", "Dentro successo");
             databaseReference.child(USER_DATABASE_REFERENCE).child(token).get().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
-                    Log.d(TAG, "Error getting data", task.getException());
                     userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
                 } else {
-                    Log.d("Testata", "dentro successo");
                     User user = task.getResult().getValue(User.class);
                     userResponseCallback.onSuccessFromRemoteDatabase(user);
                 }
             });
         }).addOnFailureListener(e -> {
-            Log.d("Testata", "Dentro failure");
             userResponseCallback.onFailureFromRemoteDatabase(e.getLocalizedMessage());
         });
 

@@ -28,8 +28,6 @@ public class CommentRemoteDataSource extends BaseCommentRemoteDataSource{
 
     @Override
     public void addComment(Comment comment) {
-        Log.d("cappero", "id: " + comment.getIdBeer());
-        Log.d("cappero", String.valueOf(comment.getIdBeer()));
         databaseReference.child(COMMENT_DATABASE_REFERENCE).child(String.valueOf(comment.getIdBeer())).child(comment.getNameUser()).setValue(comment)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){

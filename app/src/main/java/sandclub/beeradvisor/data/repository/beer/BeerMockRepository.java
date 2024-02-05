@@ -22,7 +22,6 @@ import sandclub.beeradvisor.util.ServiceLocator;
 public class BeerMockRepository implements IBeerRepository {
 
     private final Application application;
-    //private final ResponseCallback responseCallback;
     private final BeerDao beerDao;
 
     private final ResponseCallback responseCallback;

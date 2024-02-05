@@ -17,7 +17,6 @@ public abstract class BaseFavouriteBeerDataSource {
 
     public abstract void synchronizeFavoriteBeer(List<Beer> notSynchronizedBeerList);
     public abstract void deleteFavoriteBeer(Beer beer);
-    public abstract void deleteAllFavoriteBeer();
 
 
 }

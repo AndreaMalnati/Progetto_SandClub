@@ -242,9 +242,6 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Be
 
 
 
-    @Override
-    public void onDeleteFavoriteBeerSuccess(List<Beer> favoriteBeer) {
 
-    }
 
 }

@@ -177,15 +177,8 @@ private final BaseBeerLocalDataSource beerLocalDataSource;
         favoriteBeerMutableLiveData.postValue(new Result.Success(new BeerResponse(beerList)));
     }
 
-    @Override
-    public void onDeleteFavoriteBeerSuccess(List<Beer> favoriteBeer) {
 
-    }
 
-    @Override
-    public void onSuccessDeletion(){
-
-    }
 
     @Override
     public void onSuccessFromCloudReading(List<Beer> beerList) {

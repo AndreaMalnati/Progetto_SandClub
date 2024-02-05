@@ -113,8 +113,5 @@ public class FavouriteBeerDataSource extends BaseFavouriteBeerDataSource{
                 });
     }
 
-    @Override
-    public void deleteAllFavoriteBeer() {
 
-    }
 }

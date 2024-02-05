@@ -21,7 +21,6 @@ public interface IUserRepository {
     void signUp(String nome, String cognome, String email, String password);
     void signIn(String email, String password);
     void signInWithGoogle(String token);
-    //void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);
     MutableLiveData<Result> changePassword(String token, String newPw, String oldPw);
     MutableLiveData<Result> changePhoto(String token, String imageBitmap);
 

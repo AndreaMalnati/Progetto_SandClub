@@ -1,4 +1,4 @@
-package sandclub.beeradvisor.source.beer;
+package sandclub.beeradvisor.data.source.beer;
 
 import static sandclub.beeradvisor.util.Constants.API_KEY_ERROR;
 import static sandclub.beeradvisor.util.Constants.BEER_API_TEST_JSON;
@@ -34,7 +34,6 @@ public class BeerMockRemoteDataSource extends BaseBeerRemoteDataSource {
         try {
 
             beerResponse = jsonParserUtil.parseJSONFileWithGSon(BEER_API_TEST_JSON);
-            Log.d("getBeer-MockRemote-Response", "ciao" + beerResponse.getBeerList().size());
         } catch (IOException e) {
             Log.d("getBeer-MockRemote-Response", "eccezione" );
 

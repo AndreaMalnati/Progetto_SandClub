@@ -324,9 +324,7 @@ public class BeerFragment extends Fragment {
                     // Se hai già il permesso CAMERA, avvia l'attività della fotocamera
                     optionMenu();
                 } else {
-                    // Se non hai il permesso CAMERA, richiedilo all'utente
-                    optionMenu();
-                }
+                    requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);                }
             }
         });
         mapView.setOnClickListener(new View.OnClickListener() {

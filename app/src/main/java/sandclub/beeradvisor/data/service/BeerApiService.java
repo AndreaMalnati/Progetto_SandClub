@@ -16,10 +16,8 @@ import sandclub.beeradvisor.model.BeerResponse;
 
 public interface BeerApiService {
 
-    //SCRIVERE TUTTE LE CHIAMATE AL SERVIZIO A CUI CI APPOGGIAMO punkapi
 
 
-    //Get di una birra con id
     @GET(BEER_ENDPOINT)
     Call<BeerResponse> getBeerById(
         @Query(SINGLE_BEER_PARAMETER) int id

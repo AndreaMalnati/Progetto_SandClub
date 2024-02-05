@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 
+//Converter per campo fooPairing di beer
 public class Converters {
     private static Gson gson = new Gson();
 

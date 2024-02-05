@@ -56,7 +56,6 @@ public class Beer implements Parcelable {
 
     @ColumnInfo(name = "is_synchronized")
     private boolean isSynchronized;
-// Aggiungi costruttori, getter e setter secondo necessità
 
 
     public boolean isFavorite() {

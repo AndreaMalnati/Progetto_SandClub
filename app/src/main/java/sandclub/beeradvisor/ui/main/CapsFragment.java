@@ -126,9 +126,8 @@ public class CapsFragment extends Fragment {
 
                                 });
 
-                        }//TODO::Fare else con textview che compare dicendo che non ci sono birre bevute
+                        }
                     } else {
-                        //progressIndicator.setVisibility(View.GONE);
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 getErrorMessage(((Result.Error) result).getMessage()),
                                 Snackbar.LENGTH_SHORT).show();

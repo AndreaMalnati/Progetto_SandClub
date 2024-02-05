@@ -39,6 +39,7 @@ public interface BeerDao {
     @Query("DELETE FROM beer")
     int deleteAll();
 
+    //Filter query
     //From less Bitter
     @Query("SELECT * FROM beer ORDER BY ibu ASC")
     List<Beer> getBeersOrderedByIbuASC();

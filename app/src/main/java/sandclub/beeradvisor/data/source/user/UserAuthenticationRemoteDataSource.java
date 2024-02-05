@@ -34,7 +34,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if(firebaseUser == null){
                 return null;
-            }else{//TODO: Fare funzione per ottenere i dati dell'utente da firebase in file UserDataRemoteDataSource.java
+            }else{
                 return new User(firebaseUser.getUid(), firebaseUser.getEmail());
             }
         }
@@ -107,13 +107,6 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                             String nome = parts[0];  // Il primo elemento è il nome
                             String cognome = parts.length > 1 ? parts[1] : "";  // Il secondo elemento è il cognome, se presente
 
-                            Log.d("Testone", firebaseUser.getUid());
-                            Log.d("Testone", nome);
-                            Log.d("Testone", cognome);
-                            Log.d("Testone", firebaseUser.getEmail());
-                            Log.d("Testone", firebaseUser.getPhotoUrl().toString());
-
-
                             userResponseCallback.onSuccessFromAuthentication(
                                     new User(firebaseUser.getUid(),
                                     nome, cognome,
@@ -127,7 +120,6 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                                     getErrorMessage(task.getException()));
                         }
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
                     }

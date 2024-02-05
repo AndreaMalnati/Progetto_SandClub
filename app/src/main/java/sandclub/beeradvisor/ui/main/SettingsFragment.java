@@ -53,7 +53,6 @@ public class SettingsFragment extends Fragment {
     public SettingsFragment() {
     }
 
-    // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();

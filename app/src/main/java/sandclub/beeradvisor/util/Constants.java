@@ -1,7 +1,7 @@
 package sandclub.beeradvisor.util;
 
 public class Constants {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String BEER_DATABASE_NAME = "BeerDb";
     public static final String BEER_ENDPOINT = "beers";
     public static final String SINGLE_BEER_PARAMETER = "id";

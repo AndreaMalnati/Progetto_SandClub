@@ -51,7 +51,6 @@ public class NewBeerRecyclerViewAdapter  extends  RecyclerView.Adapter<RecyclerV
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Create a new view, which defines the UI of the list item
         View view = null;
 
         if (viewType == BEER_VIEW_TYPE) {
