@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="#E9DBC9" /> <!-- colore di sfondo -->
+    <solid android:color="@color/md_theme_light_primaryContainer" /> <!-- colore di sfondo -->
     <corners android:radius="20dp" /> <!-- raggio degli angoli arrotondati -->
     <stroke android:width="3dp" android:color="#000000" /> <!-- larghezza e colore del bordo -->
 

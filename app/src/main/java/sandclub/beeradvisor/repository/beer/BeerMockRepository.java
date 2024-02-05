@@ -22,14 +22,12 @@ import sandclub.beeradvisor.util.ServiceLocator;
 public class BeerMockRepository implements IBeerRepository {
 
     private final Application application;
-    //private final ResponseCallback responseCallback;
     private final BeerDao beerDao;
 
     private final ResponseCallback responseCallback;
 
 
-
-    public BeerMockRepository(Application application, ResponseCallback responseCallback) {//ResponseCallback responseCallback, ) {
+    public BeerMockRepository(Application application, ResponseCallback responseCallback) {
         this.application = application;
 
         this.responseCallback = responseCallback;
@@ -37,7 +35,6 @@ public class BeerMockRepository implements IBeerRepository {
         BeerRoomDatabase beerRoomDatabase = ServiceLocator.getInstance().getBeerDao(application);
 
         this.beerDao = beerRoomDatabase.beerDao();
-
     }
 
 
@@ -53,22 +50,16 @@ public class BeerMockRepository implements IBeerRepository {
                 e.printStackTrace();
             }
 
-
         if (beerResponse != null) {
             saveDataInDatabase(beerResponse.getBeerList());
         } else {
             responseCallback.onFailure(application.getString(R.string.error_retrieving_beers));
         }
-
-
     }
 
     //salva birre in database room
     private void saveDataInDatabase(List<Beer> beerList) {
-        //Thread in background che non va a sovraccaricare l'app
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-
-
             //Legge birre già presenti da database
             List<Beer> allBeer = beerDao.getAll();
             for (Beer beer : allBeer) {
@@ -76,7 +67,6 @@ public class BeerMockRepository implements IBeerRepository {
                     beerList.set(beerList.indexOf(beer), beer);
                 }
             }
-
             // Scrive le birre nel database
             beerDao.insertBeerList(beerList);
             responseCallback.onSuccess(beerList, System.currentTimeMillis());

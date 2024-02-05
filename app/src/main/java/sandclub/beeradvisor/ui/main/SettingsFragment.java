@@ -82,8 +82,6 @@ public class SettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -102,9 +100,6 @@ public class SettingsFragment extends Fragment {
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         dataEncryptionUtil = new DataEncryptionUtil(getActivity().getApplication());
-
-
-
     }
 
     @Override
@@ -145,8 +140,6 @@ public class SettingsFragment extends Fragment {
                 getViewLifecycleOwner(), result -> {
                     if (result.isSuccessUser()) {
                         User user = ((Result.UserResponseSuccess) result).getData();
-                        Log.d("Testata", user.getBirreBevute().toString());
-                        Log.d("Testina", String.valueOf(user.getBirreBevute().size()));
                         //updatePhotoImageView();
                         profilePhoto = requireView().findViewById(R.id.profilePhoto);
 
@@ -226,9 +219,6 @@ public class SettingsFragment extends Fragment {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
-
-
-
     ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -237,7 +227,6 @@ public class SettingsFragment extends Fragment {
                     userViewModel.changePhotoMutableLiveData(userViewModel.getLoggedUser().getUserId(), bitmapToString((Bitmap) result.getData().getExtras().get("data")));
                 }
             });
-
 
     // Dichiarazione del launcher per la richiesta di autorizzazione CAMERA
     private final ActivityResultLauncher<String> requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
@@ -250,7 +239,5 @@ public class SettingsFragment extends Fragment {
                     Snackbar.make(requireView(), getResources().getString(R.string.camera_permission_denied), Snackbar.LENGTH_SHORT).show();
                 }
             });
-
-
 }
 
