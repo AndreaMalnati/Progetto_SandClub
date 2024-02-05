@@ -192,7 +192,7 @@
             android:fontFamily="@font/testo"
             android:text="@string/register"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="18dp"
+            android:textSize="18sp"
 
             />
         <ProgressBar

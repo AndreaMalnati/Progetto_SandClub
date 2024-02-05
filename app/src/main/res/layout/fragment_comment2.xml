@@ -53,7 +53,7 @@
             android:fontFamily="@font/testo"
             android:text="@string/add_comment"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_below="@id/ratingBar"
             android:layout_centerHorizontal="true"
 

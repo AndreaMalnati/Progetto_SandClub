@@ -84,7 +84,7 @@ tools:context=".ui.welcome.LoginFragment">
         android:fontFamily="@font/testo"
         android:text="@string/login"
         android:textColor="@color/md_theme_light_inversePrimary"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <ProgressBar
         android:layout_marginTop="5dp"

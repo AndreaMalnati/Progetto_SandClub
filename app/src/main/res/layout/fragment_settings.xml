@@ -27,7 +27,7 @@
             android:fontFamily="@font/testo"
             android:text="Name Surname"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="30dp"
+            android:textSize="30sp"
             />
 
         <ImageView
@@ -52,7 +52,7 @@
 
             android:text="@string/change_profile_photo"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
 
             android:layout_marginLeft="80dp"
 
@@ -70,7 +70,7 @@
             android:layout_below="@id/profilePhoto"
             android:text="@string/change_password"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
 
             android:layout_marginLeft="80dp"
 
@@ -87,7 +87,7 @@
 
             android:text="@string/logout"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_below="@id/changePasswordBtn"
             android:layout_marginLeft="80dp"
 

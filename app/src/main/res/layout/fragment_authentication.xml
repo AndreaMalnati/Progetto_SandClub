@@ -22,7 +22,7 @@
                     android:fontFamily="@font/testo"
                     android:text="@string/login"
                     android:textColor="@color/md_theme_light_inversePrimary"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     />
 
                 <Button
@@ -35,7 +35,7 @@
                     android:fontFamily="@font/testo"
                     android:text="@string/register"
                     android:textColor="@color/md_theme_light_inversePrimary"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"

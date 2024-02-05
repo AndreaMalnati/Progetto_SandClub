@@ -30,7 +30,7 @@
             android:fontFamily="@font/testo"
             android:text="Nome birra"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/beer_grade"
@@ -42,7 +42,7 @@
             android:fontFamily="@font/testo"
             android:text="@string/gradiaton"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/beer_ibu"
@@ -54,7 +54,7 @@
             android:fontFamily="@font/testo"
             android:text="ibu"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/beer_ebc"
@@ -66,7 +66,7 @@
             android:fontFamily="@font/testo"
             android:text="ebc"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
 
         <TextView
@@ -79,7 +79,7 @@
             android:fontFamily="@font/testo"
             android:text="@string/description"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <ScrollView
             android:layout_below="@id/beer_description"
@@ -95,7 +95,7 @@
             android:fontFamily="@font/testo"
             android:text="Descrizione da cambiare"
             android:textColor="@color/md_theme_light_scrim"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
         </ScrollView>
         <TextView
             android:id="@+id/beer_foodPairings"
@@ -107,7 +107,7 @@
             android:fontFamily="@font/testo"
             android:text="@string/food_pairings"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
 
 
@@ -127,7 +127,7 @@
             android:fontFamily="@font/testo"
             android:text="Food pairings da cambiare"
             android:textColor="@color/md_theme_light_scrim"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
         </ScrollView>
         <RatingBar
             android:id="@+id/ratingBar"
@@ -174,7 +174,7 @@
             android:fontFamily="@font/testo"
             android:text="0.0"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/beer_comments"
@@ -186,7 +186,7 @@
             android:fontFamily="@font/testo"
             android:text="@string/comments"
             android:textColor="@color/md_theme_light_inversePrimary"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/add_comment_button"

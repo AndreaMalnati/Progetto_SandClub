@@ -19,7 +19,7 @@
         android:fontFamily="@font/testo"
         android:text="Beer advisor"
         android:textColor="@color/md_theme_light_inversePrimary"
-        android:textSize="50dp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
